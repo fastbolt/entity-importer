@@ -1,0 +1,6 @@
+# composer binaries and sources
+/vendor/
+/composer.phar
+
+# phpstorm data / cache folders
+.idea/
