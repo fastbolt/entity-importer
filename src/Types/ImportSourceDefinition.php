@@ -4,21 +4,41 @@ namespace Fastbolt\EntityImporter\Types;
 
 class ImportSourceDefinition
 {
+    public const TYPE_FILE = 'file';
 
-    private const TYPE_FILE = 'file';
-
+    /**
+     * @var string
+     */
     private string $filename;
 
+    /**
+     * @var string
+     */
     private string $type = self::TYPE_FILE;
 
+    /**
+     * @var string
+     */
     private string $delimiter;
 
+    /**
+     * @var string
+     */
     private string $enclosure;
 
+    /**
+     * @var string
+     */
     private string $escape;
 
+    /**
+     * @var bool
+     */
     private bool $hasHeaderRow;
 
+    /**
+     * @var string|null
+     */
     private ?string $importDir = null;
 
     /**
@@ -26,6 +46,7 @@ class ImportSourceDefinition
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
+     * @param bool   $hasHeaderRow
      */
     public function __construct(
         string $filename,
@@ -91,10 +112,14 @@ class ImportSourceDefinition
 
     /**
      * @param string $type
+     *
+     * @return ImportSourceDefinition
      */
-    public function setType(string $type): void
+    public function setType(string $type): ImportSourceDefinition
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -107,9 +132,13 @@ class ImportSourceDefinition
 
     /**
      * @param string|null $importDir
+     *
+     * @return ImportSourceDefinition
      */
-    public function setImportDir(?string $importDir): void
+    public function setImportDir(?string $importDir): ImportSourceDefinition
     {
         $this->importDir = $importDir;
+
+        return $this;
     }
 }

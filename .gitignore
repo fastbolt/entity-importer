@@ -4,3 +4,9 @@
 
 # phpstorm data / cache folders
 .idea/
+
+# composer lock file
+composer.lock
+
+# cache directory
+var/

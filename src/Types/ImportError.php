@@ -4,9 +4,14 @@ namespace Fastbolt\EntityImporter\Types;
 
 class ImportError
 {
-
+    /**
+     * @var int
+     */
     private int $line;
 
+    /**
+     * @var string
+     */
     private string $message;
 
     /**

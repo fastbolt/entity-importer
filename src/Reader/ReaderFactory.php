@@ -21,6 +21,11 @@ class ReaderFactory
         $this->importPath = $importPath;
     }
 
+    /**
+     * @param ImportSourceDefinition $sourceDefinition
+     *
+     * @return CsvReader
+     */
     public function getReader(ImportSourceDefinition $sourceDefinition): CsvReader
     {
         $fileObject = new SplFileObject(

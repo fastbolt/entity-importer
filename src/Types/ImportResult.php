@@ -4,7 +4,9 @@ namespace Fastbolt\EntityImporter\Types;
 
 class ImportResult
 {
-
+    /**
+     * @var int
+     */
     private int $success = 0;
 
     /**
@@ -12,6 +14,9 @@ class ImportResult
      */
     private array $errors = [];
 
+    /**
+     * @return $this
+     */
     public function increaseSuccess(): static
     {
         $this->success++;
@@ -19,6 +24,11 @@ class ImportResult
         return $this;
     }
 
+    /**
+     * @param ImportError $error
+     *
+     * @return $this
+     */
     public function addError(ImportError $error): static
     {
         $this->errors[] = $error;

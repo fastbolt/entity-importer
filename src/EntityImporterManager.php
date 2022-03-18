@@ -2,6 +2,9 @@
 
 namespace Fastbolt\EntityImporter;
 
+use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
+use Fastbolt\EntityImporter\Types\ImportResult;
+
 class EntityImporterManager
 {
     /**
@@ -32,15 +35,17 @@ class EntityImporterManager
         return $this->definitions;
     }
 
+    /**
+     * @param string   $name
+     * @param callable $statusCallback
+     * @param callable $errorCallback
+     *
+     * @return ImportResult
+     */
     public function import(string $name, callable $statusCallback, callable $errorCallback): ImportResult
     {
         if (!$name || null === ($definition = $this->definitions[$name] ?? null)) {
-            throw new ImporterDefinitionNotFoundException(
-                sprintf(
-                    'Invalid definition: %s',
-                    $name
-                )
-            );
+            throw new ImporterDefinitionNotFoundException($name);
         }
 
         return $this->importer->import($definition, $statusCallback, $errorCallback);

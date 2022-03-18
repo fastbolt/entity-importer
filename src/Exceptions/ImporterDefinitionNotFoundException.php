@@ -6,9 +6,11 @@ use InvalidArgumentException;
 
 class ImporterDefinitionNotFoundException extends InvalidArgumentException
 {
-
     private const MESSAGE = 'Importer %s not found.';
 
+    /**
+     * @var string
+     */
     private string $name;
 
     /**
@@ -18,7 +20,7 @@ class ImporterDefinitionNotFoundException extends InvalidArgumentException
     {
         $this->name = $name;
 
-        parent::__construct(sprintf(self::MESSAGE, ...func_get_args()));
+        parent::__construct(sprintf(self::MESSAGE, $name));
     }
 
     /**

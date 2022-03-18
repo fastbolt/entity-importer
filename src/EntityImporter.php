@@ -2,7 +2,7 @@
 
 namespace Fastbolt\EntityImporter;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportResult;
 
@@ -10,21 +10,19 @@ class EntityImporter
 {
     private ReaderFactory $readerFactory;
 
-    private EntityManagerInterface $entityManager;
+    private ArrayToEntityFactory $defaultItemFactory;
 
-    private $defaultItemFactory;
-
-    /**
-     * @param ReaderFactory          $readerFactory
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(ReaderFactory $readerFactory, EntityManagerInterface $entityManager)
+    public function __construct(ReaderFactory $readerFactory, ArrayToEntityFactory $defaultItemFactory)
     {
-        $this->readerFactory = $readerFactory;
+        $this->readerFactory      = $readerFactory;
+        $this->defaultItemFactory = $defaultItemFactory;
     }
 
-    public function import(EntityImporterDefinition $definition, callable $statusCallback, callable $errorCallback)
-    {
+    public function import(
+        EntityImporterDefinition $definition,
+        callable $statusCallback,
+        callable $errorCallback
+    ): ImportResult {
         $result           = new ImportResult();
         $sourceDefinition = $definition->getImportSourceDefinition();
         $repository       = $definition->getRepository();
@@ -39,6 +37,10 @@ class EntityImporter
                 continue;
             }
 
+            if (null === $row) {
+                continue;
+            }
+
             $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
             $factoryCallback($item, $row);
         }
@@ -46,6 +48,12 @@ class EntityImporter
         return $result;
     }
 
+    /**
+     * @param EntityImporterDefinition $definition
+     * @param array                    $row
+     *
+     * @return array<string,mixed>
+     */
     private function getRepositorySelectionArray(EntityImporterDefinition $definition, array $row): array
     {
         $columns = $definition->getIdentifierColumns();
