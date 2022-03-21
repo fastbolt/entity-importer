@@ -5,6 +5,9 @@ namespace Fastbolt\EntityImporter;
 use Doctrine\Persistence\ObjectRepository;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
 
+/**
+ * @template T
+ */
 interface EntityImporterDefinition
 {
     /**
@@ -19,11 +22,12 @@ interface EntityImporterDefinition
 
     /**
      * @return string
+     * @psalm-return class-string T
      */
     public function getEntityClass(): string;
 
     /**
-     * @return callable|null
+     * @return callable(T|null,array<string,mixed>)|null
      */
     public function getEntityFactory(): ?callable;
 
@@ -48,7 +52,7 @@ interface EntityImporterDefinition
     public function getImportSourceDefinition(): ImportSourceDefinition;
 
     /**
-     * @return ObjectRepository
+     * @return ObjectRepository<T>
      */
     public function getRepository(): ObjectRepository;
 }

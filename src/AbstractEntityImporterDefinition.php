@@ -2,6 +2,9 @@
 
 namespace Fastbolt\EntityImporter;
 
+/**
+ * @template T
+ */
 abstract class AbstractEntityImporterDefinition implements EntityImporterDefinition
 {
     /**
@@ -13,7 +16,7 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     }
 
     /**
-     * @return array<string,callable>
+     * @return array<string,callable(null|object, array<string,mixed>):mixed>
      */
     public function getFieldConverters(): array
     {
@@ -21,7 +24,7 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     }
 
     /**
-     * @return callable|null
+     * @return callable(null|object, array<string, mixed>):T|null
      */
     public function getEntityFactory(): ?callable
     {

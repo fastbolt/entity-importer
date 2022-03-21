@@ -2,6 +2,7 @@
 
 namespace Fastbolt\EntityImporter;
 
+use Exception;
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
 use Fastbolt\EntityImporter\Types\ImportResult;
 
@@ -36,9 +37,9 @@ class EntityImporterManager
     }
 
     /**
-     * @param string   $name
-     * @param callable $statusCallback
-     * @param callable $errorCallback
+     * @param string                   $name
+     * @param callable():void          $statusCallback
+     * @param callable(Exception):void $errorCallback
      *
      * @return ImportResult
      */

@@ -8,18 +8,38 @@ use Fastbolt\EntityImporter\Reader\ReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
 
+/**
+ * @template T
+ */
 class EntityImporter
 {
+    /**
+     * @var ReaderFactory
+     */
     private ReaderFactory $readerFactory;
 
+    /**
+     * @var ArrayToEntityFactory
+     */
     private ArrayToEntityFactory $defaultItemFactory;
 
+    /**
+     * @param ReaderFactory        $readerFactory
+     * @param ArrayToEntityFactory $defaultItemFactory
+     */
     public function __construct(ReaderFactory $readerFactory, ArrayToEntityFactory $defaultItemFactory)
     {
         $this->readerFactory      = $readerFactory;
         $this->defaultItemFactory = $defaultItemFactory;
     }
 
+    /**
+     * @param EntityImporterDefinition<T> $definition
+     * @param callable():void             $statusCallback
+     * @param callable(Exception):void    $errorCallback
+     *
+     * @return ImportResult
+     */
     public function import(
         EntityImporterDefinition $definition,
         callable $statusCallback,
@@ -36,12 +56,11 @@ class EntityImporter
         $reader = $this->readerFactory->getReader($sourceDefinition);
         $reader->setColumnHeaders($definition->getFields());
 
+        /**
+         * @var array<string,mixed> $row We expect this to always be assoc, since we set the columnHeaders property before.
+         */
         foreach ($reader as $index => $row) {
             if (0 === $index && $sourceDefinition->hasHeaderRow()) {
-                continue;
-            }
-
-            if (null === $row) {
                 continue;
             }
 
@@ -61,7 +80,7 @@ class EntityImporter
 
     /**
      * @param EntityImporterDefinition $definition
-     * @param array                    $row
+     * @param array<string,mixed>      $row
      *
      * @return array<string,mixed>
      */
@@ -71,10 +90,10 @@ class EntityImporter
 
         return array_filter(
             $row,
-            static function ($value, $key) use ($columns) {
+            static function (string $key) use ($columns) {
                 return in_array($key, $columns, true);
             },
-            ARRAY_FILTER_USE_BOTH
+            ARRAY_FILTER_USE_KEY
         );
     }
 }
