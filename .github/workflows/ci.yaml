@@ -54,11 +54,20 @@ jobs:
             -   name: Run test suite
                 run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
 
-            -   name: Upload coverage
-                uses: paambaati/codeclimate-action@v3.0.0
+    coverage:
+        name: Upload coverage
+        environment: default
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                include:
+                    -   php-versions: '8.1'
+                        coverage: xdebug
+                        composer-prefer: '--prefer-stable'
+                        phpunit-flags: '--coverage-clover coverage.xml'
+        steps:
+            -   uses: paambaati/codeclimate-action@v3.0.0
                 if: matrix.coverage
-                env:
-                    CC_TEST_REPORTER_ID: <code_climate_reporter_id>
                 with:
                     coverageCommand: vendor/bin/phpunit
                     debug: true
