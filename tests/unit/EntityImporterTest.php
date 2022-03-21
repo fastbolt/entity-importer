@@ -9,25 +9,50 @@ use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
 use Fastbolt\TestHelpers\BaseTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Port\Csv\CsvReader;
 use stdClass;
 
 class EntityImporterTest extends BaseTestCase
 {
+    /**
+     * @var ReaderFactory&MockObject
+     */
     private $readerFactory;
 
+    /**
+     * @var ArrayToEntityFactory&MockObject
+     */
     private $defaultItemFactory;
 
+    /**
+     * @var AbstractEntityImporterDefinition&MockObject
+     */
     private $importerDefinition;
 
+    /**
+     * @var ObjectRepository&MockObject
+     */
     private $repository;
 
-    private $customFactory;
-
+    /**
+     * @var MockObject&CsvReader
+     */
     private $reader;
 
+    /**
+     * @var MockObject|stdClass|callable
+     */
+    private $customFactory;
+
+    /**
+     * @var MockObject|stdClass|callable
+     */
     private $statusCallback;
 
+    /**
+     * @var MockObject|stdClass|callable
+     */
     private $errorCallback;
 
     /**
@@ -108,29 +133,13 @@ class EntityImporterTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->readerFactory      = $this->getMockBuilder(ReaderFactory::class)
-                                         ->disableOriginalConstructor()
-                                         ->getMock();
-        $this->defaultItemFactory = $this->getMockBuilder(ArrayToEntityFactory::class)
-                                         ->disableOriginalConstructor()
-                                         ->getMock();
-        $this->importerDefinition = $this->getMockBuilder(AbstractEntityImporterDefinition::class)
-                                         ->disableOriginalConstructor()
-                                         ->getMock();
-        $this->repository         = $this->getMockBuilder(ObjectRepository::class)
-                                         ->disableOriginalConstructor()
-                                         ->getMock();
-        $this->customFactory      = $this->getMockBuilder(stdClass::class)
-                                         ->addMethods(['__invoke'])
-                                         ->getMock();
-        $this->reader             = $this->getMockBuilder(CsvReader::class)
-                                         ->disableOriginalConstructor()
-                                         ->getMock();
-        $this->statusCallback     = $this->getMockBuilder(stdClass::class)
-                                         ->addMethods(['__invoke'])
-                                         ->getMock();
-        $this->errorCallback      = $this->getMockBuilder(stdClass::class)
-                                         ->addMethods(['__invoke'])
-                                         ->getMock();
+        $this->readerFactory      = $this->getMock(ReaderFactory::class);
+        $this->defaultItemFactory = $this->getMock(ArrayToEntityFactory::class);
+        $this->importerDefinition = $this->getMock(AbstractEntityImporterDefinition::class);
+        $this->repository         = $this->getMock(ObjectRepository::class);
+        $this->reader             = $this->getMock(CsvReader::class);
+        $this->customFactory      = $this->getCallable();
+        $this->statusCallback     = $this->getCallable();
+        $this->errorCallback      = $this->getCallable();
     }
 }

@@ -6,23 +6,39 @@ use Fastbolt\EntityImporter\EntityImporter;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\EntityImporterManager;
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
+use Fastbolt\TestHelpers\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * @covers \Fastbolt\EntityImporter\EntityImporterManager
  */
-class EntityImporterManagerTest extends TestCase
+class EntityImporterManagerTest extends BaseTestCase
 {
-    private MockObject | EntityImporter $importer;
 
-    private EntityImporterDefinition | MockObject $definition1;
+    /**
+     * @var EntityImporter|MockObject
+     */
+    private $importer;
 
-    private EntityImporterDefinition | MockObject $definition2;
+    /**
+     * @var EntityImporterDefinition|MockObject
+     */
+    private $definition1;
 
+    /**
+     * @var EntityImporterDefinition|MockObject
+     */
+    private $definition2;
+
+    /**
+     * @var callable|MockObject|stdClass
+     */
     private $statusCallback;
 
+    /**
+     * @var callable|MockObject|stdClass
+     */
     private $errorCallback;
 
     public function testImport(): void
@@ -64,27 +80,15 @@ class EntityImporterManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->importer = $this->getMockBuilder(EntityImporter::class)
-                               ->disableOriginalConstructor()
-                               ->onlyMethods(['import'])
-                               ->getMock();
+        $this->importer       = $this->getMock(EntityImporter::class, ['import']);
+        $this->definition1    = $this->getMock(EntityImporterDefinition::class);
+        $this->definition2    = $this->getMock(EntityImporterDefinition::class);
+        $this->statusCallback = $this->getCallable();
+        $this->errorCallback  = $this->getCallable();
 
-        $this->definition1 = $this->getMockBuilder(EntityImporterDefinition::class)
-                                  ->disableOriginalConstructor()
-                                  ->getMock();
         $this->definition1->method('getName')
                           ->willReturn('importer:def1:name');
-
-        $this->definition2 = $this->getMockBuilder(EntityImporterDefinition::class)
-                                  ->disableOriginalConstructor()
-                                  ->getMock();
         $this->definition2->method('getName')
                           ->willReturn('importer:def2:name');
-        $this->statusCallback = $this->getMockBuilder(stdClass::class)
-                                     ->addMethods(['__invoke'])
-                                     ->getMock();
-        $this->errorCallback  = $this->getMockBuilder(stdClass::class)
-                                     ->addMethods(['__invoke'])
-                                     ->getMock();
     }
 }
