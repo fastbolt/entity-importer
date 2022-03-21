@@ -3,8 +3,8 @@
 namespace Fastbolt\EntityImporter\Tests\unit\Reader;
 
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
-use Fastbolt\EntityImporter\Tests\_Helpers\Visibility;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use Fastbolt\TestHelpers\Visibility;
 use PHPUnit\Framework\TestCase;
 use SplFileObject;
 

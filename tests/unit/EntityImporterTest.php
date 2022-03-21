@@ -7,8 +7,8 @@ use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;
 use Fastbolt\EntityImporter\EntityImporter;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
-use Fastbolt\EntityImporter\Tests\_Helpers\BaseTestCase;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use Fastbolt\TestHelpers\BaseTestCase;
 use Port\Csv\CsvReader;
 use stdClass;
 
