@@ -2,8 +2,10 @@
 
 namespace Fastbolt\EntityImporter;
 
+use Exception;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
+use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
 
 class EntityImporter
@@ -26,8 +28,10 @@ class EntityImporter
         $result           = new ImportResult();
         $sourceDefinition = $definition->getImportSourceDefinition();
         $repository       = $definition->getRepository();
-        if (null === ($factoryCallback = $definition->getEntityFactory())) {
-            $factoryCallback = $this->defaultItemFactory;
+        $factoryCallback  = $this->defaultItemFactory;
+
+        if (null !== ($customFactoryCallback = $definition->getEntityFactory())) {
+            $factoryCallback = $customFactoryCallback;
         }
         $reader = $this->readerFactory->getReader($sourceDefinition);
         $reader->setColumnHeaders($definition->getFields());
@@ -41,8 +45,15 @@ class EntityImporter
                 continue;
             }
 
-            $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
-            $factoryCallback($item, $row);
+            try {
+                $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
+                $factoryCallback($item, $row);
+                $statusCallback();
+                $result->increaseSuccess();
+            } catch (Exception $exception) {
+                $errorCallback($exception);
+                $result->addError(new ImportError($index, $exception->getMessage()));
+            }
         }
 
         return $result;

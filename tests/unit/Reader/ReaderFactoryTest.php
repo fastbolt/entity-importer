@@ -21,7 +21,7 @@ class ReaderFactoryTest extends TestCase
             '`',
             '#'
         );
-        $definition->setImportDir(__DIR__ . '/../_Fixtures/Reader/ReaderFactory/');
+        $definition->setImportDir(__DIR__ . '/../../_Fixtures/Reader/ReaderFactory/');
         $factory = new ReaderFactory('/foo/invalid/path/' . mt_rand());
         $reader  = $factory->getReader($definition);
         /** @var SplFileObject $file */
@@ -39,7 +39,7 @@ class ReaderFactoryTest extends TestCase
             '`',
             '#'
         );
-        $factory    = new ReaderFactory(__DIR__ . '/../_Fixtures/Reader/ReaderFactory/');
+        $factory    = new ReaderFactory(__DIR__ . '/../../_Fixtures/Reader/ReaderFactory/');
         $reader     = $factory->getReader($definition);
         /** @var SplFileObject $file */
         $file = Visibility::getProperty($reader, 'file');
