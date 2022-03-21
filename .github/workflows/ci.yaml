@@ -12,6 +12,7 @@ jobs:
                 uses: docker://vimeo/psalm-github-actions
                 with:
                     args: --shepherd
+                    composer_require_dev: true
     unit-tests:
         name: Unit Tests
         runs-on: ubuntu-latest
