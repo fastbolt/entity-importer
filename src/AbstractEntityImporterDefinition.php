@@ -25,7 +25,7 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     }
 
     /**
-     * @return callable(null|T, array<string, mixed>):T|null
+     * @return callable(EntityImporterDefinition, null|T, array<string, mixed>):T|null
      */
     public function getEntityFactory(): ?callable
     {
