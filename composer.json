@@ -21,6 +21,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0|^8.1",
+        "symfony/framework-bundle": "^4.4|^5.4",
         "doctrine/persistence": "^2.4",
         "portphp/csv": "^2.0"
     },
