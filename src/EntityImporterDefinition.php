@@ -27,7 +27,7 @@ interface EntityImporterDefinition
     public function getEntityClass(): string;
 
     /**
-     * @return callable(T|null,array<string,mixed>)|null
+     * @return callable(EntityImporterDefinition,T|null,array<string,mixed>):T|null
      */
     public function getEntityFactory(): ?callable;
 

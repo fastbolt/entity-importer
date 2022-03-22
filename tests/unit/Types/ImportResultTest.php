@@ -1,6 +1,6 @@
 <?php
 
-namespace Fastbolt\EntityImporter\Tests\unit\Types;
+namespace Fastbolt\EntityImporter\Tests\Unit\Types;
 
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;

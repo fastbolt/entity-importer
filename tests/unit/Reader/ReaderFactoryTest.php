@@ -1,6 +1,6 @@
 <?php
 
-namespace Fastbolt\EntityImporter\Tests\unit\Reader;
+namespace Fastbolt\EntityImporter\Tests\Unit\Reader;
 
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;

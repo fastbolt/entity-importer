@@ -1,6 +1,6 @@
 <?php
 
-namespace Fastbolt\EntityImporter\Tests\unit;
+namespace Fastbolt\EntityImporter\Tests\Unit;
 
 use Doctrine\Persistence\ObjectRepository;
 use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;

@@ -2,6 +2,7 @@
 
 namespace Fastbolt\EntityImporter;
 
+use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
@@ -24,13 +25,23 @@ class EntityImporter
     private ArrayToEntityFactory $defaultItemFactory;
 
     /**
+     * @var ObjectManager
+     */
+    private ObjectManager $objectManager;
+
+    /**
      * @param ReaderFactory           $readerFactory
      * @param ArrayToEntityFactory<T> $defaultItemFactory
+     * @param ObjectManager           $objectManager
      */
-    public function __construct(ReaderFactory $readerFactory, ArrayToEntityFactory $defaultItemFactory)
-    {
+    public function __construct(
+        ReaderFactory $readerFactory,
+        ArrayToEntityFactory $defaultItemFactory,
+        ObjectManager $objectManager
+    ) {
         $this->readerFactory      = $readerFactory;
         $this->defaultItemFactory = $defaultItemFactory;
+        $this->objectManager      = $objectManager;
     }
 
     /**
@@ -66,14 +77,20 @@ class EntityImporter
 
             try {
                 $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
-                $factoryCallback($item, $row);
+                $item = $factoryCallback($definition, $item, $row);
+
+                $this->objectManager->persist($item);
+
                 $statusCallback();
                 $result->increaseSuccess();
             } catch (Exception $exception) {
-                $errorCallback($exception);
-                $result->addError(new ImportError($index, $exception->getMessage()));
+                $error = new ImportError($index, $exception->getMessage());
+
+                $errorCallback($error);
+                $result->addError($error);
             }
         }
+        $this->objectManager->flush();
 
         return $result;
     }

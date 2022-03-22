@@ -13,6 +13,9 @@ class EntityImporterManager
      */
     private array $definitions = [];
 
+    /**
+     * @var EntityImporter
+     */
     private EntityImporter $importer;
 
     /**

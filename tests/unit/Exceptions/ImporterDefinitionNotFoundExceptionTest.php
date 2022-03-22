@@ -1,6 +1,6 @@
 <?php
 
-namespace Fastbolt\EntityImporter\Tests\unit\Exceptions;
+namespace Fastbolt\EntityImporter\Tests\Unit\Exceptions;
 
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
 use PHPUnit\Framework\TestCase;

@@ -1,1 +1,37 @@
 services:
+    
+    Fastbolt\EntityImporter\EntityImporterManager:
+        $importer: '@Fastbolt\EntityImporter\EntityImporter'
+        $importerDefinitions: !tagged fastbolt.entity_importer.definition
+
+    Fastbolt\EntityImporter\EntityImporter:
+        $readerFactory: '@Fastbolt\EntityImporter\Reader\ReaderFactory'
+        $defaultItemFactory: '@Fastbolt\EntityImporter\Factory\ArrayToEntityFactory'
+        $objectManager: '@doctrine.orm.entity_manager'
+
+    Fastbolt\EntityImporter\Reader\ReaderFactory:
+        $importPath: '%entity_importer.default_import_path%'
+
+    Fastbolt\EntityImporter\Factory\ArrayToEntityFactory:
+        $entityInstantiator: '@Fastbolt\EntityImporter\Factory\EntityInstantiator'
+        $entityUpdater: '@Fastbolt\EntityImporter\Factory\EntityUpdater'
+
+    Fastbolt\EntityImporter\Console\ImportCommandHelpRenderer:
+        $entityImporterManager: '@Fastbolt\EntityImporter\EntityImporterManager'
+
+    Fastbolt\EntityImporter\Console\Command\ImportCommand:
+        tags: [ 'console.command' ]
+        arguments:
+            $entityImporterManager: '@Fastbolt\EntityImporter\EntityImporterManager'
+            $helpRenderer: '@Fastbolt\EntityImporter\Console\ImportCommandHelpRenderer'
+            $resultRenderer: '@Fastbolt\EntityImporter\Console\ImportCommandResultRenderer'
+
+    Fastbolt\EntityImporter\Console\ImportCommandResultRenderer:
+
+    Fastbolt\EntityImporter\Factory\EntityInstantiator:
+
+    Fastbolt\EntityImporter\Factory\EntityUpdater:
+        $setterDetectors: !tagged fastbolt.entity_importer.setter_detectors
+
+    Fastbolt\EntityImporter\Factory\SetterDetection\DefaultSetterDetector:
+        tags: [ 'fastbolt.entity_importer.setter_detectors' ]

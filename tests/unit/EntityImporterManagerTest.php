@@ -1,6 +1,6 @@
 <?php
 
-namespace Fastbolt\EntityImporter\Tests\unit;
+namespace Fastbolt\EntityImporter\Tests\Unit;
 
 use Fastbolt\EntityImporter\EntityImporter;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
@@ -15,7 +15,6 @@ use stdClass;
  */
 class EntityImporterManagerTest extends BaseTestCase
 {
-
     /**
      * @var EntityImporter|MockObject
      */
