@@ -13,7 +13,7 @@ class ArrayToEntityFactory
      *
      * @return void
      */
-    public function __invoke(?object $entity, array $row): void
+    public function __invoke($entity, array $row): void
     {
     }
 }

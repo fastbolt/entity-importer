@@ -34,7 +34,7 @@ class ImportSourceDefinition
     /**
      * @var bool
      */
-    private bool $hasHeaderRow;
+    private bool $hasHeaderRow = true;
 
     /**
      * @var string|null
@@ -46,20 +46,17 @@ class ImportSourceDefinition
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
-     * @param bool   $hasHeaderRow
      */
     public function __construct(
         string $filename,
         string $delimiter = ';',
         string $enclosure = '"',
-        string $escape = '\\',
-        bool $hasHeaderRow = true
+        string $escape = '\\'
     ) {
-        $this->filename     = $filename;
-        $this->delimiter    = $delimiter;
-        $this->enclosure    = $enclosure;
-        $this->escape       = $escape;
-        $this->hasHeaderRow = $hasHeaderRow;
+        $this->filename  = $filename;
+        $this->delimiter = $delimiter;
+        $this->enclosure = $enclosure;
+        $this->escape    = $escape;
     }
 
     /**
@@ -100,6 +97,18 @@ class ImportSourceDefinition
     public function hasHeaderRow(): bool
     {
         return $this->hasHeaderRow;
+    }
+
+    /**
+     * @param bool $hasHeaderRow
+     *
+     * @return ImportSourceDefinition
+     */
+    public function setHasHeaderRow(bool $hasHeaderRow): ImportSourceDefinition
+    {
+        $this->hasHeaderRow = $hasHeaderRow;
+
+        return $this;
     }
 
     /**

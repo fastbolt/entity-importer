@@ -31,10 +31,10 @@ class ImportSourceDefinitionTest extends TestCase
             'foo',
             'a',
             'b',
-            'c',
-            false
+            'c'
         );
-        $definition->setType('foo')
+        $definition->setHasHeaderRow(false)
+                   ->setType('foo')
                    ->setImportDir('/bar/dir');
 
         self::assertSame('foo', $definition->getFilename());

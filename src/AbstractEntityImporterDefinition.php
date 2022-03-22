@@ -3,7 +3,8 @@
 namespace Fastbolt\EntityImporter;
 
 /**
- * @template T
+ * @template   T
+ * @implements EntityImporterDefinition<T>
  */
 abstract class AbstractEntityImporterDefinition implements EntityImporterDefinition
 {
@@ -24,7 +25,7 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     }
 
     /**
-     * @return callable(null|object, array<string, mixed>):T|null
+     * @return callable(null|T, array<string, mixed>):T|null
      */
     public function getEntityFactory(): ?callable
     {

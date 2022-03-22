@@ -19,13 +19,13 @@ class EntityImporter
     private ReaderFactory $readerFactory;
 
     /**
-     * @var ArrayToEntityFactory
+     * @var ArrayToEntityFactory<T>
      */
     private ArrayToEntityFactory $defaultItemFactory;
 
     /**
-     * @param ReaderFactory        $readerFactory
-     * @param ArrayToEntityFactory $defaultItemFactory
+     * @param ReaderFactory           $readerFactory
+     * @param ArrayToEntityFactory<T> $defaultItemFactory
      */
     public function __construct(ReaderFactory $readerFactory, ArrayToEntityFactory $defaultItemFactory)
     {
@@ -79,8 +79,8 @@ class EntityImporter
     }
 
     /**
-     * @param EntityImporterDefinition $definition
-     * @param array<string,mixed>      $row
+     * @param EntityImporterDefinition<T> $definition
+     * @param array<string,mixed>         $row
      *
      * @return array<string,mixed>
      */
