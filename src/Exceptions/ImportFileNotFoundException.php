@@ -6,6 +6,9 @@ use Exception;
 
 class ImportFileNotFoundException extends Exception
 {
+    /**
+     * @var string
+     */
     private string $importFile;
 
     /**

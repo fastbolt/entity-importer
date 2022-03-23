@@ -10,7 +10,6 @@ use Fastbolt\EntityImporter\Exceptions\SetterDetectionException;
  */
 class EntityUpdater
 {
-
     /**
      * @var array<string,array<string,string|null>>
      */

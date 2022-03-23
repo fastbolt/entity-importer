@@ -8,7 +8,6 @@ use Symfony\Component\Console\Style\StyleInterface;
 
 class ImportCommandResultRenderer
 {
-
     private const MAX_SHOW_ERRORS = 1000;
 
     /**
