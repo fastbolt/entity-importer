@@ -47,4 +47,20 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     {
         return [];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEntityInstantiator(): ?callable
+    {
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEntityModifier(): ?callable
+    {
+        return null;
+    }
 }

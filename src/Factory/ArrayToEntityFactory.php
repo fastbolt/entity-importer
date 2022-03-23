@@ -31,14 +31,18 @@ class ArrayToEntityFactory
 
     /**
      * @param EntityImporterDefinition<T> $definition
-     * @param T|null                   $entity
-     * @param array<string,mixed>      $row
+     * @param T|null                      $entity
+     * @param array<string,mixed>         $row
      *
      * @return T
      */
     public function __invoke(EntityImporterDefinition $definition, $entity, array $row)
     {
-        $entity = $this->entityInstantiator->getInstance($definition, $entity);
+        if (null === $entity) {
+            $entity = null !== ($entityInstantiator = $definition->getEntityInstantiator())
+                ? $entityInstantiator()
+                : $this->entityInstantiator->getInstance($definition);
+        }
 
         return $this->entityUpdater->setData($definition, $entity, $row);
     }

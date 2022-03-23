@@ -90,6 +90,9 @@ class EntityImporter
             try {
                 $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
                 $item = $factoryCallback($definition, $item, $row);
+                if (null !== ($entityModifier = $definition->getEntityModifier())) {
+                    $entityModifier($item);
+                }
 
                 $this->objectManager->persist($item);
 

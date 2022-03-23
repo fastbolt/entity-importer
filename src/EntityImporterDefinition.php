@@ -65,4 +65,14 @@ interface EntityImporterDefinition
      * @return array<int,string>
      */
     public function getSkippedFields(): array;
+
+    /**
+     * @return callable():T|null
+     */
+    public function getEntityInstantiator(): ?callable;
+
+    /**
+     * @return callable(T)|null
+     */
+    public function getEntityModifier(): ?callable;
 }
