@@ -15,9 +15,14 @@ class ImportResult
     private array $errors = [];
 
     /**
+     * @var string|null
+     */
+    private ?string $archivedFilePath = null;
+
+    /**
      * @return $this
      */
-    public function increaseSuccess(): static
+    public function increaseSuccess(): self
     {
         $this->success++;
 
@@ -29,7 +34,7 @@ class ImportResult
      *
      * @return $this
      */
-    public function addError(ImportError $error): static
+    public function addError(ImportError $error): self
     {
         $this->errors[] = $error;
 
@@ -50,5 +55,25 @@ class ImportResult
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getArchivedFilePath(): ?string
+    {
+        return $this->archivedFilePath;
+    }
+
+    /**
+     * @param string|null $archivedFilePath
+     *
+     * @return ImportResult
+     */
+    public function setArchivedFilePath(?string $archivedFilePath): ImportResult
+    {
+        $this->archivedFilePath = $archivedFilePath;
+
+        return $this;
     }
 }

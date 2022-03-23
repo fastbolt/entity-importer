@@ -5,6 +5,7 @@ namespace Fastbolt\EntityImporter;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
+use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
@@ -30,18 +31,34 @@ class EntityImporter
     private ObjectManager $objectManager;
 
     /**
+     * @var ArchivingStrategy
+     */
+    private ArchivingStrategy $archivingStrategy;
+
+    /**
+     * @var string
+     */
+    private string $importPath;
+
+    /**
      * @param ReaderFactory           $readerFactory
      * @param ArrayToEntityFactory<T> $defaultItemFactory
      * @param ObjectManager           $objectManager
+     * @param ArchivingStrategy       $archivingStrategy
+     * @param string                  $importPath
      */
     public function __construct(
         ReaderFactory $readerFactory,
         ArrayToEntityFactory $defaultItemFactory,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        ArchivingStrategy $archivingStrategy,
+        string $importPath
     ) {
         $this->readerFactory      = $readerFactory;
         $this->defaultItemFactory = $defaultItemFactory;
         $this->objectManager      = $objectManager;
+        $this->archivingStrategy  = $archivingStrategy;
+        $this->importPath         = $importPath;
     }
 
     /**
@@ -66,9 +83,15 @@ class EntityImporter
         if (null !== ($customFactoryCallback = $definition->getEntityFactory())) {
             $factoryCallback = $customFactoryCallback;
         }
-        $addRows       = $sourceDefinition->hasHeaderRow() ? 0 : 1;
-        $flushInterval = $definition->getFlushInterval();
-        $reader        = $this->readerFactory->getReader($sourceDefinition);
+        $addRows        = $sourceDefinition->hasHeaderRow() ? 0 : 1;
+        $flushInterval  = $definition->getFlushInterval();
+        $importFilePath = sprintf(
+            '%s/%s',
+            $sourceDefinition->getImportDir() ?? $this->importPath,
+            $sourceDefinition->getFilename()
+        );
+
+        $reader = $this->readerFactory->getReader($sourceDefinition, $importFilePath);
         $reader->setColumnHeaders($definition->getFields());
 
         /**
@@ -106,6 +129,8 @@ class EntityImporter
             }
         }
         $this->objectManager->flush();
+        $archivedFilePath = $this->archivingStrategy->archiveFile($importFilePath);
+        $result->setArchivedFilePath($archivedFilePath);
 
         return $result;
     }

@@ -9,32 +9,13 @@ use SplFileObject;
 class ReaderFactory
 {
     /**
-     * @var string
-     */
-    private string $importPath;
-
-    /**
-     * @param string $importPath
-     */
-    public function __construct(string $importPath)
-    {
-        $this->importPath = $importPath;
-    }
-
-    /**
      * @param ImportSourceDefinition $sourceDefinition
      *
      * @return CsvReader
      */
-    public function getReader(ImportSourceDefinition $sourceDefinition): CsvReader
+    public function getReader(ImportSourceDefinition $sourceDefinition, string $importFilePath): CsvReader
     {
-        $fileObject = new SplFileObject(
-            sprintf(
-                '%s/%s',
-                $sourceDefinition->getImportDir() ?? $this->importPath,
-                $sourceDefinition->getFilename()
-            )
-        );
+        $fileObject = new SplFileObject($importFilePath);
 
         return new CsvReader(
             $fileObject,

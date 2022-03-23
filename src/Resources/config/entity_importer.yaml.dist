@@ -1,2 +1,3 @@
 entity_importer:
     default_import_path: '%kernel.project_dir%/data/import'
+    processed_path: '%kernel.project_dir%/data/import/processed'
