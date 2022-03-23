@@ -4,6 +4,7 @@ namespace Fastbolt\EntityImporter;
 
 use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
@@ -90,6 +91,9 @@ class EntityImporter
             $sourceDefinition->getImportDir() ?? $this->importPath,
             $sourceDefinition->getFilename()
         );
+        if (!file_exists($importFilePath)) {
+            throw new ImportFileNotFoundException($importFilePath);
+        }
 
         $reader = $this->readerFactory->getReader($sourceDefinition, $importFilePath);
         $reader->setColumnHeaders($definition->getFields());
