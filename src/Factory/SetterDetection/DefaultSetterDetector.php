@@ -10,6 +10,7 @@ use Symfony\Component\String\UnicodeString;
  */
 class DefaultSetterDetector implements SetterDetector
 {
+
     /**
      * @param T      $entity
      * @param string $key

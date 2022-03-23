@@ -12,12 +12,17 @@ class EntityUpdater
 {
 
     /**
-     * @var SetterDetector[]
+     * @var array<string,array<string,string|null>>
+     */
+    private static $setterCache = [];
+
+    /**
+     * @var SetterDetector<T>[]
      */
     private iterable $setterDetectors;
 
     /**
-     * @param iterable<SetterDetector> $setterDetectors
+     * @param iterable<SetterDetector<T>> $setterDetectors
      */
     public function __construct(iterable $setterDetectors)
     {
@@ -35,6 +40,8 @@ class EntityUpdater
      * @param array<string,mixed>         $row
      *
      * @return T
+     *
+     * @throws SetterDetectionException Throws if no detector is able to detect setter.
      */
     public function setData(EntityImporterDefinition $definition, $entity, array $row)
     {
@@ -56,17 +63,32 @@ class EntityUpdater
     }
 
     /**
+     * Detect setter for given field. Will cache results for performance reasons.
+     *
      * @param EntityImporterDefinition<T> $definition
      * @param T                           $entity
      * @param string                      $key
      * @param mixed                       $value
      *
      * @return string|null
+     *
+     * @throws SetterDetectionException Throws if no detector is able to detect setter.
      */
     private function detectSetter(EntityImporterDefinition $definition, $entity, string $key, $value): ?string
     {
+        $entityClass = get_class($entity);
+        if (null !== ($setter = self::$setterCache[$entityClass][$key] ?? null)) {
+            return $setter ?: null;
+        }
+
+        if (!isset(self::$setterCache[$entityClass])) {
+            self::$setterCache[$entityClass] = [];
+        }
+
         foreach ($this->setterDetectors as $detector) {
             if (null !== ($setter = $detector->detectSetter($entity, $key, $value))) {
+                self::$setterCache[$entityClass][$key] = $setter ?: '';
+
                 return $setter;
             }
         }
