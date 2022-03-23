@@ -1,19 +1,19 @@
-name: CI
-on: [ push, pull_request ]
+name: "PHPUnit tests"
+
+
+on:
+    pull_request:
+        paths:
+            - "**.php"
+            - "phpunit.xml.dist"
+            - ".github/workflows/phpunit.yaml"
+    push:
+        paths:
+            - "**.php"
+            - "phpunit.xml.dist"
+            - ".github/workflows/phpunit.yaml"
 
 jobs:
-    psalm:
-        name: Psalm
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@master
-
-            -   name: Psalm
-                uses: docker://vimeo/psalm-github-actions
-                with:
-                    args: --shepherd
-                    composer_require_dev: true
-
     unit-tests:
         name: Unit Tests
         runs-on: ubuntu-latest
