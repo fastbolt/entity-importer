@@ -71,7 +71,8 @@ class ImportCommand extends Command
         $limit = $input->getOption('limit');
 
         try {
-            $bar    = new ProgressBar($output);
+            $bar = new ProgressBar($output);
+            $bar->setRedrawFrequency(100);
             $result = $this->entityImporterManager->import(
                 $type,
                 static function () use ($bar) {
