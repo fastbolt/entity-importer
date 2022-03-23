@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -53,7 +54,8 @@ class ImportCommand extends Command
     {
         $this->setName('entity_importer:import')
              ->setDescription('Generic entity importer command')
-             ->addArgument('type', InputArgument::OPTIONAL, 'Type to import', '');
+             ->addArgument('type', InputArgument::OPTIONAL, 'Type to import', '')
+             ->addOption('limit', 'l', InputOption::VALUE_OPTIONAL, 'Limit imported lines', null);
     }
 
     /**
@@ -64,8 +66,9 @@ class ImportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io   = new SymfonyStyle($input, $output);
-        $type = $input->getArgument('type');
+        $io    = new SymfonyStyle($input, $output);
+        $type  = $input->getArgument('type');
+        $limit = $input->getOption('limit');
 
         try {
             $bar    = new ProgressBar($output);
@@ -78,7 +81,8 @@ class ImportCommand extends Command
                 },
                 static function (ImportError $error) {
                     return true;
-                }
+                },
+                $limit
             );
             $bar->finish();
             $this->resultRenderer->render($io, $result);

@@ -48,13 +48,15 @@ class EntityImporter
      * @param EntityImporterDefinition<T> $definition
      * @param callable():void             $statusCallback
      * @param callable(Exception):void    $errorCallback
+     * @param int|null                    $limit
      *
      * @return ImportResult
      */
     public function import(
         EntityImporterDefinition $definition,
         callable $statusCallback,
-        callable $errorCallback
+        callable $errorCallback,
+        ?int $limit
     ): ImportResult {
         $result           = new ImportResult();
         $sourceDefinition = $definition->getImportSourceDefinition();
@@ -64,6 +66,7 @@ class EntityImporter
         if (null !== ($customFactoryCallback = $definition->getEntityFactory())) {
             $factoryCallback = $customFactoryCallback;
         }
+        $addRows       = $sourceDefinition->hasHeaderRow() ? 0 : 1;
         $flushInterval = $definition->getFlushInterval();
         $reader        = $this->readerFactory->getReader($sourceDefinition);
         $reader->setColumnHeaders($definition->getFields());
@@ -74,6 +77,10 @@ class EntityImporter
         foreach ($reader as $index => $row) {
             if (0 === $index && $sourceDefinition->hasHeaderRow()) {
                 continue;
+            }
+
+            if (null !== $limit && $index + $addRows > $limit) {
+                break;
             }
 
             try {
