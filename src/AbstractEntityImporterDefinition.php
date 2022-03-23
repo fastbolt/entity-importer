@@ -37,7 +37,7 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
      */
     public function getFlushInterval(): int
     {
-        return 100;
+        return 1000;
     }
 
     /**
