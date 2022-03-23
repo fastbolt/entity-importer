@@ -55,4 +55,9 @@ interface EntityImporterDefinition
      * @return ObjectRepository<T>
      */
     public function getRepository(): ObjectRepository;
+
+    /**
+     * @return int
+     */
+    public function getFlushInterval(): int;
 }

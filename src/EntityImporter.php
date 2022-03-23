@@ -64,7 +64,8 @@ class EntityImporter
         if (null !== ($customFactoryCallback = $definition->getEntityFactory())) {
             $factoryCallback = $customFactoryCallback;
         }
-        $reader = $this->readerFactory->getReader($sourceDefinition);
+        $flushInterval = $definition->getFlushInterval();
+        $reader        = $this->readerFactory->getReader($sourceDefinition);
         $reader->setColumnHeaders($definition->getFields());
 
         /**
@@ -83,6 +84,10 @@ class EntityImporter
 
                 $statusCallback();
                 $result->increaseSuccess();
+
+                if ($index > 0 && $index % $flushInterval === 0) {
+                    $this->objectManager->flush();
+                }
             } catch (Exception $exception) {
                 $error = new ImportError($index, $exception->getMessage());
 
