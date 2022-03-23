@@ -39,10 +39,12 @@ class ProcessedFolderArchivingStrategy implements ArchivingStrategy
     public function archiveFile(string $originalFilename): string
     {
         $fs = new Filesystem();
+        /** @var array{filename: string, extension: string} $pathInfo */
+        $pathInfo = pathinfo($originalFilename);
         [
             'filename'  => $filename,
             'extension' => $extension,
-        ] = pathinfo($originalFilename);
+        ] = $pathInfo;
 
         $archiveFilename = sprintf(
             '%s/%s/%s/%s.%s.%s.gz',

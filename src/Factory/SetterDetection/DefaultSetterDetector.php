@@ -13,6 +13,7 @@ use Symfony\Component\String\UnicodeString;
 
 /**
  * @template T
+ * @implements DefaultSetterDetector<T>
  */
 class DefaultSetterDetector implements SetterDetector
 {
@@ -25,6 +26,10 @@ class DefaultSetterDetector implements SetterDetector
      */
     public function detectSetter($entity, string $key, $value): ?string
     {
+        if (!is_object($entity)) {
+            return null;
+        }
+
         $stringObject = new UnicodeString($key);
         $setterName   = sprintf(
             'set%s',
