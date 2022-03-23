@@ -83,6 +83,10 @@ class EntityImporter
                 break;
             }
 
+            if ($index > 0 && $index % $flushInterval === 0) {
+                $this->objectManager->flush();
+            }
+
             try {
                 $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
                 $item = $factoryCallback($definition, $item, $row);
@@ -91,10 +95,6 @@ class EntityImporter
 
                 $statusCallback();
                 $result->increaseSuccess();
-
-                if ($index > 0 && $index % $flushInterval === 0) {
-                    $this->objectManager->flush();
-                }
             } catch (Exception $exception) {
                 $error = new ImportError($index, $exception->getMessage());
 
