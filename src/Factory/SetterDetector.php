@@ -8,15 +8,12 @@
 
 namespace Fastbolt\EntityImporter\Factory;
 
-/**
- * @template T
- */
 interface SetterDetector
 {
     /**
-     * @param T      $entity
-     * @param string $key
-     * @param mixed  $value
+     * @param object $entity
+     * @param string   $key
+     * @param mixed    $value
      *
      * @return string|null
      */

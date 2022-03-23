@@ -11,9 +11,6 @@ namespace Fastbolt\EntityImporter\Factory;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Exceptions\SetterDetectionException;
 
-/**
- * @template T
- */
 class EntityUpdater
 {
     /**
@@ -22,12 +19,12 @@ class EntityUpdater
     private static $setterCache = [];
 
     /**
-     * @var SetterDetector<T>[]
+     * @var SetterDetector[]
      */
     private iterable $setterDetectors;
 
     /**
-     * @param iterable<SetterDetector<T>> $setterDetectors
+     * @param iterable<SetterDetector> $setterDetectors
      */
     public function __construct(iterable $setterDetectors)
     {
@@ -40,11 +37,11 @@ class EntityUpdater
     }
 
     /**
-     * @param EntityImporterDefinition<T> $definition
-     * @param T                           $entity
-     * @param array<string,mixed>         $row
+     * @param EntityImporterDefinition $definition
+     * @param object                   $entity
+     * @param array<string,mixed>      $row
      *
-     * @return T
+     * @return object
      *
      * @throws SetterDetectionException Throws if no detector is able to detect setter.
      */
@@ -71,7 +68,7 @@ class EntityUpdater
      * Detect setter for given field. Will cache results for performance reasons.
      *
      * @param EntityImporterDefinition<T> $definition
-     * @param T                           $entity
+     * @param object                      $entity
      * @param string                      $key
      * @param mixed                       $value
      *

@@ -12,7 +12,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
 
 /**
- * @template T
+ * @template EntityClass
  */
 interface EntityImporterDefinition
 {
@@ -28,12 +28,12 @@ interface EntityImporterDefinition
 
     /**
      * @return string
-     * @psalm-return class-string T
+     * @psalm-return class-string<EntityClass>
      */
     public function getEntityClass(): string;
 
     /**
-     * @return callable(EntityImporterDefinition,T|null,array<string,mixed>):T|null
+     * @return callable(EntityImporterDefinition<EntityClass>,EntityClass|null,array<string,mixed>):EntityClass|null
      */
     public function getEntityFactory(): ?callable;
 
@@ -58,7 +58,7 @@ interface EntityImporterDefinition
     public function getImportSourceDefinition(): ImportSourceDefinition;
 
     /**
-     * @return ObjectRepository<T>
+     * @return ObjectRepository<EntityClass>
      */
     public function getRepository(): ObjectRepository;
 
@@ -73,12 +73,12 @@ interface EntityImporterDefinition
     public function getSkippedFields(): array;
 
     /**
-     * @return callable():T|null
+     * @return callable():EntityClass|null
      */
     public function getEntityInstantiator(): ?callable;
 
     /**
-     * @return callable(T)|null
+     * @return callable(EntityClass)|null
      */
     public function getEntityModifier(): ?callable;
 }
