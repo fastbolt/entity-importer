@@ -1,4 +1,4 @@
-name: "Code Style"
+name: "PHP_Codesniffer"
 
 on:
     pull_request:
@@ -23,8 +23,5 @@ jobs:
             - name: Install dependencies
               run: composer install --prefer-dist --no-progress --no-suggest
 
-            - uses: tinovyatkin/action-php-codesniffer@v1
-              with:
-                  files: "**.php" # you may customize glob as needed
-                  phpcs_path: vendor/bin/phpcs
-                  standard: phpcs.xml.dist
+            - name: Run PHP_CodeSniffer
+              run: vendor/bin/phpcs
