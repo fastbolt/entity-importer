@@ -60,4 +60,9 @@ interface EntityImporterDefinition
      * @return int
      */
     public function getFlushInterval(): int;
+
+    /**
+     * @return array<int,string>
+     */
+    public function getSkippedFields(): array;
 }

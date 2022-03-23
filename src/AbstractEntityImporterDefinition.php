@@ -9,7 +9,7 @@ namespace Fastbolt\EntityImporter;
 abstract class AbstractEntityImporterDefinition implements EntityImporterDefinition
 {
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -17,7 +17,7 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     }
 
     /**
-     * @return array<string,callable(null|object, array<string,mixed>):mixed>
+     * @inheritDoc
      */
     public function getFieldConverters(): array
     {
@@ -25,7 +25,7 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     }
 
     /**
-     * @return callable(EntityImporterDefinition, null|T, array<string, mixed>):T|null
+     * @inheritDoc
      */
     public function getEntityFactory(): ?callable
     {
@@ -33,10 +33,18 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     }
 
     /**
-     * @return int
+     * @inheritDoc
      */
     public function getFlushInterval(): int
     {
         return 100;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSkippedFields(): array
+    {
+        return [];
     }
 }

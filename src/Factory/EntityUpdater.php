@@ -38,8 +38,12 @@ class EntityUpdater
      */
     public function setData(EntityImporterDefinition $definition, $entity, array $row)
     {
-        $converters = $definition->getFieldConverters();
+        $converters    = $definition->getFieldConverters();
+        $skippedFields = $definition->getSkippedFields();
         foreach ($row as $key => $value) {
+            if (in_array($key, $skippedFields, true)) {
+                continue;
+            }
             if (null !== ($converter = $converters[$key] ?? null)) {
                 $value = $converter($value);
             }
