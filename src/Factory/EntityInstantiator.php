@@ -26,7 +26,7 @@ class EntityInstantiator
      * @throws EntityFactoryException Throws if entity is not set as argument, but can not be constructed.
      * @throws ReflectionException Throws if class reflection fails (unknown class etc.)
      */
-    public function getInstance(EntityImporterDefinition $definition)
+    public function getInstance(EntityImporterDefinition $definition): object
     {
         $entityClass           = $definition->getEntityClass();
         $entityClassReflection = new ReflectionClass($entityClass);
@@ -41,6 +41,7 @@ class EntityInstantiator
             );
         }
 
+        /** @var T $entity */
         $entity = $entityClassReflection->newInstance();
 
         unset($entityClassReflection, $constructor);

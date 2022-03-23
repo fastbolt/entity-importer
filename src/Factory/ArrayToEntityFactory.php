@@ -41,13 +41,16 @@ class ArrayToEntityFactory
      * @param array<string,mixed>         $row
      *
      * @return T
+     * @param-out T $entity
      */
-    public function __invoke(EntityImporterDefinition $definition, $entity, array $row)
+    public function __invoke(EntityImporterDefinition $definition, ?object $entity, array $row): object
     {
         if (null === $entity) {
-            $entity = null !== ($entityInstantiator = $definition->getEntityInstantiator())
-                ? $entityInstantiator()
-                : $this->entityInstantiator->getInstance($definition);
+            if (null !== ($entityInstantiator = $definition->getEntityInstantiator())) {
+                $entity = $entityInstantiator();
+            } else {
+                $entity = $this->entityInstantiator->getInstance($definition);
+            }
         }
 
         return $this->entityUpdater->setData($definition, $entity, $row);

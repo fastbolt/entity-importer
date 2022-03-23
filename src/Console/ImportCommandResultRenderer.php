@@ -18,6 +18,7 @@ class ImportCommandResultRenderer
 
     /**
      * @param StyleInterface $io
+     * @param ImportResult   $importResult
      *
      * @return void
      */

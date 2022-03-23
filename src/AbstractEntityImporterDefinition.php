@@ -8,10 +8,6 @@
 
 namespace Fastbolt\EntityImporter;
 
-/**
- * @template   T
- * @implements EntityImporterDefinition<T>
- */
 abstract class AbstractEntityImporterDefinition implements EntityImporterDefinition
 {
     /**

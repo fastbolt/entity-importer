@@ -22,12 +22,12 @@ class EntityUpdater
     private static $setterCache = [];
 
     /**
-     * @var SetterDetector<T>[]
+     * @var SetterDetector[]
      */
     private iterable $setterDetectors;
 
     /**
-     * @param iterable<SetterDetector<T>> $setterDetectors
+     * @param iterable<SetterDetector> $setterDetectors
      */
     public function __construct(iterable $setterDetectors)
     {
@@ -41,14 +41,14 @@ class EntityUpdater
 
     /**
      * @param EntityImporterDefinition<T> $definition
-     * @param T                           $entity
-     * @param array<string,mixed>         $row
+     * @param T                  $entity
+     * @param array<string,mixed>      $row
      *
      * @return T
      *
      * @throws SetterDetectionException Throws if no detector is able to detect setter.
      */
-    public function setData(EntityImporterDefinition $definition, $entity, array $row)
+    public function setData(EntityImporterDefinition $definition, object $entity, array $row): object
     {
         $converters    = $definition->getFieldConverters();
         $skippedFields = $definition->getSkippedFields();
@@ -70,16 +70,16 @@ class EntityUpdater
     /**
      * Detect setter for given field. Will cache results for performance reasons.
      *
-     * @param EntityImporterDefinition<T> $definition
-     * @param T                           $entity
-     * @param string                      $key
-     * @param mixed                       $value
+     * @param EntityImporterDefinition $definition
+     * @param object                   $entity
+     * @param string                   $key
+     * @param mixed                    $value
      *
      * @return string|null
      *
      * @throws SetterDetectionException Throws if no detector is able to detect setter.
      */
-    private function detectSetter(EntityImporterDefinition $definition, $entity, string $key, $value): ?string
+    private function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): ?string
     {
         $entityClass = get_class($entity);
         if (null !== ($setter = self::$setterCache[$entityClass][$key] ?? null)) {

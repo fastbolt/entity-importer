@@ -27,13 +27,12 @@ interface EntityImporterDefinition
     public function getDescription(): string;
 
     /**
-     * @return string
-     * @psalm-return class-string T
+     * @return class-string
      */
     public function getEntityClass(): string;
 
     /**
-     * @return callable(EntityImporterDefinition,T|null,array<string,mixed>):T|null
+     * @return callable(EntityImporterDefinition<T>,T|null,array<string,mixed>):T|null
      */
     public function getEntityFactory(): ?callable;
 
@@ -43,7 +42,7 @@ interface EntityImporterDefinition
     public function getFields(): array;
 
     /**
-     * @return array<string,callable>
+     * @return array<string, callable>
      */
     public function getFieldConverters(): array;
 
