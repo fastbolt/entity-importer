@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\EntityImporter;
 
+use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
+use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
@@ -24,26 +33,54 @@ class EntityImporter
     private ArrayToEntityFactory $defaultItemFactory;
 
     /**
+     * @var ObjectManager
+     */
+    private ObjectManager $objectManager;
+
+    /**
+     * @var ArchivingStrategy
+     */
+    private ArchivingStrategy $archivingStrategy;
+
+    /**
+     * @var string
+     */
+    private string $importPath;
+
+    /**
      * @param ReaderFactory           $readerFactory
      * @param ArrayToEntityFactory<T> $defaultItemFactory
+     * @param ObjectManager           $objectManager
+     * @param ArchivingStrategy       $archivingStrategy
+     * @param string                  $importPath
      */
-    public function __construct(ReaderFactory $readerFactory, ArrayToEntityFactory $defaultItemFactory)
-    {
+    public function __construct(
+        ReaderFactory $readerFactory,
+        ArrayToEntityFactory $defaultItemFactory,
+        ObjectManager $objectManager,
+        ArchivingStrategy $archivingStrategy,
+        string $importPath
+    ) {
         $this->readerFactory      = $readerFactory;
         $this->defaultItemFactory = $defaultItemFactory;
+        $this->objectManager      = $objectManager;
+        $this->archivingStrategy  = $archivingStrategy;
+        $this->importPath         = $importPath;
     }
 
     /**
      * @param EntityImporterDefinition<T> $definition
      * @param callable():void             $statusCallback
      * @param callable(Exception):void    $errorCallback
+     * @param int|null                    $limit
      *
      * @return ImportResult
      */
     public function import(
         EntityImporterDefinition $definition,
         callable $statusCallback,
-        callable $errorCallback
+        callable $errorCallback,
+        ?int $limit
     ): ImportResult {
         $result           = new ImportResult();
         $sourceDefinition = $definition->getImportSourceDefinition();
@@ -53,7 +90,18 @@ class EntityImporter
         if (null !== ($customFactoryCallback = $definition->getEntityFactory())) {
             $factoryCallback = $customFactoryCallback;
         }
-        $reader = $this->readerFactory->getReader($sourceDefinition);
+        $addRows        = $sourceDefinition->hasHeaderRow() ? 0 : 1;
+        $flushInterval  = $definition->getFlushInterval();
+        $importFilePath = sprintf(
+            '%s/%s',
+            $sourceDefinition->getImportDir() ?? $this->importPath,
+            $sourceDefinition->getFilename()
+        );
+        if (!file_exists($importFilePath)) {
+            throw new ImportFileNotFoundException($importFilePath);
+        }
+
+        $reader = $this->readerFactory->getReader($sourceDefinition, $importFilePath);
         $reader->setColumnHeaders($definition->getFields());
 
         /**
@@ -64,16 +112,35 @@ class EntityImporter
                 continue;
             }
 
+            if (null !== $limit && $index + $addRows > $limit) {
+                break;
+            }
+
+            if ($index > 0 && $index % $flushInterval === 0) {
+                $this->objectManager->flush();
+            }
+
             try {
                 $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
-                $factoryCallback($item, $row);
+                $item = $factoryCallback($definition, $item, $row);
+                if (null !== ($entityModifier = $definition->getEntityModifier())) {
+                    $entityModifier($item);
+                }
+
+                $this->objectManager->persist($item);
+
                 $statusCallback();
                 $result->increaseSuccess();
             } catch (Exception $exception) {
-                $errorCallback($exception);
-                $result->addError(new ImportError($index, $exception->getMessage()));
+                $error = new ImportError($index, $exception->getMessage());
+
+                $errorCallback($error);
+                $result->addError($error);
             }
         }
+        $this->objectManager->flush();
+        $archivedFilePath = $this->archivingStrategy->archiveFile($importFilePath);
+        $result->setArchivedFilePath($archivedFilePath);
 
         return $result;
     }

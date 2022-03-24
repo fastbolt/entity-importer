@@ -21,8 +21,13 @@
     ],
     "require": {
         "php": "^7.4|^8.0|^8.1",
+        "ext-zlib": "*",
         "doctrine/persistence": "^2.4",
-        "portphp/csv": "^2.0"
+        "portphp/csv": "^2.0",
+        "symfony/config": "^4.4|^5.0",
+        "symfony/filesystem": "^4.4|^5.0",
+        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/string": "^4.4|^5.0"
     },
     "require-dev": {
         "fastbolt/test-helpers": "^0.1",
@@ -45,7 +50,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Fastbolt\\EntityImporter\\Tests\\": "tests/"
+            "Fastbolt\\EntityImporter\\Tests\\Unit\\": "tests/unit/"
         }
     },
     "scripts": {

@@ -1,6 +1,12 @@
 <?php
 
-namespace Fastbolt\EntityImporter\Tests\unit;
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Fastbolt\EntityImporter\Tests\Unit;
 
 use Fastbolt\EntityImporter\EntityImporter;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
@@ -15,7 +21,6 @@ use stdClass;
  */
 class EntityImporterManagerTest extends BaseTestCase
 {
-
     /**
      * @var EntityImporter|MockObject
      */
@@ -61,7 +66,7 @@ class EntityImporterManagerTest extends BaseTestCase
                        ->method('import')
                        ->with($this->definition2, $this->statusCallback, $this->errorCallback);
 
-        $result = $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback);
+        $result = $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
     }
 
     public function testImportInvalidType(): void
@@ -73,7 +78,7 @@ class EntityImporterManagerTest extends BaseTestCase
             []
         );
         self::assertSame([], $manager->getImporterDefinitions());
-        $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback);
+        $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
     }
 
     protected function setUp(): void

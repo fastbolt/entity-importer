@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\EntityImporter\Reader;
 
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
@@ -9,32 +15,13 @@ use SplFileObject;
 class ReaderFactory
 {
     /**
-     * @var string
-     */
-    private string $importPath;
-
-    /**
-     * @param string $importPath
-     */
-    public function __construct(string $importPath)
-    {
-        $this->importPath = $importPath;
-    }
-
-    /**
      * @param ImportSourceDefinition $sourceDefinition
      *
      * @return CsvReader
      */
-    public function getReader(ImportSourceDefinition $sourceDefinition): CsvReader
+    public function getReader(ImportSourceDefinition $sourceDefinition, string $importFilePath): CsvReader
     {
-        $fileObject = new SplFileObject(
-            sprintf(
-                '%s/%s',
-                $sourceDefinition->getImportDir() ?? $this->importPath,
-                $sourceDefinition->getFilename()
-            )
-        );
+        $fileObject = new SplFileObject($importFilePath);
 
         return new CsvReader(
             $fileObject,

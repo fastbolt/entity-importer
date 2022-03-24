@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
+  <file src="src/Console/Command/ImportCommand.php">
+    <InvalidArgument occurrences="1"/>
+    <InvalidScalarArgument occurrences="1">
+      <code>$limit</code>
+    </InvalidScalarArgument>
+    <UnusedClosureParam occurrences="1">
+      <code>$error</code>
+    </UnusedClosureParam>
+  </file>
+  <file src="src/Console/ImportCommandHelpRenderer.php">
+    <MixedAssignment occurrences="1">
+      <code>$table</code>
+    </MixedAssignment>
+    <MixedMethodCall occurrences="3">
+      <code>addRow</code>
+      <code>render</code>
+      <code>setHeaders</code>
+    </MixedMethodCall>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>createTable</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Console/ImportCommandResultRenderer.php">
+    <MixedAssignment occurrences="1">
+      <code>$count</code>
+    </MixedAssignment>
+    <MixedOperand occurrences="1">
+      <code>$count</code>
+    </MixedOperand>
+  </file>
+  <file src="src/DependencyInjection/Configuration.php">
+    <PossiblyNullReference occurrences="1">
+      <code>scalarNode</code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedMethod occurrences="1">
+      <code>scalarNode</code>
+    </PossiblyUndefinedMethod>
+  </file>
+  <file src="src/DependencyInjection/EntityImporterExtension.php">
+    <MixedArgument occurrences="1">
+      <code>$value</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$value</code>
+    </MixedAssignment>
+    <ReservedWord occurrences="1">
+      <code>$loader-&gt;load('services.yaml')</code>
+    </ReservedWord>
+  </file>
+  <file src="src/EntityImporter.php">
+    <InvalidArgument occurrences="1">
+      <code>$error</code>
+    </InvalidArgument>
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>$item</code>
+    </MixedArgumentTypeCoercion>
+  </file>
+  <file src="src/Factory/ArrayToEntityFactory.php">
+    <MixedAssignment occurrences="1">
+      <code>$entity</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="1">
+      <code>T</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement occurrences="1">
+      <code>$this-&gt;entityUpdater-&gt;setData($definition, $entity, $row)</code>
+    </MixedReturnStatement>
+  </file>
+  <file src="src/Factory/EntityUpdater.php">
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>$entity</code>
+    </MixedArgumentTypeCoercion>
+    <MixedAssignment occurrences="2">
+      <code>$value</code>
+      <code>$value</code>
+    </MixedAssignment>
+    <MixedMethodCall occurrences="1">
+      <code>$setter</code>
+    </MixedMethodCall>
+  </file>
+  <file src="tests/unit/AbstractEntityImporterDefinitionTest.php">
+    <MissingPropertyType occurrences="1">
+      <code>$definition</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="1">
+      <code>testDefaults</code>
+    </MissingReturnType>
+    <MixedMethodCall occurrences="3">
+      <code>getEntityFactory</code>
+      <code>getFieldConverters</code>
+      <code>getName</code>
+    </MixedMethodCall>
+  </file>
+  <file src="tests/unit/EntityImporterManagerTest.php">
+    <InvalidArgument occurrences="1"/>
+    <MixedArgumentTypeCoercion occurrences="4">
+      <code>$this-&gt;errorCallback</code>
+      <code>$this-&gt;errorCallback</code>
+      <code>$this-&gt;statusCallback</code>
+      <code>$this-&gt;statusCallback</code>
+    </MixedArgumentTypeCoercion>
+    <MixedMethodCall occurrences="2">
+      <code>method</code>
+      <code>with</code>
+    </MixedMethodCall>
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$this-&gt;importer</code>
+      <code>$this-&gt;importer</code>
+    </PossiblyInvalidArgument>
+    <PossiblyUndefinedMethod occurrences="1">
+      <code>expects</code>
+    </PossiblyUndefinedMethod>
+    <UnusedVariable occurrences="1">
+      <code>$result</code>
+    </UnusedVariable>
+  </file>
+  <file src="tests/unit/EntityImporterTest.php">
+    <MissingReturnType occurrences="1">
+      <code>testFileNotExists</code>
+    </MissingReturnType>
+    <MixedArgumentTypeCoercion occurrences="4">
+      <code>$this-&gt;errorCallback</code>
+      <code>$this-&gt;errorCallback</code>
+      <code>$this-&gt;statusCallback</code>
+      <code>$this-&gt;statusCallback</code>
+    </MixedArgumentTypeCoercion>
+    <MixedMethodCall occurrences="5">
+      <code>method</code>
+      <code>method</code>
+      <code>method</code>
+      <code>willReturnOnConsecutiveCalls</code>
+      <code>withConsecutive</code>
+    </MixedMethodCall>
+    <PossiblyInvalidMethodCall occurrences="3">
+      <code>expects</code>
+      <code>expects</code>
+      <code>expects</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyUndefinedMethod occurrences="3">
+      <code>expects</code>
+      <code>expects</code>
+      <code>expects</code>
+    </PossiblyUndefinedMethod>
+  </file>
+  <file src="tests/unit/Exceptions/ImportFileNotFoundExceptionTest.php">
+    <MissingReturnType occurrences="1">
+      <code>testException</code>
+    </MissingReturnType>
+  </file>
+  <file src="tests/unit/Exceptions/SetterDetectionExceptionTest.php">
+    <MissingReturnType occurrences="1">
+      <code>testException</code>
+    </MissingReturnType>
+  </file>
+  <file src="tests/unit/Factory/ArrayToEntityFactoryTest.php">
+    <InvalidDocblock occurrences="1">
+      <code>private $customEntityInstantiator;</code>
+    </InvalidDocblock>
+    <MissingPropertyType occurrences="1">
+      <code>$customEntityInstantiator</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="3">
+      <code>testNullEntityWithCustomEntityInstantiator</code>
+      <code>testNullEntityWithDefaultEntityInstantiator</code>
+      <code>testWithEntity</code>
+    </MissingReturnType>
+    <MixedMethodCall occurrences="7">
+      <code>expects</code>
+      <code>expects</code>
+      <code>expects</code>
+      <code>method</code>
+      <code>method</code>
+      <code>method</code>
+      <code>willReturn</code>
+    </MixedMethodCall>
+  </file>
+  <file src="tests/unit/Factory/EntityInstantiatorTest.php">
+    <MissingReturnType occurrences="4">
+      <code>testNoConstructor</code>
+      <code>testWithConstructorNoArguments</code>
+      <code>testWithConstructorWithArgumentsNotMandatory</code>
+      <code>testWithConstructorWithMandatoryArguments</code>
+    </MissingReturnType>
+  </file>
+  <file src="tests/unit/Factory/EntityUpdaterTest.php">
+    <MissingReturnType occurrences="4">
+      <code>testSetData</code>
+      <code>testSetDataEnsureCaching</code>
+      <code>testSetDataException</code>
+      <code>testSortDetectors</code>
+    </MissingReturnType>
+    <MixedAssignment occurrences="2">
+      <code>$result</code>
+      <code>$result</code>
+    </MixedAssignment>
+  </file>
+  <file src="tests/unit/Factory/SetterDetection/DefaultSetterDetectorTest.php">
+    <MissingReturnType occurrences="2">
+      <code>detectionDataProvider</code>
+      <code>testDetection</code>
+    </MissingReturnType>
+  </file>
+  <file src="tests/unit/Filesystem/ProcessedFolderArchivingStrategyTest.php">
+    <MissingReturnType occurrences="2">
+      <code>testArchiveFile</code>
+      <code>testFallbackFilesystem</code>
+    </MissingReturnType>
+  </file>
+</files>
