@@ -23,14 +23,17 @@ class ImportResultTest extends TestCase
 
         self::assertSame([], $result->getErrors());
         self::assertSame(0, $result->getSuccess());
+        self::assertNull($result->getArchivedFilePath());
 
         $result->increaseSuccess()
                ->addError($error1 = new ImportError(12, 'foo'))
                ->increaseSuccess()
                ->increaseSuccess()
-               ->addError($error2 = new ImportError(15, 'bar'));
+               ->addError($error2 = new ImportError(15, 'bar'))
+               ->setArchivedFilePath('/foo/bar');
 
         self::assertSame([$error1, $error2], $result->getErrors());
         self::assertSame(3, $result->getSuccess());
+        self::assertSame('/foo/bar', $result->getArchivedFilePath());
     }
 }

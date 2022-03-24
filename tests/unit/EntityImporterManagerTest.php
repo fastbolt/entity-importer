@@ -66,7 +66,7 @@ class EntityImporterManagerTest extends BaseTestCase
                        ->method('import')
                        ->with($this->definition2, $this->statusCallback, $this->errorCallback);
 
-        $result = $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback);
+        $result = $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
     }
 
     public function testImportInvalidType(): void
@@ -78,7 +78,7 @@ class EntityImporterManagerTest extends BaseTestCase
             []
         );
         self::assertSame([], $manager->getImporterDefinitions());
-        $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback);
+        $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
     }
 
     protected function setUp(): void

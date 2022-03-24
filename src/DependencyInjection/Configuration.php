@@ -13,6 +13,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * @psalm-suppress MixedMethodCall
+ * @codeCoverageIgnore
  */
 class Configuration implements ConfigurationInterface
 {

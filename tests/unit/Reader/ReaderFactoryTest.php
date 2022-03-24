@@ -21,32 +21,15 @@ class ReaderFactoryTest extends TestCase
 {
     public function testGetReaderWithImportPath(): void
     {
-        $definition = new ImportSourceDefinition(
+        $definition     = new ImportSourceDefinition(
             'dummyFile.csv',
             '@',
             '`',
             '#'
         );
-        $definition->setImportDir(__DIR__ . '/../../_Fixtures/Reader/ReaderFactory/');
-        $factory = new ReaderFactory('/foo/invalid/path/' . mt_rand());
-        $reader  = $factory->getReader($definition);
-        /** @var SplFileObject $file */
-        $file = Visibility::getProperty($reader, 'file');
-
-        self::assertSame('dummyFile.csv', $file->getFilename());
-        self::assertSame(['@', '`', '#'], $file->getCsvControl());
-    }
-
-    public function testGetReaderWithoutImportPath(): void
-    {
-        $definition = new ImportSourceDefinition(
-            'dummyFile.csv',
-            '@',
-            '`',
-            '#'
-        );
-        $factory    = new ReaderFactory(__DIR__ . '/../../_Fixtures/Reader/ReaderFactory/');
-        $reader     = $factory->getReader($definition);
+        $importFilePath = __DIR__ . '/../../_Fixtures/Reader/ReaderFactory/dummyFile.csv';
+        $factory        = new ReaderFactory();
+        $reader         = $factory->getReader($definition, $importFilePath);
         /** @var SplFileObject $file */
         $file = Visibility::getProperty($reader, 'file');
 
