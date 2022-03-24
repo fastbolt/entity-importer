@@ -8,11 +8,78 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Factory;
 
-use PHPUnit\Framework\TestCase;
+use Fastbolt\EntityImporter\EntityImporterDefinition;
+use Fastbolt\EntityImporter\Exceptions\EntityFactoryException;
+use Fastbolt\EntityImporter\Factory\EntityInstantiator;
+use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityNoConstructor;
+use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityWithConstructorNoArguments;
+use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityWithConstructorWithArgumentsNotMandatory;
+use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityWithConstructorWithMandatoryArguments;
+use Fastbolt\TestHelpers\BaseTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @covers \Fastbolt\EntityImporter\Factory\EntityInstantiator
  */
-class EntityInstantiatorTest extends TestCase
+class EntityInstantiatorTest extends BaseTestCase
 {
+    /**
+     * @var EntityImporterDefinition&MockObject
+     */
+    private $definition;
+
+    public function testNoConstructor()
+    {
+        $instantiator = new EntityInstantiator();
+        $this->definition->method('getEntityClass')
+                         ->willReturn(TestEntityNoConstructor::class);
+
+        $result = $instantiator->getInstance($this->definition);
+
+        self::assertInstanceOf(TestEntityNoConstructor::class, $result);
+    }
+
+    public function testWithConstructorNoArguments()
+    {
+        $instantiator = new EntityInstantiator();
+        $this->definition->method('getEntityClass')
+                         ->willReturn(TestEntityWithConstructorNoArguments::class);
+
+        $result = $instantiator->getInstance($this->definition);
+
+        self::assertInstanceOf(TestEntityWithConstructorNoArguments::class, $result);
+    }
+
+    public function testWithConstructorWithArgumentsNotMandatory()
+    {
+        $instantiator = new EntityInstantiator();
+        $this->definition->method('getEntityClass')
+                         ->willReturn(TestEntityWithConstructorWithArgumentsNotMandatory::class);
+
+        $result = $instantiator->getInstance($this->definition);
+
+        self::assertInstanceOf(TestEntityWithConstructorWithArgumentsNotMandatory::class, $result);
+    }
+
+    public function testWithConstructorWithMandatoryArguments()
+    {
+        $this->expectException(EntityFactoryException::class);
+        $this->expectExceptionMessage(
+            'Unable to create new entity using factory Fastbolt\EntityImporter\Factory\EntityInstantiator, constructor has 1 required parameters.'
+        );
+
+        $instantiator = new EntityInstantiator();
+        $this->definition->method('getEntityClass')
+                         ->willReturn(TestEntityWithConstructorWithMandatoryArguments::class);
+
+        $instantiator->getInstance($this->definition);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->definition = $this->getMock(EntityImporterDefinition::class);
+    }
 }
+

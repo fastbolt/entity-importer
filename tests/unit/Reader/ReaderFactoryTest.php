@@ -27,7 +27,7 @@ class ReaderFactoryTest extends TestCase
             '`',
             '#'
         );
-        $importFilePath = __DIR__ . '/../../_Fixtures/Reader/ReaderFactory/dummyFile.csv';
+        $importFilePath = __DIR__ . '/../_Fixtures/Reader/ReaderFactory/dummyFile.csv';
         $factory        = new ReaderFactory();
         $reader         = $factory->getReader($definition, $importFilePath);
         /** @var SplFileObject $file */

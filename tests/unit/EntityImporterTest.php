@@ -159,7 +159,7 @@ class EntityImporterTest extends BaseTestCase
             $this->defaultItemFactory,
             $this->objectManager,
             $this->archivingStrategy,
-            __DIR__ . '/../_Fixtures/Reader/ReaderFactory'
+            __DIR__ . '/_Fixtures/Reader/ReaderFactory'
         );
         $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
         self::assertSame(2, $result->getSuccess());
