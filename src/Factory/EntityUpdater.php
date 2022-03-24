@@ -19,7 +19,7 @@ class EntityUpdater
     /**
      * @var array<string,array<string,string|null>>
      */
-    private static $setterCache = [];
+    private array $setterCache = [];
 
     /**
      * @var SetterDetector[]
@@ -41,8 +41,8 @@ class EntityUpdater
 
     /**
      * @param EntityImporterDefinition<T> $definition
-     * @param T                  $entity
-     * @param array<string,mixed>      $row
+     * @param T                           $entity
+     * @param array<string,mixed>         $row
      *
      * @return T
      *
@@ -82,17 +82,17 @@ class EntityUpdater
     private function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): ?string
     {
         $entityClass = get_class($entity);
-        if (null !== ($setter = self::$setterCache[$entityClass][$key] ?? null)) {
+        if (null !== ($setter = $this->setterCache[$entityClass][$key] ?? null)) {
             return $setter ?: null;
         }
 
-        if (!isset(self::$setterCache[$entityClass])) {
-            self::$setterCache[$entityClass] = [];
+        if (!isset($this->setterCache[$entityClass])) {
+            $this->setterCache[$entityClass] = [];
         }
 
         foreach ($this->setterDetectors as $detector) {
             if (null !== ($setter = $detector->detectSetter($entity, $key, $value))) {
-                self::$setterCache[$entityClass][$key] = $setter ?: '';
+                $this->setterCache[$entityClass][$key] = $setter ?: '';
 
                 return $setter;
             }

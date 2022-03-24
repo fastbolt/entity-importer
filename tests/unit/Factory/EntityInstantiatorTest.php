@@ -82,4 +82,3 @@ class EntityInstantiatorTest extends BaseTestCase
         $this->definition = $this->getMock(EntityImporterDefinition::class);
     }
 }
-

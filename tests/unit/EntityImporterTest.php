@@ -12,6 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;
 use Fastbolt\EntityImporter\EntityImporter;
+use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
@@ -21,6 +22,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Port\Csv\CsvReader;
 use stdClass;
 
+/**
+ * @covers \Fastbolt\EntityImporter\EntityImporter
+ */
 class EntityImporterTest extends BaseTestCase
 {
     /**
@@ -73,9 +77,24 @@ class EntityImporterTest extends BaseTestCase
      */
     private $errorCallback;
 
-    /**
-     * @covers \Fastbolt\EntityImporter\EntityImporter
-     */
+    public function testFileNotExists()
+    {
+        $this->expectException(ImportFileNotFoundException::class);
+
+        $sourceDefinition = (new ImportSourceDefinition('foo.not.exists'));
+        $this->importerDefinition->method('getImportSourceDefinition')
+                                 ->willReturn($sourceDefinition);
+
+        $importer = new EntityImporter(
+            $this->readerFactory,
+            $this->defaultItemFactory,
+            $this->objectManager,
+            $this->archivingStrategy,
+            __DIR__ . '/_Fixtures/Reader/ReaderFactory'
+        );
+        $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
+    }
+
     public function testImportUsesDefaultFactory(): void
     {
         $data             = [

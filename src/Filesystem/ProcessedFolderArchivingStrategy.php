@@ -23,12 +23,21 @@ class ProcessedFolderArchivingStrategy implements ArchivingStrategy
     private string $archiveFilenameDateFormat;
 
     /**
+     * @var Filesystem
+     */
+    private Filesystem $filesystem;
+
+    /**
      * @param string $processedFolder
      */
-    public function __construct(string $processedFolder, string $archiveFilenameDateFormat)
-    {
+    public function __construct(
+        string $processedFolder,
+        string $archiveFilenameDateFormat,
+        ?Filesystem $filesystem = null
+    ) {
         $this->processedFolder           = $processedFolder;
         $this->archiveFilenameDateFormat = $archiveFilenameDateFormat;
+        $this->filesystem                = $filesystem ?? new Filesystem();
     }
 
     /**
@@ -38,7 +47,6 @@ class ProcessedFolderArchivingStrategy implements ArchivingStrategy
      */
     public function archiveFile(string $originalFilename): string
     {
-        $fs = new Filesystem();
         /** @var array{filename: string, extension: string} $pathInfo */
         $pathInfo = pathinfo($originalFilename);
         [
@@ -58,8 +66,8 @@ class ProcessedFolderArchivingStrategy implements ArchivingStrategy
 
         $fileContents = gzencode(file_get_contents($originalFilename));
 
-        $fs->dumpFile($archiveFilename, $fileContents);
-        $fs->remove($originalFilename);
+        $this->filesystem->dumpFile($archiveFilename, $fileContents);
+        $this->filesystem->remove($originalFilename);
 
         return $archiveFilename;
     }
