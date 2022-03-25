@@ -9,7 +9,7 @@
 namespace Fastbolt\EntityImporter\Tests\Unit\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Exceptions\EntityFactoryException;
+use Fastbolt\EntityImporter\Exceptions\EntityInstantiationException;
 use Fastbolt\EntityImporter\Factory\EntityInstantiator;
 use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityNoConstructor;
 use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityWithConstructorNoArguments;
@@ -63,10 +63,7 @@ class EntityInstantiatorTest extends BaseTestCase
 
     public function testWithConstructorWithMandatoryArguments()
     {
-        $this->expectException(EntityFactoryException::class);
-        $this->expectExceptionMessage(
-            'Unable to create new entity using factory Fastbolt\EntityImporter\Factory\EntityInstantiator, constructor has 1 required parameters.'
-        );
+        $this->expectException(EntityInstantiationException::class);
 
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')

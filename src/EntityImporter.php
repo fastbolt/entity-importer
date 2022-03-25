@@ -14,7 +14,7 @@ use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
 use Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
-use Fastbolt\EntityImporter\Reader\ReaderFactory;
+use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager;
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
 
@@ -24,9 +24,9 @@ use Fastbolt\EntityImporter\Types\ImportResult;
 class EntityImporter
 {
     /**
-     * @var ReaderFactory
+     * @var ReaderFactoryManager
      */
-    private ReaderFactory $readerFactory;
+    private ReaderFactoryManager $readerFactoryManager;
 
     /**
      * @var ArrayToEntityFactory<T>
@@ -49,24 +49,24 @@ class EntityImporter
     private string $importPath;
 
     /**
-     * @param ReaderFactory           $readerFactory
+     * @param ReaderFactoryManager    $readerFactoryManager
      * @param ArrayToEntityFactory<T> $defaultItemFactory
      * @param ObjectManager           $objectManager
      * @param ArchivingStrategy       $archivingStrategy
      * @param string                  $importPath
      */
     public function __construct(
-        ReaderFactory $readerFactory,
+        ReaderFactoryManager $readerFactoryManager,
         ArrayToEntityFactory $defaultItemFactory,
         ObjectManager $objectManager,
         ArchivingStrategy $archivingStrategy,
         string $importPath
     ) {
-        $this->readerFactory      = $readerFactory;
-        $this->defaultItemFactory = $defaultItemFactory;
-        $this->objectManager      = $objectManager;
-        $this->archivingStrategy  = $archivingStrategy;
-        $this->importPath         = $importPath;
+        $this->readerFactoryManager = $readerFactoryManager;
+        $this->defaultItemFactory   = $defaultItemFactory;
+        $this->objectManager        = $objectManager;
+        $this->archivingStrategy    = $archivingStrategy;
+        $this->importPath           = $importPath;
     }
 
     /**
@@ -102,7 +102,8 @@ class EntityImporter
             throw new ImportFileNotFoundException($importFilePath);
         }
 
-        $reader = $this->readerFactory->getReader($sourceDefinition, $importFilePath);
+        $readerFactory = $this->readerFactoryManager->getReaderFactory($sourceDefinition->getType());
+        $reader        = $readerFactory->getReader($sourceDefinition, $importFilePath);
         $reader->setColumnHeaders($definition->getFields());
         if ($reader->hasErrors() && count($errors = $reader->getErrors()) > 0) {
             throw new InvalidInputFileFormatException($importFilePath, $errors);

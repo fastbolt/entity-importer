@@ -24,6 +24,7 @@
         "ext-zlib": "*",
         "doctrine/persistence": "^2.4",
         "portphp/csv": "^2.0",
+        "portphp/spreadsheet": "^1.0",
         "symfony/config": "^4.4|^5.0",
         "symfony/filesystem": "^4.4|^5.0",
         "symfony/framework-bundle": "^4.4|^5.0",

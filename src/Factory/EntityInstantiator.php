@@ -9,7 +9,7 @@
 namespace Fastbolt\EntityImporter\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Exceptions\EntityFactoryException;
+use Fastbolt\EntityImporter\Exceptions\EntityInstantiationException;
 use ReflectionClass;
 use ReflectionException;
 
@@ -23,7 +23,7 @@ class EntityInstantiator
      *
      * @return T
      *
-     * @throws EntityFactoryException Throws if entity is not set as argument, but can not be constructed.
+     * @throws EntityInstantiationException Throws if entity is not set as argument, but can not be constructed.
      * @throws ReflectionException Throws if class reflection fails (unknown class etc.)
      */
     public function getInstance(EntityImporterDefinition $definition): object
@@ -32,12 +32,9 @@ class EntityInstantiator
         $entityClassReflection = new ReflectionClass($entityClass);
         $constructor           = $entityClassReflection->getConstructor();
         if (null !== $constructor && ($numRequiredParameters = $constructor->getNumberOfRequiredParameters()) > 0) {
-            throw new EntityFactoryException(
-                sprintf(
-                    'Unable to create new entity using factory %s, constructor has %s required parameters.',
-                    self::class,
-                    $numRequiredParameters
-                )
+            throw new EntityInstantiationException(
+                $entityClass,
+                $numRequiredParameters
             );
         }
 

@@ -6,16 +6,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Reader;
+namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
 use Port\Csv\CsvReader;
 use SplFileObject;
 
-class ReaderFactory
+class CsvReaderFactory implements ReaderFactoryInterface
 {
     /**
      * @param ImportSourceDefinition $sourceDefinition
+     * @param string                 $importFilePath
      *
      * @return CsvReader
      */
@@ -29,5 +30,15 @@ class ReaderFactory
             $sourceDefinition->getEnclosure(),
             $sourceDefinition->getEscape()
         );
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
+    public function supportsFiletype(string $type): bool
+    {
+        return $type === 'csv';
     }
 }
