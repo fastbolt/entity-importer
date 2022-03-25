@@ -11,6 +11,7 @@ namespace Fastbolt\EntityImporter;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
+use Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
@@ -103,6 +104,9 @@ class EntityImporter
 
         $reader = $this->readerFactory->getReader($sourceDefinition, $importFilePath);
         $reader->setColumnHeaders($definition->getFields());
+        if ($reader->hasErrors() && count($errors = $reader->getErrors()) > 0) {
+            throw new InvalidInputFileFormatException($importFilePath, $errors);
+        }
 
         /**
          * @var array<string,mixed> $row We expect this to always be assoc, since we set the columnHeaders property before.
