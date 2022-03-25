@@ -13,6 +13,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;
 use Fastbolt\EntityImporter\EntityImporter;
 use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
+use Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\ReaderFactory;
@@ -182,6 +183,81 @@ class EntityImporterTest extends BaseTestCase
         );
         $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
         self::assertSame(2, $result->getSuccess());
+        self::assertCount(0, $result->getErrors());
+        self::assertSame([], $result->getErrors());
+    }
+
+    public function testInvalidInputFileDefinition(): void
+    {
+        $this->expectException(InvalidInputFileFormatException::class);
+
+        $errors           = [
+            [
+                'col 1',
+                'col 2',
+                'col 3',
+            ],
+            [
+                'val 1.1',
+                'val 1.2',
+                'val 1.3',
+            ],
+            [
+                'val 2.1',
+                'val 2.2',
+                'val 2.3',
+            ],
+        ];
+        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv'));
+        $this->importerDefinition->method('getImportSourceDefinition')
+                                 ->willReturn($sourceDefinition);
+        $this->importerDefinition->method('getRepository')
+                                 ->willReturn($this->repository);
+        $this->importerDefinition->method('getEntityFactory')
+                                 ->willReturn($this->customFactory);
+        $this->importerDefinition->method('getFields')
+                                 ->willReturn($columnHeaders = ['foo', 'bar', 'asd', 'baz']);
+        $this->importerDefinition->method('getIdentifierColumns')
+                                 ->willReturn(['bar']);
+        $this->importerDefinition->method('getFlushInterval')
+                                 ->willReturn(1000);
+        $this->readerFactory->expects(self::once())
+                            ->method('getReader')
+                            ->with($sourceDefinition)
+                            ->willReturn(
+                                $this->mockIterator($this->reader, [null])
+                            );
+        $this->reader->expects(self::once())
+                     ->method('hasErrors')
+                     ->willReturn(true);
+        $this->reader->expects(self::once())
+                     ->method('getErrors')
+                     ->willReturn($errors);
+        $this->reader->expects(self::once())
+                     ->method('setColumnHeaders')
+                     ->with($columnHeaders);
+        $this->repository->expects(self::never())
+                         ->method('findOneBy');
+        $this->customFactory->expects(self::never())
+                            ->method('__invoke');
+        $this->objectManager->expects(self::never())
+                            ->method('persist');
+        $this->defaultItemFactory->expects(self::never())
+                                 ->method('__invoke');
+        $this->statusCallback->expects(self::never())
+                             ->method('__invoke');
+        $this->errorCallback->expects(self::never())
+                            ->method('__invoke');
+
+        $importer = new EntityImporter(
+            $this->readerFactory,
+            $this->defaultItemFactory,
+            $this->objectManager,
+            $this->archivingStrategy,
+            __DIR__ . '/_Fixtures/Reader/ReaderFactory'
+        );
+        $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
+        self::assertSame(0, $result->getSuccess());
         self::assertCount(0, $result->getErrors());
         self::assertSame([], $result->getErrors());
     }
