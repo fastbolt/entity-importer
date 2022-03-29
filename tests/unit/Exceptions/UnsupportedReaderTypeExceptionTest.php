@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class UnsupportedReaderTypeExceptionTest extends TestCase
 {
-    public function testException()
+    public function testException(): void
     {
         $exception = new UnsupportedReaderTypeException('foo');
         self::assertSame('foo', $exception->getType());

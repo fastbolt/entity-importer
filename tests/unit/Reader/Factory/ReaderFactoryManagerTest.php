@@ -29,7 +29,7 @@ class ReaderFactoryManagerTest extends BaseTestCase
      */
     private $readerBar;
 
-    public function testGetReaderSuccess()
+    public function testGetReaderSuccess(): void
     {
         $manager = new ReaderFactoryManager([$this->readerFoo, $this->readerBar]);
 
@@ -40,7 +40,7 @@ class ReaderFactoryManagerTest extends BaseTestCase
         self::assertSame($this->readerBar, $reader);
     }
 
-    public function testGetReaderException()
+    public function testGetReaderException(): void
     {
         $this->expectException(UnsupportedReaderTypeException::class);
 

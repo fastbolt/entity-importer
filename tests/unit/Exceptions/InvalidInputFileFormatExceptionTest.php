@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class InvalidInputFileFormatExceptionTest extends TestCase
 {
-    public function testException()
+    public function testException(): void
     {
         $exception = new InvalidInputFileFormatException('foo/filename.txt', $errors = ['foo', 'bar']);
         self::assertSame('foo/filename.txt', $exception->getFilename());

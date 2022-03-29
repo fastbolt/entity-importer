@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class EntityInstantiationExceptionTest extends TestCase
 {
-    public function testException()
+    public function testException(): void
     {
         $exception = new EntityInstantiationException(self::class, 5);
         self::assertSame(self::class, $exception->getEntityClass());

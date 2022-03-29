@@ -1,26 +1,33 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
-use Port\Spreadsheet\SpreadsheetReader;
+use Fastbolt\EntityImporter\EntityImporterDefinition;
+use Fastbolt\EntityImporter\Reader\Reader\XlsxReader;
 use SplFileObject;
 
 class XlsxReaderFactory implements ReaderFactoryInterface
 {
     /**
-     * @param ImportSourceDefinition $sourceDefinition
-     * @param string                 $importFilePath
+     * @param EntityImporterDefinition $importerDefinition
+     * @param string                   $importFilePath
      *
-     * @return SpreadsheetReader
+     * @return XlsxReader
      */
-    public function getReader(ImportSourceDefinition $sourceDefinition, string $importFilePath): SpreadsheetReader
+    public function getReader(EntityImporterDefinition $importerDefinition, string $importFilePath): XlsxReader
     {
         $fileObject = new SplFileObject($importFilePath);
 
-        return new SpreadsheetReader(
+        return new XlsxReader(
             $fileObject,
-            $sourceDefinition->hasHeaderRow() ? 1 : 0
+            $importerDefinition->getFields(),
+            $importerDefinition->getImportSourceDefinition()->hasHeaderRow() ? 1 : 0
         );
     }
 

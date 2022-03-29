@@ -28,7 +28,7 @@ class EntityInstantiatorTest extends BaseTestCase
      */
     private $definition;
 
-    public function testNoConstructor()
+    public function testNoConstructor(): void
     {
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')
@@ -39,7 +39,7 @@ class EntityInstantiatorTest extends BaseTestCase
         self::assertInstanceOf(TestEntityNoConstructor::class, $result);
     }
 
-    public function testWithConstructorNoArguments()
+    public function testWithConstructorNoArguments(): void
     {
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')
@@ -50,7 +50,7 @@ class EntityInstantiatorTest extends BaseTestCase
         self::assertInstanceOf(TestEntityWithConstructorNoArguments::class, $result);
     }
 
-    public function testWithConstructorWithArgumentsNotMandatory()
+    public function testWithConstructorWithArgumentsNotMandatory(): void
     {
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')
@@ -61,7 +61,7 @@ class EntityInstantiatorTest extends BaseTestCase
         self::assertInstanceOf(TestEntityWithConstructorWithArgumentsNotMandatory::class, $result);
     }
 
-    public function testWithConstructorWithMandatoryArguments()
+    public function testWithConstructorWithMandatoryArguments(): void
     {
         $this->expectException(EntityInstantiationException::class);
 

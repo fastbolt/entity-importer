@@ -8,17 +8,18 @@
 
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use Fastbolt\EntityImporter\EntityImporterDefinition;
+use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
 
 interface ReaderFactoryInterface
 {
     /**
-     * @param ImportSourceDefinition $sourceDefinition
-     * @param string                 $importFilePath
+     * @param EntityImporterDefinition $importerDefinition
+     * @param string                   $importFilePath
      *
-     * @return iterable
+     * @return ReaderInterface
      */
-    public function getReader(ImportSourceDefinition $sourceDefinition, string $importFilePath): iterable;
+    public function getReader(EntityImporterDefinition $importerDefinition, string $importFilePath): ReaderInterface;
 
     /**
      * @param string $type

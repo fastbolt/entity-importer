@@ -15,7 +15,7 @@ class ReaderFactoryManager
     /**
      * @var iterable<ReaderFactoryInterface>
      */
-    private array $factories;
+    private iterable $factories;
 
     /**
      * @param iterable<ReaderFactoryInterface> $factories

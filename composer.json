@@ -55,9 +55,9 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
-        "check-style": "phpcs src tests",
-        "fix-style": "phpcbf src tests"
+        "test": "vendor/bin/phpunit",
+        "check-style": "vendor/bin/phpcs",
+        "fix-style": "vendor/bin/phpcbf"
     },
     "config": {
         "optimize-autoloader": true,

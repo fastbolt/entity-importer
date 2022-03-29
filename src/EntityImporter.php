@@ -103,14 +103,14 @@ class EntityImporter
         }
 
         $readerFactory = $this->readerFactoryManager->getReaderFactory($sourceDefinition->getType());
-        $reader        = $readerFactory->getReader($sourceDefinition, $importFilePath);
-        $reader->setColumnHeaders($definition->getFields());
-        if ($reader->hasErrors() && count($errors = $reader->getErrors()) > 0) {
+        $reader        = $readerFactory->getReader($definition, $importFilePath);
+        if (count($errors = $reader->getErrors()) > 0) {
             throw new InvalidInputFileFormatException($importFilePath, $errors);
         }
 
         /**
          * @var array<string,mixed> $row We expect this to always be assoc, since we set the columnHeaders property before.
+         * @var int                 $index
          */
         foreach ($reader as $index => $row) {
             if (0 === $index && $sourceDefinition->hasHeaderRow()) {
