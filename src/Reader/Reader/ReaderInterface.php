@@ -10,6 +10,9 @@ namespace Fastbolt\EntityImporter\Reader\Reader;
 
 use Iterator;
 
+/**
+ * @template-implements Iterator<int,mixed>
+ */
 interface ReaderInterface extends Iterator
 {
     /**
