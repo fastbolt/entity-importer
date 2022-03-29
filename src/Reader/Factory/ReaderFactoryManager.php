@@ -15,14 +15,16 @@ class ReaderFactoryManager
     /**
      * @var iterable<ReaderFactoryInterface>
      */
-    private iterable $factories;
+    private iterable $factories = [];
 
     /**
      * @param iterable<ReaderFactoryInterface> $factories
      */
     public function __construct(iterable $factories)
     {
-        $this->factories = $factories;
+        foreach ($factories as $factory) {
+            $this->factories[] = $factory;
+        }
     }
 
     /**
@@ -40,6 +42,17 @@ class ReaderFactoryManager
             }
         }
 
-        throw new UnsupportedReaderTypeException($type);
+        $availableTypes = [];
+        array_walk(
+            $this->factories,
+            static function (ReaderFactoryInterface $readerFactory) use (&$availableTypes) {
+                $availableTypes = array_merge($availableTypes, $readerFactory->getSupportedTypes());
+            }
+        );
+
+        throw new UnsupportedReaderTypeException(
+            $type,
+            $availableTypes
+        );
     }
 }

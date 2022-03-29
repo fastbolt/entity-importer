@@ -1,17 +1,27 @@
 services:
-    
+
+    _defaults:
+        public: true
+
     Fastbolt\EntityImporter\EntityImporterManager:
         $importer: '@Fastbolt\EntityImporter\EntityImporter'
         $importerDefinitions: !tagged fastbolt.entity_importer.definition
 
+    Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager:
+        $factories: !tagged fastbolt.entity_importer.reader_factory
+
     Fastbolt\EntityImporter\EntityImporter:
-        $readerFactory: '@Fastbolt\EntityImporter\Reader\ReaderFactory'
+        $readerFactoryManager: '@Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager'
         $defaultItemFactory: '@Fastbolt\EntityImporter\Factory\ArrayToEntityFactory'
         $objectManager: '@doctrine.orm.entity_manager'
         $archivingStrategy: '@Fastbolt\EntityImporter\Filesystem\ProcessedFolderArchivingStrategy'
         $importPath: '%entity_importer.default_import_path%'
 
-    Fastbolt\EntityImporter\Reader\ReaderFactory:
+    Fastbolt\EntityImporter\Reader\Factory\CsvReaderFactory:
+        tags: ['fastbolt.entity_importer.reader_factory']
+
+    Fastbolt\EntityImporter\Reader\Factory\XlsxReaderFactory:
+        tags: ['fastbolt.entity_importer.reader_factory']
 
     Fastbolt\EntityImporter\Factory\ArrayToEntityFactory:
         $entityInstantiator: '@Fastbolt\EntityImporter\Factory\EntityInstantiator'

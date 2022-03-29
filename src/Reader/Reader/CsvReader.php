@@ -16,6 +16,8 @@ use SplFileObject;
  */
 class CsvReader extends PortCsvReader implements ReaderInterface
 {
+    public const TYPE = 'csv';
+
     /**
      * @param SplFileObject     $file
      * @param array<int,string> $columnHeaders

@@ -18,15 +18,22 @@ class UnsupportedReaderTypeException extends Exception
     private string $type;
 
     /**
+     * @var string[]
+     */
+    private array $availableTypes;
+
+    /**
      * @param string $type
      */
-    public function __construct(string $type)
+    public function __construct(string $type, array $availableTypes)
     {
-        $this->type = $type;
+        $this->type           = $type;
+        $this->availableTypes = $availableTypes;
 
         $message = sprintf(
-            'Unsupported reader type: %s.',
-            $type
+            'Unsupported reader type: %s. Available types: %s',
+            $type,
+            implode(', ', $this->availableTypes ?: ['*none*'])
         );
         parent::__construct($message);
     }
