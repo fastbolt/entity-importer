@@ -31,7 +31,7 @@ class UnsupportedReaderTypeException extends Exception
         $this->availableTypes = $availableTypes;
 
         $message = sprintf(
-            'Unsupported reader type: %s. Available types: %s',
+            'Unsupported reader type: %s. Available types: %s.',
             $type,
             implode(', ', $this->availableTypes ?: ['*none*'])
         );

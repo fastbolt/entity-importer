@@ -18,8 +18,8 @@ class UnsupportedReaderTypeExceptionTest extends TestCase
 {
     public function testException(): void
     {
-        $exception = new UnsupportedReaderTypeException('foo');
+        $exception = new UnsupportedReaderTypeException('foo', ['asd', 'bar']);
         self::assertSame('foo', $exception->getType());
-        self::assertStringMatchesFormat('Unsupported reader type: %s.', $exception->getMessage());
+        self::assertStringMatchesFormat('Unsupported reader type: foo. Available types: asd, bar.', $exception->getMessage());
     }
 }
