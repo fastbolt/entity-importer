@@ -13,9 +13,9 @@ use Fastbolt\EntityImporter\Exceptions\UnsupportedReaderTypeException;
 class ReaderFactoryManager
 {
     /**
-     * @var iterable<ReaderFactoryInterface>
+     * @var array<int,ReaderFactoryInterface>
      */
-    private iterable $factories = [];
+    private array $factories = [];
 
     /**
      * @param iterable<ReaderFactoryInterface> $factories
@@ -42,17 +42,25 @@ class ReaderFactoryManager
             }
         }
 
+        throw new UnsupportedReaderTypeException($type, $this->getAvailableTypes());
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAvailableTypes(): array
+    {
+        /** @var string[] $availableTypes */
         $availableTypes = [];
         array_walk(
             $this->factories,
             static function (ReaderFactoryInterface $readerFactory) use (&$availableTypes) {
                 $availableTypes = array_merge($availableTypes, $readerFactory->getSupportedTypes());
-            }
+
+                return $readerFactory;
+            },
         );
 
-        throw new UnsupportedReaderTypeException(
-            $type,
-            $availableTypes
-        );
+        return $availableTypes;
     }
 }
