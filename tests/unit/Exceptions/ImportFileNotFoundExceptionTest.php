@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ImportFileNotFoundExceptionTest extends TestCase
 {
-    public function testException()
+    public function testException(): void
     {
         $exception = new ImportFileNotFoundException('/foo/bar.csv');
         self::assertSame('/foo/bar.csv', $exception->getImportFile());

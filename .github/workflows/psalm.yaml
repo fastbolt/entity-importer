@@ -26,3 +26,4 @@ jobs:
                 with:
                     args: --shepherd
                     composer_require_dev: true
+                    composer_ignore_platform_reqs: true

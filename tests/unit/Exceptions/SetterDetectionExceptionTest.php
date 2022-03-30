@@ -17,7 +17,7 @@ use Fastbolt\TestHelpers\BaseTestCase;
  */
 class SetterDetectionExceptionTest extends BaseTestCase
 {
-    public function testException()
+    public function testException(): void
     {
         $definition = $this->getMock(EntityImporterDefinition::class);
         $exception  = new SetterDetectionException($definition, 'foo', 'bar');

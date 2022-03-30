@@ -9,7 +9,7 @@
 namespace Fastbolt\EntityImporter\Tests\Unit\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Exceptions\EntityFactoryException;
+use Fastbolt\EntityImporter\Exceptions\EntityInstantiationException;
 use Fastbolt\EntityImporter\Factory\EntityInstantiator;
 use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityNoConstructor;
 use Fastbolt\EntityImporter\Tests\Unit\_Fixtures\Factory\EntityInstantiator\TestEntityWithConstructorNoArguments;
@@ -28,7 +28,7 @@ class EntityInstantiatorTest extends BaseTestCase
      */
     private $definition;
 
-    public function testNoConstructor()
+    public function testNoConstructor(): void
     {
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')
@@ -39,7 +39,7 @@ class EntityInstantiatorTest extends BaseTestCase
         self::assertInstanceOf(TestEntityNoConstructor::class, $result);
     }
 
-    public function testWithConstructorNoArguments()
+    public function testWithConstructorNoArguments(): void
     {
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')
@@ -50,7 +50,7 @@ class EntityInstantiatorTest extends BaseTestCase
         self::assertInstanceOf(TestEntityWithConstructorNoArguments::class, $result);
     }
 
-    public function testWithConstructorWithArgumentsNotMandatory()
+    public function testWithConstructorWithArgumentsNotMandatory(): void
     {
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')
@@ -61,12 +61,9 @@ class EntityInstantiatorTest extends BaseTestCase
         self::assertInstanceOf(TestEntityWithConstructorWithArgumentsNotMandatory::class, $result);
     }
 
-    public function testWithConstructorWithMandatoryArguments()
+    public function testWithConstructorWithMandatoryArguments(): void
     {
-        $this->expectException(EntityFactoryException::class);
-        $this->expectExceptionMessage(
-            'Unable to create new entity using factory Fastbolt\EntityImporter\Factory\EntityInstantiator, constructor has 1 required parameters.'
-        );
+        $this->expectException(EntityInstantiationException::class);
 
         $instantiator = new EntityInstantiator();
         $this->definition->method('getEntityClass')

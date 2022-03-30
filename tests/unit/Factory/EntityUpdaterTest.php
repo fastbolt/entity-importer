@@ -44,7 +44,7 @@ class EntityUpdaterTest extends BaseTestCase
      */
     private $entity;
 
-    public function testSortDetectors()
+    public function testSortDetectors(): void
     {
         $this->setterDetector1->method('getPriority')
                               ->willReturn(1000);
@@ -57,7 +57,7 @@ class EntityUpdaterTest extends BaseTestCase
         );
     }
 
-    public function testSetData()
+    public function testSetData(): void
     {
         $array = [
             'foo' => '123',
@@ -97,7 +97,7 @@ class EntityUpdaterTest extends BaseTestCase
         self::assertSame($result, $this->entity);
     }
 
-    public function testSetDataException()
+    public function testSetDataException(): void
     {
         $this->expectException(SetterDetectionException::class);
 
@@ -108,7 +108,7 @@ class EntityUpdaterTest extends BaseTestCase
         $updater->setData($this->definition, $this->entity, ['foo' => '123']);
     }
 
-    public function testSetDataEnsureCaching()
+    public function testSetDataEnsureCaching(): void
     {
         $array = [
             'foo' => '123',

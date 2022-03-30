@@ -18,7 +18,7 @@ class AbstractEntityImporterDefinitionTest extends TestCase
 {
     private $definition;
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         self::assertSame('', $this->definition->getName());
         self::assertSame([], $this->definition->getFieldConverters());

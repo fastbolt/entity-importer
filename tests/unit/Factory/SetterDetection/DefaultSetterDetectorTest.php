@@ -19,7 +19,7 @@ class DefaultSetterDetectorTest extends TestCase
     /**
      * @dataProvider detectionDataProvider
      */
-    public function testDetection(object $entity, string $key, ?string $expectedSetter, string $message)
+    public function testDetection(object $entity, string $key, ?string $expectedSetter, string $message): void
     {
         $detector = new DefaultSetterDetector();
 
@@ -27,7 +27,7 @@ class DefaultSetterDetectorTest extends TestCase
         self::assertSame($expectedSetter, $detector->detectSetter($entity, $key, ''), $message);
     }
 
-    public function detectionDataProvider()
+    public function detectionDataProvider(): array
     {
         return [
             [

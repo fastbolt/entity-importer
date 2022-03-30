@@ -41,7 +41,7 @@ class ArrayToEntityFactoryTest extends BaseTestCase
      */
     private $definition;
 
-    public function testWithEntity()
+    public function testWithEntity(): void
     {
         $entity = new stdClass();
         $row    = ['foo' => 'asd', 'bar' => 'dsa'];
@@ -61,7 +61,7 @@ class ArrayToEntityFactoryTest extends BaseTestCase
         self::assertSame($entity, $result);
     }
 
-    public function testNullEntityWithDefaultEntityInstantiator()
+    public function testNullEntityWithDefaultEntityInstantiator(): void
     {
         $entity = new stdClass();
         $row    = ['foo' => 'asd', 'bar' => 'dsa'];
@@ -83,7 +83,7 @@ class ArrayToEntityFactoryTest extends BaseTestCase
         self::assertSame($entity, $result);
     }
 
-    public function testNullEntityWithCustomEntityInstantiator()
+    public function testNullEntityWithCustomEntityInstantiator(): void
     {
         $entity = new stdClass();
         $row    = ['foo' => 'asd', 'bar' => 'dsa'];

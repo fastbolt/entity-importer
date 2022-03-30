@@ -16,11 +16,12 @@ use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
 use Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
-use Fastbolt\EntityImporter\Reader\ReaderFactory;
+use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryInterface;
+use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager;
+use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
 use Fastbolt\TestHelpers\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Port\Csv\CsvReader;
 use stdClass;
 
 /**
@@ -29,9 +30,14 @@ use stdClass;
 class EntityImporterTest extends BaseTestCase
 {
     /**
-     * @var ReaderFactory&MockObject
+     * @var ReaderFactoryInterface&MockObject
      */
     private $readerFactory;
+
+    /**
+     * @var ReaderFactoryManager&MockObject
+     */
+    private $readerFactoryManager;
 
     /**
      * @var ArrayToEntityFactory&MockObject
@@ -59,7 +65,7 @@ class EntityImporterTest extends BaseTestCase
     private $archivingStrategy;
 
     /**
-     * @var MockObject&CsvReader
+     * @var MockObject&ReaderInterface
      */
     private $reader;
 
@@ -78,20 +84,20 @@ class EntityImporterTest extends BaseTestCase
      */
     private $errorCallback;
 
-    public function testFileNotExists()
+    public function testFileNotExists(): void
     {
         $this->expectException(ImportFileNotFoundException::class);
 
-        $sourceDefinition = (new ImportSourceDefinition('foo.not.exists'));
+        $sourceDefinition = (new ImportSourceDefinition('foo.not.exists', 'bar'));
         $this->importerDefinition->method('getImportSourceDefinition')
                                  ->willReturn($sourceDefinition);
 
         $importer = new EntityImporter(
-            $this->readerFactory,
+            $this->readerFactoryManager,
             $this->defaultItemFactory,
             $this->objectManager,
             $this->archivingStrategy,
-            __DIR__ . '/_Fixtures/Reader/ReaderFactory'
+            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
         );
         $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
     }
@@ -118,7 +124,7 @@ class EntityImporterTest extends BaseTestCase
         ];
         $object1          = new stdClass();
         $object2          = new stdClass();
-        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv'));
+        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv', 'bar'));
         $this->importerDefinition->method('getImportSourceDefinition')
                                  ->willReturn($sourceDefinition);
         $this->importerDefinition->method('getRepository')
@@ -131,15 +137,18 @@ class EntityImporterTest extends BaseTestCase
                                  ->willReturn(['bar']);
         $this->importerDefinition->method('getFlushInterval')
                                  ->willReturn(10);
+        $this->readerFactoryManager->expects(self::once())
+                                   ->method('getReaderFactory')
+                                   ->with('bar')
+                                   ->willReturn($this->readerFactory);
         $this->readerFactory->expects(self::once())
                             ->method('getReader')
-                            ->with($sourceDefinition)
+                            ->with($this->importerDefinition)
                             ->willReturn(
                                 $this->mockIterator($this->reader, $data)
                             );
-        $this->reader->expects(self::once())
-                     ->method('setColumnHeaders')
-                     ->with($columnHeaders);
+        $this->reader->method('getErrors')
+                     ->willReturn([]);
         $this->repository->expects(self::exactly(2))
                          ->method('findOneBy')
                          ->withConsecutive(
@@ -175,11 +184,11 @@ class EntityImporterTest extends BaseTestCase
                             ->method('__invoke');
 
         $importer = new EntityImporter(
-            $this->readerFactory,
+            $this->readerFactoryManager,
             $this->defaultItemFactory,
             $this->objectManager,
             $this->archivingStrategy,
-            __DIR__ . '/_Fixtures/Reader/ReaderFactory'
+            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
         );
         $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
         self::assertSame(2, $result->getSuccess());
@@ -208,7 +217,7 @@ class EntityImporterTest extends BaseTestCase
                 'val 2.3',
             ],
         ];
-        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv'));
+        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv', 'baz'));
         $this->importerDefinition->method('getImportSourceDefinition')
                                  ->willReturn($sourceDefinition);
         $this->importerDefinition->method('getRepository')
@@ -221,21 +230,19 @@ class EntityImporterTest extends BaseTestCase
                                  ->willReturn(['bar']);
         $this->importerDefinition->method('getFlushInterval')
                                  ->willReturn(1000);
+        $this->readerFactoryManager->expects(self::once())
+                                   ->method('getReaderFactory')
+                                   ->with('baz')
+                                   ->willReturn($this->readerFactory);
         $this->readerFactory->expects(self::once())
                             ->method('getReader')
-                            ->with($sourceDefinition)
+                            ->with($this->importerDefinition)
                             ->willReturn(
                                 $this->mockIterator($this->reader, [null])
                             );
         $this->reader->expects(self::once())
-                     ->method('hasErrors')
-                     ->willReturn(true);
-        $this->reader->expects(self::once())
                      ->method('getErrors')
                      ->willReturn($errors);
-        $this->reader->expects(self::once())
-                     ->method('setColumnHeaders')
-                     ->with($columnHeaders);
         $this->repository->expects(self::never())
                          ->method('findOneBy');
         $this->customFactory->expects(self::never())
@@ -250,11 +257,11 @@ class EntityImporterTest extends BaseTestCase
                             ->method('__invoke');
 
         $importer = new EntityImporter(
-            $this->readerFactory,
+            $this->readerFactoryManager,
             $this->defaultItemFactory,
             $this->objectManager,
             $this->archivingStrategy,
-            __DIR__ . '/_Fixtures/Reader/ReaderFactory'
+            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
         );
         $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
         self::assertSame(0, $result->getSuccess());
@@ -266,15 +273,16 @@ class EntityImporterTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->readerFactory      = $this->getMock(ReaderFactory::class);
-        $this->defaultItemFactory = $this->getMock(ArrayToEntityFactory::class);
-        $this->objectManager      = $this->getMock(ObjectManager::class);
-        $this->archivingStrategy  = $this->getMock(ArchivingStrategy::class);
-        $this->importerDefinition = $this->getMock(AbstractEntityImporterDefinition::class);
-        $this->repository         = $this->getMock(ObjectRepository::class);
-        $this->reader             = $this->getMock(CsvReader::class);
-        $this->customFactory      = $this->getCallable();
-        $this->statusCallback     = $this->getCallable();
-        $this->errorCallback      = $this->getCallable();
+        $this->readerFactory        = $this->getMock(ReaderFactoryInterface::class);
+        $this->defaultItemFactory   = $this->getMock(ArrayToEntityFactory::class);
+        $this->objectManager        = $this->getMock(ObjectManager::class);
+        $this->archivingStrategy    = $this->getMock(ArchivingStrategy::class);
+        $this->importerDefinition   = $this->getMock(AbstractEntityImporterDefinition::class);
+        $this->repository           = $this->getMock(ObjectRepository::class);
+        $this->reader               = $this->getMock(ReaderInterface::class);
+        $this->readerFactoryManager = $this->getMock(ReaderFactoryManager::class);
+        $this->customFactory        = $this->getCallable();
+        $this->statusCallback       = $this->getCallable();
+        $this->errorCallback        = $this->getCallable();
     }
 }

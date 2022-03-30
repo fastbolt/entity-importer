@@ -24,14 +24,14 @@ class ProcessedFolderArchivingStrategyTest extends BaseTestCase
      */
     private $filesystem;
 
-    public function testFallbackFilesystem()
+    public function testFallbackFilesystem(): void
     {
         $strategy = new ProcessedFolderArchivingStrategy('', '', null);
 
         self::assertInstanceOf(Filesystem::class, Visibility::getProperty($strategy, 'filesystem'));
     }
 
-    public function testArchiveFile()
+    public function testArchiveFile(): void
     {
         $sourceFolder  = __DIR__ . '/../../../var';
         $archiveFolder = $sourceFolder . '/archive';
