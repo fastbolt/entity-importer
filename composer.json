@@ -55,9 +55,15 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
+        "phpunit": "vendor/bin/phpunit",
         "check-style": "vendor/bin/phpcs",
-        "fix-style": "vendor/bin/phpcbf"
+        "psalm": "vendor/bin/psalm",
+        "fix-style": "vendor/bin/phpcbf",
+        "test": [
+            "@phpunit",
+            "@psalm",
+            "@check-style"
+        ]
     },
     "config": {
         "optimize-autoloader": true,
