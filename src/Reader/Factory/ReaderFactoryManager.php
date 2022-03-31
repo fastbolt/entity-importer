@@ -47,19 +47,16 @@ class ReaderFactoryManager
 
     /**
      * @return string[]
+     * @noinspection SlowArrayOperationsInLoopInspection This method is only used for exceptions, causing the process
+     *               to end. Therefore, slowness is not relevant here.
      */
     private function getAvailableTypes(): array
     {
         /** @var string[] $availableTypes */
         $availableTypes = [];
-        array_walk(
-            $this->factories,
-            static function (ReaderFactoryInterface $readerFactory) use (&$availableTypes) {
-                $availableTypes = array_merge($availableTypes, $readerFactory->getSupportedTypes());
-
-                return $readerFactory;
-            },
-        );
+        foreach ($this->factories as $factory) {
+            $availableTypes = array_merge($availableTypes, $factory->getSupportedTypes());
+        }
 
         return $availableTypes;
     }
