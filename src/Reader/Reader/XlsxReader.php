@@ -16,6 +16,8 @@ use SplFileObject;
  */
 class XlsxReader extends SpreadsheetReader implements ReaderInterface
 {
+    public const TYPE = 'xlsx';
+
     /**
      * Faulty rows
      *

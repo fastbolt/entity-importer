@@ -13,16 +13,18 @@ use Fastbolt\EntityImporter\Exceptions\UnsupportedReaderTypeException;
 class ReaderFactoryManager
 {
     /**
-     * @var iterable<ReaderFactoryInterface>
+     * @var array<int,ReaderFactoryInterface>
      */
-    private iterable $factories;
+    private array $factories = [];
 
     /**
      * @param iterable<ReaderFactoryInterface> $factories
      */
     public function __construct(iterable $factories)
     {
-        $this->factories = $factories;
+        foreach ($factories as $factory) {
+            $this->factories[] = $factory;
+        }
     }
 
     /**
@@ -40,6 +42,22 @@ class ReaderFactoryManager
             }
         }
 
-        throw new UnsupportedReaderTypeException($type);
+        throw new UnsupportedReaderTypeException($type, $this->getAvailableTypes());
+    }
+
+    /**
+     * @return string[]
+     * @noinspection SlowArrayOperationsInLoopInspection This method is only used for exceptions, causing the process
+     *               to end. Therefore, slowness is not relevant here.
+     */
+    private function getAvailableTypes(): array
+    {
+        /** @var string[] $availableTypes */
+        $availableTypes = [];
+        foreach ($this->factories as $factory) {
+            $availableTypes = array_merge($availableTypes, $factory->getSupportedTypes());
+        }
+
+        return $availableTypes;
     }
 }

@@ -42,6 +42,14 @@ class CsvReaderFactory implements ReaderFactoryInterface
      */
     public function supportsFiletype(string $type): bool
     {
-        return $type === 'csv';
+        return in_array($type, $this->getSupportedTypes());
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSupportedTypes(): array
+    {
+        return ['csv'];
     }
 }

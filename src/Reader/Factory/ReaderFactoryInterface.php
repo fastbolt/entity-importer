@@ -27,4 +27,9 @@ interface ReaderFactoryInterface
      * @return bool
      */
     public function supportsFiletype(string $type): bool;
+
+    /**
+     * @return string[]
+     */
+    public function getSupportedTypes(): array;
 }

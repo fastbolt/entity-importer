@@ -59,9 +59,13 @@ class ReaderFactoryManagerTest extends BaseTestCase
                         ->willReturnCallback(static function (string $type) {
                             return $type === 'foo';
                         });
+        $this->readerFoo->method('getSupportedTypes')
+                        ->willReturn(['foo', 'baz']);
         $this->readerBar->method('supportsFiletype')
                         ->willReturnCallback(static function (string $type) {
                             return $type === 'bar';
                         });
+        $this->readerBar->method('getSupportedTypes')
+                        ->willReturn(['bar']);
     }
 }

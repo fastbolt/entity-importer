@@ -32,10 +32,20 @@ class XlsxReaderFactory implements ReaderFactoryInterface
     }
 
     /**
-     * @inheritDoc
+     * @param string $type
+     *
+     * @return bool
      */
     public function supportsFiletype(string $type): bool
     {
-        return $type === 'xlsx';
+        return in_array($type, $this->getSupportedTypes());
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSupportedTypes(): array
+    {
+        return ['xlsx'];
     }
 }
