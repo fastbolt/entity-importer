@@ -77,7 +77,7 @@ interface EntityImporterDefinition
     public function getEntityInstantiator(): ?callable;
 
     /**
-     * @return callable(T)|null
+     * @return callable(T, array<mixed>)|null
      */
     public function getEntityModifier(): ?callable;
 }
