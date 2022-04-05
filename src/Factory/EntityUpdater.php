@@ -57,7 +57,7 @@ class EntityUpdater
                 continue;
             }
             if (null !== ($converter = $converters[$key] ?? null)) {
-                $value = $converter($value);
+                $value = $converter($value, $row);
             }
             $setter = $this->detectSetter($definition, $entity, $key, $value);
 
