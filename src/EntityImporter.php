@@ -102,8 +102,9 @@ class EntityImporter
             throw new ImportFileNotFoundException($importFilePath);
         }
 
-        $readerFactory = $this->readerFactoryManager->getReaderFactory($sourceDefinition->getType());
-        $reader        = $readerFactory->getReader($definition, $importFilePath);
+        $entityModifier = $definition->getEntityModifier();
+        $readerFactory  = $this->readerFactoryManager->getReaderFactory($sourceDefinition->getType());
+        $reader         = $readerFactory->getReader($definition, $importFilePath);
         if (count($errors = $reader->getErrors()) > 0) {
             throw new InvalidInputFileFormatException($importFilePath, $errors);
         }
@@ -128,8 +129,8 @@ class EntityImporter
             try {
                 $item = $repository->findOneBy($this->getRepositorySelectionArray($definition, $row));
                 $item = $factoryCallback($definition, $item, $row);
-                if (null !== ($entityModifier = $definition->getEntityModifier())) {
-                    $entityModifier($item);
+                if (null !== $entityModifier) {
+                    $entityModifier($item, $row);
                 }
 
                 $this->objectManager->persist($item);

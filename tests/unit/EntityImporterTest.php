@@ -196,6 +196,91 @@ class EntityImporterTest extends BaseTestCase
         self::assertSame([], $result->getErrors());
     }
 
+    public function testUsesEntityModifier(): void
+    {
+        $data             = [
+            [
+                'foo' => 'col 1',
+                'bar' => 'col 2',
+                'asd' => 'col 3',
+            ],
+            [
+                'foo' => 'val 1.1',
+                'bar' => 'val 1.2',
+                'asd' => 'val 1.3',
+            ],
+            null,
+        ];
+        $object1          = new stdClass();
+        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv', 'bar'));
+        $this->importerDefinition->method('getImportSourceDefinition')
+                                 ->willReturn($sourceDefinition);
+        $this->importerDefinition->method('getRepository')
+                                 ->willReturn($this->repository);
+        $this->importerDefinition->method('getEntityFactory')
+                                 ->willReturn($this->customFactory);
+        $this->importerDefinition->method('getEntityModifier')
+                                 ->willReturn(function ($entity, $data) {
+                                     $entity->mod = true;
+
+                                     return $entity;
+                                 });
+        $this->importerDefinition->method('getFields')
+                                 ->willReturn($columnHeaders = ['foo', 'bar', 'asd']);
+        $this->importerDefinition->method('getIdentifierColumns')
+                                 ->willReturn(['bar']);
+        $this->importerDefinition->method('getFlushInterval')
+                                 ->willReturn(10);
+        $this->readerFactoryManager->expects(self::once())
+                                   ->method('getReaderFactory')
+                                   ->with('bar')
+                                   ->willReturn($this->readerFactory);
+        $this->readerFactory->expects(self::once())
+                            ->method('getReader')
+                            ->with($this->importerDefinition)
+                            ->willReturn(
+                                $this->mockIterator($this->reader, $data)
+                            );
+        $this->reader->method('getErrors')
+                     ->willReturn([]);
+        $this->repository->expects(self::once())
+                         ->method('findOneBy')
+                         ->with(['bar' => 'val 1.2'])
+                         ->willReturn(null);
+        $this->customFactory->expects(self::once())
+                            ->method('__invoke')
+                            ->with($this->importerDefinition, null, $data[1])
+                            ->willReturn($object1);
+        $this->objectManager->expects(self::once())
+                            ->method('persist')
+                            ->with(
+                                self::callback(static function ($object) {
+                                    self::assertInstanceOf(stdClass::class, $object);
+                                    self::assertTrue($object->mod);
+
+                                    return true;
+                                })
+                            );
+        $this->defaultItemFactory->expects(self::never())
+                                 ->method('__invoke');
+        $this->statusCallback->expects(self::once())
+                             ->method('__invoke');
+        $this->errorCallback->expects(self::never())
+                            ->method('__invoke');
+
+        $importer = new EntityImporter(
+            $this->readerFactoryManager,
+            $this->defaultItemFactory,
+            $this->objectManager,
+            $this->archivingStrategy,
+            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
+        );
+        $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
+        self::assertSame(1, $result->getSuccess());
+        self::assertCount(0, $result->getErrors());
+        self::assertSame([], $result->getErrors());
+    }
+
     public function testInvalidInputFileDefinition(): void
     {
         $this->expectException(InvalidInputFileFormatException::class);
