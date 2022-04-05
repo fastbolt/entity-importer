@@ -59,7 +59,7 @@ class EntityUpdaterTest extends BaseTestCase
 
     public function testSetData(): void
     {
-        $array = [
+        $importRow = [
             'foo' => '123',
             'bar' => new DateTime(),
             'asd' => 'foo',
@@ -70,7 +70,7 @@ class EntityUpdaterTest extends BaseTestCase
                               ->method('detectSetter')
                               ->withConsecutive(
                                   [$this->entity, 'foo', '321'],
-                                  [$this->entity, 'bar', $array['bar']],
+                                  [$this->entity, 'bar', $importRow['bar']],
                               )
                               ->willReturnOnConsecutiveCalls(
                                   'setFoo',
@@ -81,18 +81,21 @@ class EntityUpdaterTest extends BaseTestCase
                      ->with('321');
         $this->entity->expects(self::once())
                      ->method('setBar')
-                     ->with($array['bar']);
+                     ->with($importRow['bar']);
         $this->definition->method('getSkippedFields')
                          ->willReturn(['asd']);
         $this->definition->method('getFieldConverters')
                          ->willReturn([
-                                          'foo' => static function (string $value): string {
+                                          'foo' => static function (string $value, array $row) use ($importRow
+                                          ): string {
+                                              self::assertSame($importRow, $row);
+
                                               return strrev($value);
                                           },
                                       ]);
 
         $updater = new EntityUpdater([$this->setterDetector1]);
-        $result  = $updater->setData($this->definition, $this->entity, $array);
+        $result  = $updater->setData($this->definition, $this->entity, $importRow);
 
         self::assertSame($result, $this->entity);
     }
