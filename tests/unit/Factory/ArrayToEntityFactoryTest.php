@@ -94,6 +94,7 @@ class ArrayToEntityFactoryTest extends BaseTestCase
                                  ->with($this->definition);
         $this->customEntityInstantiator->expects(self::once())
                                        ->method('__invoke')
+                                       ->with($row)
                                        ->willReturn($entity);
         $this->entityUpdater->expects(self::once())
                             ->method('setData')

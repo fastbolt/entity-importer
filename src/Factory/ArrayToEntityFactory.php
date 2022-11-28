@@ -47,7 +47,7 @@ class ArrayToEntityFactory
     {
         if (null === $entity) {
             if (null !== ($entityInstantiator = $definition->getEntityInstantiator())) {
-                $entity = $entityInstantiator();
+                $entity = $entityInstantiator($row);
             } else {
                 $entity = $this->entityInstantiator->getInstance($definition);
             }
