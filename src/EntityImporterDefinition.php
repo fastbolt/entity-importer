@@ -102,7 +102,7 @@ interface EntityImporterDefinition
      * Callable used for entity creation.
      * Defaults to {@see \Fastbolt\EntityImporter\Factory\EntityInstantiator::getInstance()}.
      *
-     * @return callable():T|null
+     * @return callable(array<string,mixed>):T|null
      */
     public function getEntityInstantiator(): ?callable;
 
