@@ -39,7 +39,7 @@ class XlsxReaderTest extends BaseTestCase
         self::assertSame($errors, $reader->getErrors());
     }
 
-    public function testIteratorInvalidContent()
+    public function testIteratorInvalidContent(): void
     {
         $file          = new SplFileObject(
             __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFileInvalid.xlsx'
@@ -58,7 +58,7 @@ class XlsxReaderTest extends BaseTestCase
         );
     }
 
-    public function testIteratorValidHeaders()
+    public function testIteratorValidHeaders(): void
     {
         $file          = new SplFileObject(
             __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'
@@ -80,7 +80,7 @@ class XlsxReaderTest extends BaseTestCase
         self::assertSame([], $reader->getErrors());
     }
 
-    public function testIteratorValidHeadersInFile()
+    public function testIteratorValidHeadersInFile(): void
     {
         $file          = new SplFileObject(
             __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'

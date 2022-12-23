@@ -11,15 +11,14 @@ namespace Fastbolt\EntityImporter\Tests\Unit;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;
+use Fastbolt\EntityImporter\ArchivingStrategy\ArchivingStrategy;
 use Fastbolt\EntityImporter\EntityImporter;
-use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
-use Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException;
+use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
-use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryInterface;
 use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager;
 use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 use Fastbolt\TestHelpers\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
@@ -84,24 +83,6 @@ class EntityImporterTest extends BaseTestCase
      */
     private $errorCallback;
 
-    public function testFileNotExists(): void
-    {
-        $this->expectException(ImportFileNotFoundException::class);
-
-        $sourceDefinition = (new ImportSourceDefinition('foo.not.exists', 'bar'));
-        $this->importerDefinition->method('getImportSourceDefinition')
-                                 ->willReturn($sourceDefinition);
-
-        $importer = new EntityImporter(
-            $this->readerFactoryManager,
-            $this->defaultItemFactory,
-            $this->objectManager,
-            $this->archivingStrategy,
-            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
-        );
-        $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
-    }
-
     public function testImportUsesDefaultFactory(): void
     {
         $data             = [
@@ -124,7 +105,7 @@ class EntityImporterTest extends BaseTestCase
         ];
         $object1          = new stdClass();
         $object2          = new stdClass();
-        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv', 'bar'));
+        $sourceDefinition = (new Csv('dummyFile.csv', $this->archivingStrategy));
         $this->importerDefinition->method('getImportSourceDefinition')
                                  ->willReturn($sourceDefinition);
         $this->importerDefinition->method('getRepository')
@@ -139,7 +120,7 @@ class EntityImporterTest extends BaseTestCase
                                  ->willReturn(10);
         $this->readerFactoryManager->expects(self::once())
                                    ->method('getReaderFactory')
-                                   ->with('bar')
+                                   ->with('csv')
                                    ->willReturn($this->readerFactory);
         $this->readerFactory->expects(self::once())
                             ->method('getReader')
@@ -186,9 +167,7 @@ class EntityImporterTest extends BaseTestCase
         $importer = new EntityImporter(
             $this->readerFactoryManager,
             $this->defaultItemFactory,
-            $this->objectManager,
-            $this->archivingStrategy,
-            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
+            $this->objectManager
         );
         $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
         self::assertSame(2, $result->getSuccess());
@@ -212,7 +191,7 @@ class EntityImporterTest extends BaseTestCase
             null,
         ];
         $object1          = new stdClass();
-        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv', 'bar'));
+        $sourceDefinition = (new Csv('dummyFile.csv', $this->archivingStrategy));
         $this->importerDefinition->method('getImportSourceDefinition')
                                  ->willReturn($sourceDefinition);
         $this->importerDefinition->method('getRepository')
@@ -233,7 +212,7 @@ class EntityImporterTest extends BaseTestCase
                                  ->willReturn(10);
         $this->readerFactoryManager->expects(self::once())
                                    ->method('getReaderFactory')
-                                   ->with('bar')
+                                   ->with('csv')
                                    ->willReturn($this->readerFactory);
         $this->readerFactory->expects(self::once())
                             ->method('getReader')
@@ -271,9 +250,7 @@ class EntityImporterTest extends BaseTestCase
         $importer = new EntityImporter(
             $this->readerFactoryManager,
             $this->defaultItemFactory,
-            $this->objectManager,
-            $this->archivingStrategy,
-            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
+            $this->objectManager
         );
         $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
         self::assertSame(1, $result->getSuccess());
@@ -283,7 +260,7 @@ class EntityImporterTest extends BaseTestCase
 
     public function testInvalidInputFileDefinition(): void
     {
-        $this->expectException(InvalidInputFileFormatException::class);
+        $this->expectException(InvalidInputFormatException::class);
 
         $errors           = [
             [
@@ -302,7 +279,7 @@ class EntityImporterTest extends BaseTestCase
                 'val 2.3',
             ],
         ];
-        $sourceDefinition = (new ImportSourceDefinition('dummyFile.csv', 'baz'));
+        $sourceDefinition = (new Csv('dummyFile.csv', $this->archivingStrategy));
         $this->importerDefinition->method('getImportSourceDefinition')
                                  ->willReturn($sourceDefinition);
         $this->importerDefinition->method('getRepository')
@@ -317,7 +294,7 @@ class EntityImporterTest extends BaseTestCase
                                  ->willReturn(1000);
         $this->readerFactoryManager->expects(self::once())
                                    ->method('getReaderFactory')
-                                   ->with('baz')
+                                   ->with('csv')
                                    ->willReturn($this->readerFactory);
         $this->readerFactory->expects(self::once())
                             ->method('getReader')
@@ -344,9 +321,7 @@ class EntityImporterTest extends BaseTestCase
         $importer = new EntityImporter(
             $this->readerFactoryManager,
             $this->defaultItemFactory,
-            $this->objectManager,
-            $this->archivingStrategy,
-            __DIR__ . '/_Fixtures/Reader/Factory/CsvReaderFactory'
+            $this->objectManager
         );
         $result   = $importer->import($this->importerDefinition, $this->statusCallback, $this->errorCallback, null);
         self::assertSame(0, $result->getSuccess());

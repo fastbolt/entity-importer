@@ -16,19 +16,20 @@ class CsvReaderFactory implements ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param string                   $importFilePath
+     * @param array                    $options
      *
      * @return CsvReader
      */
-    public function getReader(EntityImporterDefinition $importerDefinition, string $importFilePath): CsvReader
+    public function getReader(EntityImporterDefinition $importerDefinition, array $options): CsvReader
     {
-        $fileObject       = new SplFileObject($importFilePath);
         $sourceDefinition = $importerDefinition->getImportSourceDefinition();
+        $importFilePath   = $sourceDefinition->getTarget();
+        $fileObject       = new SplFileObject($importFilePath);
 
         return new CsvReader(
             $fileObject,
             $importerDefinition->getFields(),
-            $sourceDefinition->hasHeaderRow() ? 0 : null,
+            $sourceDefinition->skipFirstRow() ? 0 : null,
             $sourceDefinition->getDelimiter(),
             $sourceDefinition->getEnclosure(),
             $sourceDefinition->getEscape()
@@ -40,7 +41,7 @@ class CsvReaderFactory implements ReaderFactoryInterface
      *
      * @return bool
      */
-    public function supportsFiletype(string $type): bool
+    public function supportsType(string $type): bool
     {
         return in_array($type, $this->getSupportedTypes());
     }

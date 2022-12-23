@@ -6,8 +6,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Filesystem;
+namespace Fastbolt\EntityImporter\ArchivingStrategy;
 
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ProcessedFolderArchivingStrategy implements ArchivingStrategy
@@ -41,12 +42,14 @@ class ProcessedFolderArchivingStrategy implements ArchivingStrategy
     }
 
     /**
-     * @param string $originalFilename
+     * @param ImportSourceDefinition $importSourceDefinition
      *
-     * @return string
+     * @return ArchivingResult
      */
-    public function archiveFile(string $originalFilename): string
+    public function archive(ImportSourceDefinition $importSourceDefinition): ArchivingResult
     {
+        $originalFilename = $importSourceDefinition->getTarget();
+
         /** @var array{filename: string, extension: string} $pathInfo */
         $pathInfo = pathinfo($originalFilename);
         [
@@ -69,6 +72,6 @@ class ProcessedFolderArchivingStrategy implements ArchivingStrategy
         $this->filesystem->dumpFile($archiveFilename, $fileContents);
         $this->filesystem->remove($originalFilename);
 
-        return $archiveFilename;
+        return new ArchivingResult($archiveFilename);
     }
 }

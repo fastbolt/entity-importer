@@ -16,8 +16,6 @@ use SplFileObject;
  */
 class CsvReader extends PortCsvReader implements ReaderInterface
 {
-    public const TYPE = 'csv';
-
     /**
      * @param SplFileObject     $file
      * @param array<int,string> $columnHeaders
@@ -49,7 +47,6 @@ class CsvReader extends PortCsvReader implements ReaderInterface
     /**
      * Method only added to implement method with return type.
      *
-     * @noinspection PhpRedundantMethodOverrideInspection
      * @return array<int,array<int,mixed>>
      */
     public function getErrors(): array

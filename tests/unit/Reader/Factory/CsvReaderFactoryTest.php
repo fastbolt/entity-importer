@@ -8,11 +8,13 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Factory;
 
+use Fastbolt\EntityImporter\ArchivingStrategy\ArchivingStrategy;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Factory\CsvReaderFactory;
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 use Fastbolt\TestHelpers\BaseTestCase;
 use Fastbolt\TestHelpers\Visibility;
+use PHPUnit\Framework\MockObject\MockObject;
 use SplFileObject;
 
 /**
@@ -20,21 +22,26 @@ use SplFileObject;
  */
 class CsvReaderFactoryTest extends BaseTestCase
 {
+    /***
+     * @var ArchivingStrategy&MockObject
+     */
+    private $archivingStrategy;
+
     public function testGetReader(): void
     {
-        $sourceDefinition = new ImportSourceDefinition(
-            'dummyFile.csv',
-            'foo',
+        $sourceDefinition = new Csv(
+            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv',
+            $this->archivingStrategy,
             '@',
             '`',
             '#'
         );
-        $definition       = $this->getMock(EntityImporterDefinition::class);
+        /** @var EntityImporterDefinition&MockObject $definition */
+        $definition = $this->getMock(EntityImporterDefinition::class);
         $definition->method('getImportSourceDefinition')
                    ->willReturn($sourceDefinition);
-        $importFilePath = __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv';
-        $factory        = new CsvReaderFactory();
-        $reader         = $factory->getReader($definition, $importFilePath);
+        $factory = new CsvReaderFactory();
+        $reader  = $factory->getReader($definition, []);
 
         /** @var SplFileObject $file */
         $file = Visibility::getProperty($reader, 'file');
@@ -43,26 +50,32 @@ class CsvReaderFactoryTest extends BaseTestCase
         self::assertSame(['@', '`', '#'], $file->getCsvControl());
         self::assertSame(0, Visibility::getProperty($reader, 'headerRowNumber'));
 
-        self::assertTrue($factory->supportsFiletype('csv'));
+        self::assertTrue($factory->supportsType('csv'));
     }
 
     public function testGetReaderWithoutHeaderRow(): void
     {
-        $sourceDefinition = new ImportSourceDefinition(
-            'dummyFile.csv',
-            'foo',
+        $sourceDefinition = new Csv(
+            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv',
+            $this->archivingStrategy,
             '@',
             '`',
-            '#'
+            '#',
+            false
         );
-        $sourceDefinition->setHasHeaderRow(false);
-        $definition = $this->getMock(EntityImporterDefinition::class);
+        $definition       = $this->getMock(EntityImporterDefinition::class);
         $definition->method('getImportSourceDefinition')
                    ->willReturn($sourceDefinition);
-        $importFilePath = __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv';
-        $factory        = new CsvReaderFactory();
-        $reader         = $factory->getReader($definition, $importFilePath);
+        $factory = new CsvReaderFactory();
+        $reader  = $factory->getReader($definition, []);
 
         self::assertSame(null, Visibility::getProperty($reader, 'headerRowNumber'));
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->archivingStrategy = $this->getMock(ArchivingStrategy::class);
     }
 }

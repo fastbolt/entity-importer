@@ -10,12 +10,12 @@ namespace Fastbolt\EntityImporter\Exceptions;
 
 use Exception;
 
-class InvalidInputFileFormatException extends Exception
+class InvalidInputFormatException extends Exception
 {
     /**
      * @var string
      */
-    private string $filename;
+    private string $source;
 
     /**
      * @var array
@@ -23,16 +23,17 @@ class InvalidInputFileFormatException extends Exception
     private array $errors;
 
     /**
-     * @param string $filename
+     * @param string $source
+     * @param array  $errors
      */
-    public function __construct(string $filename, array $errors)
+    public function __construct(string $source, array $errors)
     {
-        $this->filename = $filename;
-        $this->errors   = $errors;
+        $this->source = $source;
+        $this->errors = $errors;
 
         $message = sprintf(
-            'Invalid input file format for file: %s. %s errors found.',
-            $filename,
+            'Invalid input format for source: %s. %s errors found.',
+            $source,
             count($errors)
         );
         parent::__construct($message);
@@ -41,9 +42,9 @@ class InvalidInputFileFormatException extends Exception
     /**
      * @return string
      */
-    public function getFilename(): string
+    public function getSource(): string
     {
-        return $this->filename;
+        return $this->source;
     }
 
     /**

@@ -8,21 +8,21 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Exceptions;
 
-use Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException;
+use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException
+ * @covers \Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException
  */
-class InvalidInputFileFormatExceptionTest extends TestCase
+class InvalidInputFormatExceptionTest extends TestCase
 {
     public function testException(): void
     {
-        $exception = new InvalidInputFileFormatException('foo/filename.txt', $errors = ['foo', 'bar']);
-        self::assertSame('foo/filename.txt', $exception->getFilename());
+        $exception = new InvalidInputFormatException('foo/filename.txt', $errors = ['foo', 'bar']);
+        self::assertSame('foo/filename.txt', $exception->getSource());
         self::assertSame($errors, $exception->getErrors());
         self::assertStringMatchesFormat(
-            'Invalid input file format for file: %s. %d errors found.',
+            'Invalid input format for source: %s. %d errors found.',
             $exception->getMessage()
         );
     }

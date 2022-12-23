@@ -37,7 +37,7 @@ class ReaderFactoryManager
     public function getReaderFactory(string $type): ReaderFactoryInterface
     {
         foreach ($this->factories as $factory) {
-            if ($factory->supportsFiletype($type)) {
+            if ($factory->supportsType($type)) {
                 return $factory;
             }
         }

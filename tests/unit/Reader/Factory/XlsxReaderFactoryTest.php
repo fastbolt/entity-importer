@@ -8,32 +8,47 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Factory;
 
+use Fastbolt\EntityImporter\ArchivingStrategy\ArchivingStrategy;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Factory\XlsxReaderFactory;
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Xlsx;
 use Fastbolt\TestHelpers\BaseTestCase;
 use Fastbolt\TestHelpers\Visibility;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @covers \Fastbolt\EntityImporter\Reader\Factory\XlsxReaderFactory
  */
 class XlsxReaderFactoryTest extends BaseTestCase
 {
+    /**
+     * @var ArchivingStrategy&MockObject
+     */
+    private $archivingStrategy;
+
     public function testGetReader(): void
     {
-        $sourceDefinition = (new ImportSourceDefinition('dummyFile.xlsx', 'xlsx'))
-            ->setHasHeaderRow(false);
+        $sourceDefinition = (new Xlsx(
+            __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx',
+            $this->archivingStrategy
+        ));
         $definition       = $this->getMock(EntityImporterDefinition::class);
         $definition->method('getImportSourceDefinition')
                    ->willReturn($sourceDefinition);
-        $importFilePath = __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx';
-        $factory        = new XlsxReaderFactory();
-        $reader         = $factory->getReader($definition, $importFilePath);
+        $factory = new XlsxReaderFactory();
+        $reader  = $factory->getReader($definition, []);
 
         self::assertSame(
             [['foo', 'bar', 'baz'], ['asd', 'asdf', 'asdfg'], ['x', 'xy', 'xyz']],
             Visibility::getProperty($reader, 'worksheet')
         );
-        self::assertTrue($factory->supportsFiletype('xlsx'));
+        self::assertTrue($factory->supportsType('xlsx'));
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->archivingStrategy = $this->getMock(ArchivingStrategy::class);
     }
 }

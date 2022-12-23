@@ -15,18 +15,18 @@ interface ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param string                   $importFilePath
+     * @param array                    $options Array containing implementation-specific options
      *
      * @return ReaderInterface
      */
-    public function getReader(EntityImporterDefinition $importerDefinition, string $importFilePath): ReaderInterface;
+    public function getReader(EntityImporterDefinition $importerDefinition, array $options): ReaderInterface;
 
     /**
      * @param string $type
      *
      * @return bool
      */
-    public function supportsFiletype(string $type): bool;
+    public function supportsType(string $type): bool;
 
     /**
      * @return string[]

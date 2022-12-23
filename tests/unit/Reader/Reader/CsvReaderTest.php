@@ -33,7 +33,7 @@ class CsvReaderTest extends BaseTestCase
         self::assertSame([';', '`', '#'], $file->getCsvControl());
     }
 
-    public function testIteratorInvalidContent()
+    public function testIteratorInvalidContent(): void
     {
         $file          = new SplFileObject(
             __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFileInvalid.csv'
@@ -47,7 +47,7 @@ class CsvReaderTest extends BaseTestCase
         );
     }
 
-    public function testIteratorValidHeaders()
+    public function testIteratorValidHeaders(): void
     {
         $file          = new SplFileObject(
             __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
@@ -68,7 +68,7 @@ class CsvReaderTest extends BaseTestCase
         }
     }
 
-    public function testIteratorValidHeadersInFile()
+    public function testIteratorValidHeadersInFile(): void
     {
         $file          = new SplFileObject(
             __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'

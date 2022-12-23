@@ -16,12 +16,10 @@ use SplFileObject;
  */
 class XlsxReader extends SpreadsheetReader implements ReaderInterface
 {
-    public const TYPE = 'xlsx';
-
     /**
      * Faulty rows
      *
-     * @var array<int,array>|null
+     * @var array<int,array<int,mixed>>|null
      */
     protected ?array $errors = null;
 

@@ -10,10 +10,8 @@ namespace Fastbolt\EntityImporter;
 
 use Doctrine\Persistence\ObjectManager;
 use Exception;
-use Fastbolt\EntityImporter\Exceptions\ImportFileNotFoundException;
-use Fastbolt\EntityImporter\Exceptions\InvalidInputFileFormatException;
+use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
-use Fastbolt\EntityImporter\Filesystem\ArchivingStrategy;
 use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager;
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
@@ -39,34 +37,18 @@ class EntityImporter
     private ObjectManager $objectManager;
 
     /**
-     * @var ArchivingStrategy
-     */
-    private ArchivingStrategy $archivingStrategy;
-
-    /**
-     * @var string
-     */
-    private string $importPath;
-
-    /**
      * @param ReaderFactoryManager    $readerFactoryManager
      * @param ArrayToEntityFactory<T> $defaultItemFactory
      * @param ObjectManager           $objectManager
-     * @param ArchivingStrategy       $archivingStrategy
-     * @param string                  $importPath
      */
     public function __construct(
         ReaderFactoryManager $readerFactoryManager,
         ArrayToEntityFactory $defaultItemFactory,
-        ObjectManager $objectManager,
-        ArchivingStrategy $archivingStrategy,
-        string $importPath
+        ObjectManager $objectManager
     ) {
         $this->readerFactoryManager = $readerFactoryManager;
         $this->defaultItemFactory   = $defaultItemFactory;
         $this->objectManager        = $objectManager;
-        $this->archivingStrategy    = $archivingStrategy;
-        $this->importPath           = $importPath;
     }
 
     /**
@@ -91,22 +73,14 @@ class EntityImporter
         if (null !== ($customFactoryCallback = $definition->getEntityFactory())) {
             $factoryCallback = $customFactoryCallback;
         }
-        $addRows        = $sourceDefinition->hasHeaderRow() ? 0 : 1;
-        $flushInterval  = $definition->getFlushInterval();
-        $importFilePath = sprintf(
-            '%s/%s',
-            $sourceDefinition->getImportDir() ?? $this->importPath,
-            $sourceDefinition->getFilename()
-        );
-        if (!file_exists($importFilePath)) {
-            throw new ImportFileNotFoundException($importFilePath);
-        }
+        $addRows       = $sourceDefinition->skipFirstRow() ? 0 : 1;
+        $flushInterval = $definition->getFlushInterval();
 
         $entityModifier = $definition->getEntityModifier();
         $readerFactory  = $this->readerFactoryManager->getReaderFactory($sourceDefinition->getType());
-        $reader         = $readerFactory->getReader($definition, $importFilePath);
+        $reader         = $readerFactory->getReader($definition, $sourceDefinition->getOptions());
         if (count($errors = $reader->getErrors()) > 0) {
-            throw new InvalidInputFileFormatException($importFilePath, $errors);
+            throw new InvalidInputFormatException($sourceDefinition->getTarget(), $errors);
         }
 
         /**
@@ -114,7 +88,7 @@ class EntityImporter
          * @var int                 $index
          */
         foreach ($reader as $index => $row) {
-            if (0 === $index && $sourceDefinition->hasHeaderRow()) {
+            if (0 === $index && $sourceDefinition->skipFirstRow()) {
                 continue;
             }
 
@@ -145,8 +119,9 @@ class EntityImporter
             }
         }
         $this->objectManager->flush();
-        $archivedFilePath = $this->archivingStrategy->archiveFile($importFilePath);
-        $result->setArchivedFilePath($archivedFilePath);
+        $archivingResult = $sourceDefinition->getArchivingStrategy()
+                                            ->archive($sourceDefinition);
+        $result->setArchivingResult($archivingResult);
 
         return $result;
     }

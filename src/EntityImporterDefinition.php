@@ -9,7 +9,7 @@
 namespace Fastbolt\EntityImporter;
 
 use Doctrine\Persistence\ObjectRepository;
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 
 /**
  * @template T
