@@ -17,12 +17,19 @@ class Api implements ImportSourceDefinition
 
     private string $apiPath;
 
+    /**
+     * @param string $apiHost
+     * @param string $apiPath
+     */
     public function __construct(string $apiHost, string $apiPath)
     {
         $this->apiHost = $apiHost;
         $this->apiPath = $apiPath;
     }
 
+    /**
+     * @return string
+     */
     public function getTarget(): string
     {
         return sprintf(
@@ -32,11 +39,17 @@ class Api implements ImportSourceDefinition
         );
     }
 
+    /**
+     * @return bool
+     */
     public function skipFirstRow(): bool
     {
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function getType(): string
     {
         return 'api';
