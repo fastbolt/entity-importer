@@ -61,7 +61,17 @@ When executing the command without any arguments, it will display all available 
 
 namespace App\Component\Data\Import\EntityImporter;
 
-use App\Entity\Branch;use App\Entity\Material;use App\Entity\MaterialGroup;use App\Repository\BranchRepository;use App\Repository\MaterialGroupRepository;use App\Repository\MaterialRepository;use DateTime;use Doctrine\Persistence\ObjectRepository;use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;use Fastbolt\EntityImporter\Reader\Reader\CsvReader;use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
+use App\Entity\Branch;
+use App\Entity\Material;
+use App\Entity\MaterialGroup;
+use App\Repository\BranchRepository;
+use App\Repository\MaterialGroupRepository;
+use App\Repository\MaterialRepository;
+use DateTime;
+use Doctrine\Persistence\ObjectRepository;
+use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;
+use Fastbolt\EntityImporter\Reader\Reader\CsvReader;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 
 /**
  * @template-implements Material
