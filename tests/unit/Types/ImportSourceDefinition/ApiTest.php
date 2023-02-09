@@ -21,13 +21,14 @@ class ApiTest extends BaseTestCase
     {
         $definition = new Api(
             'https://example.com',
-            '/api/v1'
+            '/api/v1',
+            $options = ['foo' => 'bar']
         );
 
         self::assertInstanceOf(VoidArchivingStratetegy::class, $definition->getArchivingStrategy());
         self::assertSame('https://example.com/api/v1', $definition->getSource());
-        self::assertSame([], $definition->getOptions());
         self::assertSame('api', $definition->getType());
         self::assertFalse($definition->skipFirstRow());
+        self::assertSame($options, $definition->getOptions());
     }
 }

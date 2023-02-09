@@ -26,9 +26,10 @@ class PagePaginationStrategyTest extends BaseTestCase
 
         self::assertSame(0, $strategy->getPageStartOffset(0));
         self::assertSame(0, $strategy->getPageStartOffset(50));
-        self::assertSame(0, $strategy->getPageStartOffset(500));
+        self::assertSame(0, $strategy->getPageStartOffset(499));
         self::assertSame(500, $strategy->getPageStartOffset(500));
         self::assertSame(500, $strategy->getPageStartOffset(550));
-        self::assertSame(500, $strategy->getPageStartOffset(1000));
+        self::assertSame(500, $strategy->getPageStartOffset(999));
+        self::assertSame(1000, $strategy->getPageStartOffset(1000));
     }
 }

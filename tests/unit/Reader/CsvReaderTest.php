@@ -20,7 +20,7 @@ class CsvReaderTest extends BaseTestCase
 {
     public function testCsvReader(): void
     {
-        $file          = new SplFileObject(__DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv');
+        $file          = new SplFileObject(__DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv');
         $columnHeaders = ['foo', 'bar', 'baz'];
         $reader        = new CsvReader($file, $columnHeaders, null, ';', '`', '#');
 
@@ -36,7 +36,7 @@ class CsvReaderTest extends BaseTestCase
     public function testIteratorInvalidContent(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFileInvalid.csv'
+            __DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFileInvalid.csv'
         );
         $columnHeaders = ['foo', 'bar', 'asd'];
         $reader        = new CsvReader($file, $columnHeaders, null, ';');
@@ -50,7 +50,7 @@ class CsvReaderTest extends BaseTestCase
     public function testIteratorValidHeaders(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
+            __DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
         );
         $columnHeaders = ['a', 'b', 'c'];
         $reader        = new CsvReader($file, $columnHeaders, null, ';');
@@ -71,7 +71,7 @@ class CsvReaderTest extends BaseTestCase
     public function testIteratorValidHeadersInFile(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
+            __DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
         );
         $columnHeaders = ['a', 'b', 'c'];
         $reader        = new CsvReader($file, $columnHeaders, 0, ';');

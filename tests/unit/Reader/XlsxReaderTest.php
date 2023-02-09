@@ -21,7 +21,7 @@ class XlsxReaderTest extends BaseTestCase
     public function testXlsxReader(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'
+            __DIR__ . '/../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'
         );
         $columnHeaders = ['foo', 'bar', 'baz'];
         $reader        = new XlsxReader($file, $columnHeaders, 2);
@@ -42,7 +42,7 @@ class XlsxReaderTest extends BaseTestCase
     public function testIteratorInvalidContent(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFileInvalid.xlsx'
+            __DIR__ . '/../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFileInvalid.xlsx'
         );
         $columnHeaders = ['foo', 'bar'];
         $reader        = new XlsxReader($file, $columnHeaders, null, ';');
@@ -61,7 +61,7 @@ class XlsxReaderTest extends BaseTestCase
     public function testIteratorValidHeaders(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'
+            __DIR__ . '/../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'
         );
         $columnHeaders = ['a', 'b', 'c'];
         $reader        = new XlsxReader($file, $columnHeaders, null, ';');
@@ -83,7 +83,7 @@ class XlsxReaderTest extends BaseTestCase
     public function testIteratorValidHeadersInFile(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'
+            __DIR__ . '/../_Fixtures/Reader/Factory/XlsxReaderFactory/dummyFile.xlsx'
         );
         $columnHeaders = ['a', 'b', 'c'];
         $reader        = new XlsxReader($file, $columnHeaders, 0, ';');
