@@ -38,9 +38,14 @@ class ApiReader implements ReaderInterface
 
     private array $options;
 
-    private array $currentBatch = [];
+    /**
+     * @var array<int, mixed>
+     */
+    private array $data = [];
 
     private int $position = 0;
+
+    private bool $readToEnd = false;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -67,25 +72,61 @@ class ApiReader implements ReaderInterface
         if (!isset($this->options['pagination_strategy'])) {
             $this->options['pagination_strategy'] = new PagePaginationStrategy(500);
         }
+        if (!isset($this->options['serialized_format'])) {
+            $this->options['serialized_format'] = 'json';
+        }
+    }
+
+    public function current()
+    {
+        return $this->data[$this->position];
     }
 
     /**
-     * @return array<string|int,mixed>
+     * Move forward to next element
+     *
+     * @link https://php.net/manual/en/iterator.next.php
+     * @return void Any returned value is ignored.
      */
-    public function current(): array
+    public function next(): void
     {
-        if ([] === $this->currentBatch) {
-            $this->currentBatch = $this->loadBulkData($this->position);
-        }
-
-        if (null !== ($row = array_shift($this->currentBatch))) {
-            return $row;
-        }
-
-        return [];
+        ++$this->position;
     }
 
-    private function loadBulkData(int $offset): array
+    /**
+     * Return the key of the current element
+     *
+     * @link https://php.net/manual/en/iterator.key.php
+     * @return TKey|null TKey on success, or null on failure.
+     */
+    public function key(): int
+    {
+        return $this->position;
+    }
+
+    /**
+     * Checks if current position is valid
+     *
+     * @link https://php.net/manual/en/iterator.valid.php
+     * @return bool The return value will be casted to boolean and then evaluated.
+     * Returns true on success or false on failure.
+     */
+    public function valid(): bool
+    {
+        if (isset($this->data[$this->position])) {
+            return true;
+        }
+
+        if ($this->readToEnd) {
+            return false;
+        }
+
+        $this->loadBulkData($this->position);
+
+        return isset($this->data[$this->position]);
+    }
+
+    private function loadBulkData(int $offset): void
     {
         $clientFactory = $this->clientFactory;
         $client        = $clientFactory();
@@ -154,42 +195,17 @@ class ApiReader implements ReaderInterface
             );
         }
 
-        $result = $this->serializer->deserialize($body, $this->options['serialized_type'], 'json');
+        $itemsPerPage = $paginationStrategy->getItemsPerPage();
+        $startOffset  = $paginationStrategy->getPageStartOffset($offset);
+        $data         = json_decode($body, true);
+        if (count($data) !== $itemsPerPage) {
+            $this->readToEnd = true;
+        }
+        foreach ($data as $dataOffset => $datum) {
+            $this->data[$dataOffset + $startOffset] = $datum;
+        }
 
-        dd($result);
-    }
-
-    /**
-     * Move forward to next element
-     *
-     * @link https://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
-     */
-    public function next(): void
-    {
-    }
-
-    /**
-     * Return the key of the current element
-     *
-     * @link https://php.net/manual/en/iterator.key.php
-     * @return TKey|null TKey on success, or null on failure.
-     */
-    public function key(): int
-    {
-        return 0;
-    }
-
-    /**
-     * Checks if current position is valid
-     *
-     * @link https://php.net/manual/en/iterator.valid.php
-     * @return bool The return value will be casted to boolean and then evaluated.
-     * Returns true on success or false on failure.
-     */
-    public function valid(): bool
-    {
-        return true;
+        $x = 1;
     }
 
     /**
@@ -200,6 +216,7 @@ class ApiReader implements ReaderInterface
      */
     public function rewind(): void
     {
+        $this->position = 0;
     }
 
     /**

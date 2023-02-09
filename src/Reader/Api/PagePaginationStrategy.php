@@ -27,4 +27,22 @@ class PagePaginationStrategy implements PaginationStrategy
             ],
         ];
     }
+
+    public function getItemsPerPage(): int
+    {
+        return $this->itemsPerPage;
+    }
+
+    /**
+     * Return page start offset (0-based) for item offset (1-based).
+     *
+     * Example: Page size 100, item offset = 101 => will return 100, because item 101 is on page 2 which
+     * starts at offset 100.
+     *
+     * @return int
+     */
+    public function getPageStartOffset(int $itemOffset): int
+    {
+        return (int)floor($itemOffset / $this->itemsPerPage) * $this->itemsPerPage;
+    }
 }
