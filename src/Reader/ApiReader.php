@@ -57,12 +57,13 @@ class ApiReader implements ReaderInterface
         $this->serializer             = $serializer;
         $this->importerDefinition     = $importerDefinition;
         $this->importSourceDefinition = $importerDefinition->getImportSourceDefinition();
-        $this->options                = array_merge_recursive(
-            $this->importSourceDefinition->getOptions(),
-            $options
-        );
+        $this->options                = $options;
 
         Assert::keyExists($this->options, 'api_key');
+        Assert::keyExists($this->options, 'serialized_type');
+        Assert::string($this->options['serialized_type']);
+        Assert::stringNotEmpty($this->options['serialized_type']);
+
         if (!isset($this->options['pagination_strategy'])) {
             $this->options['pagination_strategy'] = new PagePaginationStrategy(500);
         }
@@ -153,10 +154,9 @@ class ApiReader implements ReaderInterface
             );
         }
 
-        /** @var ApiResponse $result */
-        $result = $this->serializer->deserialize($body, ApiResponse::class, 'json');
+        $result = $this->serializer->deserialize($body, $this->options['serialized_type'], 'json');
 
-        dd($requestParameters, $url);
+        dd($result);
     }
 
     /**
