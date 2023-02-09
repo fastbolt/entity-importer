@@ -26,7 +26,7 @@ class XlsxTest extends BaseTestCase
             $this->archivingStrategy
         );
 
-        self::assertSame('foo', $definition->getTarget());
+        self::assertSame('foo', $definition->getSource());
         self::assertTrue($definition->skipFirstRow());
         self::assertSame('xlsx', $definition->getType());
         self::assertSame([], $definition->getOptions());
@@ -40,7 +40,7 @@ class XlsxTest extends BaseTestCase
             $this->archivingStrategy,
             false
         );
-        self::assertSame('foo', $definition->getTarget());
+        self::assertSame('foo', $definition->getSource());
         self::assertFalse($definition->skipFirstRow());
         self::assertSame('xlsx', $definition->getType());
         self::assertSame([], $definition->getOptions());

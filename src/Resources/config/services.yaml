@@ -1,50 +1,55 @@
 services:
 
     _defaults:
-            public: true
+        public: true
 
     Fastbolt\EntityImporter\EntityImporterManager:
-            $importer: '@Fastbolt\EntityImporter\EntityImporter'
-            $importerDefinitions: !tagged fastbolt.entity_importer.definition
+        $importer: '@Fastbolt\EntityImporter\EntityImporter'
+        $importerDefinitions: !tagged fastbolt.entity_importer.definition
 
     Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager:
-            $factories: !tagged fastbolt.entity_importer.reader_factory
+        $factories: !tagged fastbolt.entity_importer.reader_factory
 
     Fastbolt\EntityImporter\EntityImporter:
-            $readerFactoryManager: '@Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager'
-            $defaultItemFactory: '@Fastbolt\EntityImporter\Factory\ArrayToEntityFactory'
-            $objectManager: '@doctrine.orm.entity_manager'
+        $readerFactoryManager: '@Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager'
+        $defaultItemFactory: '@Fastbolt\EntityImporter\Factory\ArrayToEntityFactory'
+        $objectManager: '@doctrine.orm.entity_manager'
+
+    Fastbolt\EntityImporter\Reader\Factory\ApiReaderFactory:
+        tags: [ 'fastbolt.entity_importer.reader_factory' ]
+        arguments:
+            $serializer: '@Symfony\Component\Serializer\SerializerInterface'
 
     Fastbolt\EntityImporter\Reader\Factory\CsvReaderFactory:
-            tags: ['fastbolt.entity_importer.reader_factory']
+        tags: [ 'fastbolt.entity_importer.reader_factory' ]
 
     Fastbolt\EntityImporter\Reader\Factory\XlsxReaderFactory:
-            tags: ['fastbolt.entity_importer.reader_factory']
+        tags: [ 'fastbolt.entity_importer.reader_factory' ]
 
     Fastbolt\EntityImporter\Factory\ArrayToEntityFactory:
-            $entityInstantiator: '@Fastbolt\EntityImporter\Factory\EntityInstantiator'
-            $entityUpdater: '@Fastbolt\EntityImporter\Factory\EntityUpdater'
+        $entityInstantiator: '@Fastbolt\EntityImporter\Factory\EntityInstantiator'
+        $entityUpdater: '@Fastbolt\EntityImporter\Factory\EntityUpdater'
 
     Fastbolt\EntityImporter\Console\ImportCommandHelpRenderer:
-            $entityImporterManager: '@Fastbolt\EntityImporter\EntityImporterManager'
+        $entityImporterManager: '@Fastbolt\EntityImporter\EntityImporterManager'
 
     Fastbolt\EntityImporter\Console\Command\ImportCommand:
-            tags: [ 'console.command' ]
-            arguments:
-                  $entityImporterManager: '@Fastbolt\EntityImporter\EntityImporterManager'
-                  $helpRenderer: '@Fastbolt\EntityImporter\Console\ImportCommandHelpRenderer'
-                  $resultRenderer: '@Fastbolt\EntityImporter\Console\ImportCommandResultRenderer'
+        tags: [ 'console.command' ]
+        arguments:
+            $entityImporterManager: '@Fastbolt\EntityImporter\EntityImporterManager'
+            $helpRenderer: '@Fastbolt\EntityImporter\Console\ImportCommandHelpRenderer'
+            $resultRenderer: '@Fastbolt\EntityImporter\Console\ImportCommandResultRenderer'
 
     Fastbolt\EntityImporter\Console\ImportCommandResultRenderer:
 
     Fastbolt\EntityImporter\Factory\EntityInstantiator:
 
     Fastbolt\EntityImporter\Factory\EntityUpdater:
-            $setterDetectors: !tagged fastbolt.entity_importer.setter_detectors
+        $setterDetectors: !tagged fastbolt.entity_importer.setter_detectors
 
     Fastbolt\EntityImporter\Factory\SetterDetection\DefaultSetterDetector:
-                tags: [ 'fastbolt.entity_importer.setter_detectors' ]
+        tags: [ 'fastbolt.entity_importer.setter_detectors' ]
 
     Fastbolt\EntityImporter\ArchivingStrategy\ProcessedFolderArchivingStrategy:
-            $processedFolder: '%entity_importer.processed_path%'
-            $archiveFilenameDateFormat: '%entity_importer.archive_filename_date_format%'
+        $processedFolder: '%entity_importer.processed_path%'
+        $archiveFilenameDateFormat: '%entity_importer.archive_filename_date_format%'

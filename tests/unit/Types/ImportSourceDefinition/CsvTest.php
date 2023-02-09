@@ -26,7 +26,7 @@ class CsvTest extends BaseTestCase
             $this->archivingStrategy
         );
 
-        self::assertSame('foo', $definition->getTarget());
+        self::assertSame('foo', $definition->getSource());
         self::assertSame(';', $definition->getDelimiter());
         self::assertSame('"', $definition->getEnclosure());
         self::assertSame('\\', $definition->getEscape());
@@ -46,7 +46,7 @@ class CsvTest extends BaseTestCase
             'c',
             false
         );
-        self::assertSame('foo', $definition->getTarget());
+        self::assertSame('foo', $definition->getSource());
         self::assertSame('a', $definition->getDelimiter());
         self::assertSame('b', $definition->getEnclosure());
         self::assertSame('c', $definition->getEscape());

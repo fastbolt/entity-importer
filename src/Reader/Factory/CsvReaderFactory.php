@@ -23,7 +23,7 @@ class CsvReaderFactory implements ReaderFactoryInterface
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): CsvReader
     {
         $sourceDefinition = $importerDefinition->getImportSourceDefinition();
-        $importFilePath   = $sourceDefinition->getTarget();
+        $importFilePath   = $sourceDefinition->getSource();
         $fileObject       = new SplFileObject($importFilePath);
 
         return new CsvReader(

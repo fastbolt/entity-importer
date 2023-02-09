@@ -25,9 +25,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('entity_importer');
         $treeBuilder->getRootNode()
                     ->children()
-                    ->scalarNode('default_import_path')
-                    ->defaultValue('%kernel.project_dir%/data/import')
-                    ->end()
                     ->scalarNode('processed_path')
                     ->defaultValue('%kernel.project_dir%/data/import/processed')
                     ->end()

@@ -80,7 +80,7 @@ class EntityImporter
         $readerFactory  = $this->readerFactoryManager->getReaderFactory($sourceDefinition->getType());
         $reader         = $readerFactory->getReader($definition, $sourceDefinition->getOptions());
         if (count($errors = $reader->getErrors()) > 0) {
-            throw new InvalidInputFormatException($sourceDefinition->getTarget(), $errors);
+            throw new InvalidInputFormatException($sourceDefinition->getSource(), $errors);
         }
 
         /**

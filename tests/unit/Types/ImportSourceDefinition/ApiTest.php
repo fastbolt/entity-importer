@@ -25,7 +25,7 @@ class ApiTest extends BaseTestCase
         );
 
         self::assertInstanceOf(VoidArchivingStratetegy::class, $definition->getArchivingStrategy());
-        self::assertSame('https://example.com/api/v1', $definition->getTarget());
+        self::assertSame('https://example.com/api/v1', $definition->getSource());
         self::assertSame([], $definition->getOptions());
         self::assertSame('api', $definition->getType());
         self::assertFalse($definition->skipFirstRow());

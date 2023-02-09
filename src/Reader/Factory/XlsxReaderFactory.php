@@ -23,7 +23,7 @@ class XlsxReaderFactory implements ReaderFactoryInterface
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): XlsxReader
     {
         $sourceDefinition = $importerDefinition->getImportSourceDefinition();
-        $importFilePath   = $sourceDefinition->getTarget();
+        $importFilePath   = $sourceDefinition->getSource();
         $fileObject       = new SplFileObject($importFilePath);
 
         return new XlsxReader(

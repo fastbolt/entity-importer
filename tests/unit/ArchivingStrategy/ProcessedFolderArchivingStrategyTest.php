@@ -51,7 +51,7 @@ class ProcessedFolderArchivingStrategyTest extends BaseTestCase
 
         self::assertFileExists($inputFile);
 
-        $this->importSourceDefinition->method('getTarget')
+        $this->importSourceDefinition->method('getSource')
                                      ->willReturn($inputFile);
         $result           = $strategy->archive($this->importSourceDefinition);
         $archivedFilename = $result->getArchivedFilename();

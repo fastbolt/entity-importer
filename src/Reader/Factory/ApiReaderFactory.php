@@ -11,9 +11,28 @@ namespace Fastbolt\EntityImporter\Reader\Factory;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Reader\ApiReader;
 use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
+use GuzzleHttp\Client;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ApiReaderFactory implements ReaderFactoryInterface
 {
+    private $clientFactory;
+
+    private SerializerInterface $serializer;
+
+    public function __construct(
+        SerializerInterface $serializer,
+        ?callable $clientFactory = null
+    ) {
+        if (!$clientFactory) {
+            $clientFactory = static function (): Client {
+                return new Client(['verify' => false]);
+            };
+        }
+        $this->clientFactory = $clientFactory;
+        $this->serializer    = $serializer;
+    }
+
     /**
      * @param EntityImporterDefinition $importerDefinition
      * @param array                    $options
@@ -22,7 +41,7 @@ class ApiReaderFactory implements ReaderFactoryInterface
      */
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): ReaderInterface
     {
-        return new ApiReader();
+        return new ApiReader($this->serializer, $importerDefinition, $options, $this->clientFactory);
     }
 
     /**

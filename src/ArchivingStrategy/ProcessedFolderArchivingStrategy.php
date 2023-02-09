@@ -48,7 +48,7 @@ class ProcessedFolderArchivingStrategy implements ArchivingStrategy
      */
     public function archive(ImportSourceDefinition $importSourceDefinition): ArchivingResult
     {
-        $originalFilename = $importSourceDefinition->getTarget();
+        $originalFilename = $importSourceDefinition->getSource();
 
         /** @var array{filename: string, extension: string} $pathInfo */
         $pathInfo = pathinfo($originalFilename);

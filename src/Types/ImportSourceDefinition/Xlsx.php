@@ -45,7 +45,7 @@ class Xlsx implements ImportSourceDefinition
     /**
      * @return string
      */
-    public function getTarget(): string
+    public function getSource(): string
     {
         return $this->importFile;
     }
