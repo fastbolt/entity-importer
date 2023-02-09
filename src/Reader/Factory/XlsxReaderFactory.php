@@ -9,7 +9,7 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\XlsxReader;
+use Fastbolt\EntityImporter\Reader\XlsxReader;
 use SplFileObject;
 
 class XlsxReaderFactory implements ReaderFactoryInterface

@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Reader\Reader;
+namespace Fastbolt\EntityImporter\Reader;
 
 use Port\Csv\CsvReader as PortCsvReader;
 use SplFileObject;

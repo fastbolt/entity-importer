@@ -17,7 +17,7 @@ use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryInterface;
 use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager;
-use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
+use Fastbolt\EntityImporter\Reader\ReaderInterface;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 use Fastbolt\TestHelpers\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;

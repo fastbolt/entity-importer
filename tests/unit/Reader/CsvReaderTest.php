@@ -6,15 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Reader;
+namespace Fastbolt\EntityImporter\Tests\Unit\Reader;
 
-use Fastbolt\EntityImporter\Reader\Reader\CsvReader;
+use Fastbolt\EntityImporter\Reader\CsvReader;
 use Fastbolt\TestHelpers\BaseTestCase;
 use Fastbolt\TestHelpers\Visibility;
 use SplFileObject;
 
 /**
- * @covers \Fastbolt\EntityImporter\Reader\Reader\CsvReader
+ * @covers \Fastbolt\EntityImporter\Reader\CsvReader
  */
 class CsvReaderTest extends BaseTestCase
 {

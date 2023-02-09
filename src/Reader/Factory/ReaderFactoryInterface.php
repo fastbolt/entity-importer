@@ -9,7 +9,7 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
+use Fastbolt\EntityImporter\Reader\ReaderInterface;
 
 interface ReaderFactoryInterface
 {

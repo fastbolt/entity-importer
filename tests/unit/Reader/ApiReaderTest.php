@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Reader;
+namespace Fastbolt\EntityImporter\Tests\Unit\Reader;
 
 use Fastbolt\TestHelpers\BaseTestCase;
 

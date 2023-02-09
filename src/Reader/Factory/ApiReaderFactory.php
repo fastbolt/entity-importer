@@ -9,8 +9,8 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\ApiReader;
-use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
+use Fastbolt\EntityImporter\Reader\ApiReader;
+use Fastbolt\EntityImporter\Reader\ReaderInterface;
 use GuzzleHttp\Client;
 use Symfony\Component\Serializer\SerializerInterface;
 

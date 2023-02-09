@@ -9,7 +9,7 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\CsvReader;
+use Fastbolt\EntityImporter\Reader\CsvReader;
 use SplFileObject;
 
 class CsvReaderFactory implements ReaderFactoryInterface
