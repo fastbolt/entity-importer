@@ -17,8 +17,6 @@ services:
 
     Fastbolt\EntityImporter\Reader\Factory\ApiReaderFactory:
         tags: [ 'fastbolt.entity_importer.reader_factory' ]
-        arguments:
-            $serializer: '@Symfony\Component\Serializer\SerializerInterface'
 
     Fastbolt\EntityImporter\Reader\Factory\CsvReaderFactory:
         tags: [ 'fastbolt.entity_importer.reader_factory' ]

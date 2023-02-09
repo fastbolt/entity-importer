@@ -12,16 +12,12 @@ use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\ApiReader;
 use Fastbolt\EntityImporter\Reader\ReaderInterface;
 use GuzzleHttp\Client;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ApiReaderFactory implements ReaderFactoryInterface
 {
     private $clientFactory;
 
-    private SerializerInterface $serializer;
-
     public function __construct(
-        SerializerInterface $serializer,
         ?callable $clientFactory = null
     ) {
         if (!$clientFactory) {
@@ -30,7 +26,6 @@ class ApiReaderFactory implements ReaderFactoryInterface
             };
         }
         $this->clientFactory = $clientFactory;
-        $this->serializer    = $serializer;
     }
 
     /**
@@ -41,7 +36,7 @@ class ApiReaderFactory implements ReaderFactoryInterface
      */
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): ReaderInterface
     {
-        return new ApiReader($this->serializer, $importerDefinition, $options, $this->clientFactory);
+        return new ApiReader($importerDefinition, $options, $this->clientFactory);
     }
 
     /**

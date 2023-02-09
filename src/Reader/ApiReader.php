@@ -20,7 +20,6 @@ use GuzzleHttp\Psr7\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Serializer\SerializerInterface;
 use Webmozart\Assert\Assert;
 
 class ApiReader implements ReaderInterface
@@ -29,8 +28,6 @@ class ApiReader implements ReaderInterface
      * @var callable
      */
     private $clientFactory;
-
-    private SerializerInterface $serializer;
 
     private EntityImporterDefinition $importerDefinition;
 
@@ -48,7 +45,6 @@ class ApiReader implements ReaderInterface
     private bool $readToEnd = false;
 
     public function __construct(
-        SerializerInterface $serializer,
         EntityImporterDefinition $importerDefinition,
         array $options,
         ?callable $clientFactory = null
@@ -59,15 +55,11 @@ class ApiReader implements ReaderInterface
             };
         }
         $this->clientFactory          = $clientFactory;
-        $this->serializer             = $serializer;
         $this->importerDefinition     = $importerDefinition;
         $this->importSourceDefinition = $importerDefinition->getImportSourceDefinition();
         $this->options                = $options;
 
         Assert::keyExists($this->options, 'api_key');
-        Assert::keyExists($this->options, 'serialized_type');
-        Assert::string($this->options['serialized_type']);
-        Assert::stringNotEmpty($this->options['serialized_type']);
 
         if (!isset($this->options['pagination_strategy'])) {
             $this->options['pagination_strategy'] = new PagePaginationStrategy(500);
