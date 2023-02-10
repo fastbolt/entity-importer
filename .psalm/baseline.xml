@@ -64,9 +64,6 @@
     </ReservedWord>
   </file>
   <file src="src/EntityImporter.php">
-    <InvalidArgument>
-      <code>$error</code>
-    </InvalidArgument>
     <MixedArgumentTypeCoercion>
       <code>$item</code>
     </MixedArgumentTypeCoercion>
