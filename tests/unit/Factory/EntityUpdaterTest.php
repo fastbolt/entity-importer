@@ -69,8 +69,8 @@ class EntityUpdaterTest extends BaseTestCase
         $this->setterDetector1->expects(self::exactly(2))
                               ->method('detectSetter')
                               ->withConsecutive(
-                                  [$this->entity, 'foo', '321'],
-                                  [$this->entity, 'bar', $importRow['bar']],
+                                  [$this->definition, $this->entity, 'foo', '321'],
+                                  [$this->definition, $this->entity, 'bar', $importRow['bar']],
                               )
                               ->willReturnOnConsecutiveCalls(
                                   'setFoo',
@@ -123,8 +123,8 @@ class EntityUpdaterTest extends BaseTestCase
         $this->setterDetector1->expects(self::exactly(2))
                               ->method('detectSetter')
                               ->withConsecutive(
-                                  [$this->entity, 'foo', $array['foo']],
-                                  [$this->entity, 'bar', $array['bar']],
+                                  [$this->definition, $this->entity, 'foo', $array['foo']],
+                                  [$this->definition, $this->entity, 'bar', $array['bar']],
                               )
                               ->willReturnOnConsecutiveCalls(
                                   'setFoo',

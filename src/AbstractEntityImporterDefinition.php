@@ -69,4 +69,12 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     {
         return null;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSetterMapping(): array
+    {
+        return [];
+    }
 }
