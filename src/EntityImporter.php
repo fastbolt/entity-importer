@@ -9,12 +9,12 @@
 namespace Fastbolt\EntityImporter;
 
 use Doctrine\Persistence\ObjectManager;
-use Exception;
 use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager;
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
+use Throwable;
 
 /**
  * @template T
@@ -54,7 +54,7 @@ class EntityImporter
     /**
      * @param EntityImporterDefinition<T> $definition
      * @param callable():void             $statusCallback
-     * @param callable(Exception):void    $errorCallback
+     * @param callable(Throwable):void    $errorCallback
      * @param int|null                    $limit
      *
      * @return ImportResult
@@ -111,7 +111,7 @@ class EntityImporter
 
                 $statusCallback();
                 $result->increaseSuccess();
-            } catch (Exception $exception) {
+            } catch (Throwable $exception) {
                 $error = new ImportError($index, $exception->getMessage());
 
                 $errorCallback($error);

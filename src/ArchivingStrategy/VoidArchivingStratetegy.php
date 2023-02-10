@@ -13,11 +13,11 @@ use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 class VoidArchivingStratetegy implements ArchivingStrategy
 {
     /**
-     * @param ImportSourceDefinition $sourceDefinition
+     * @param ImportSourceDefinition $importSourceDefinition
      *
      * @return ArchivingResult
      */
-    public function archive(ImportSourceDefinition $sourceDefinition): ArchivingResult
+    public function archive(ImportSourceDefinition $importSourceDefinition): ArchivingResult
     {
         return new ArchivingResult();
     }

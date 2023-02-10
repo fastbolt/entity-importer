@@ -10,19 +10,20 @@ namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\ApiReader;
-use Fastbolt\EntityImporter\Reader\ReaderInterface;
 use GuzzleHttp\Client;
 
 class ApiReaderFactory implements ReaderFactoryInterface
 {
+    /**
+     * @var callable():Client
+     */
     private $clientFactory;
 
     /**
      * @param callable():Client|null $clientFactory
      */
-    public function __construct(
-        ?callable $clientFactory = null
-    ) {
+    public function __construct(?callable $clientFactory = null)
+    {
         if (!$clientFactory) {
             $clientFactory = static function (): Client {
                 return new Client(['verify' => false]);
@@ -33,11 +34,11 @@ class ApiReaderFactory implements ReaderFactoryInterface
 
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param array                    $options
+     * @param array<string,mixed>      $options Array containing implementation-specific options
      *
-     * @return ReaderInterface
+     * @return ApiReader
      */
-    public function getReader(EntityImporterDefinition $importerDefinition, array $options): ReaderInterface
+    public function getReader(EntityImporterDefinition $importerDefinition, array $options): ApiReader
     {
         return new ApiReader($importerDefinition, $options, $this->clientFactory);
     }

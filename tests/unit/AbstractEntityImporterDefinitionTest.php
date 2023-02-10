@@ -23,6 +23,10 @@ class AbstractEntityImporterDefinitionTest extends TestCase
         self::assertSame('', $this->definition->getName());
         self::assertSame([], $this->definition->getFieldConverters());
         self::assertNull($this->definition->getEntityFactory());
+        self::assertSame(1000, $this->definition->getFlushInterval());
+        self::assertSame([], $this->definition->getSkippedFields());
+        $this->assertNull($this->definition->getEntityInstantiator());
+        $this->assertNull($this->definition->getEntityModifier());
     }
 
     protected function setUp(): void

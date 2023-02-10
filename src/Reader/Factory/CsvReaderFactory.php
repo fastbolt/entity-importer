@@ -10,18 +10,20 @@ namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\CsvReader;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 use SplFileObject;
 
 class CsvReaderFactory implements ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param array                    $options
+     * @param array<string,mixed>      $options
      *
      * @return CsvReader
      */
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): CsvReader
     {
+        /** @var Csv $sourceDefinition */
         $sourceDefinition = $importerDefinition->getImportSourceDefinition();
         $importFilePath   = $sourceDefinition->getSource();
         $fileObject       = new SplFileObject($importFilePath);

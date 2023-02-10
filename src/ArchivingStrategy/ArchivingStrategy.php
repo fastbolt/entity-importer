@@ -13,9 +13,9 @@ use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 interface ArchivingStrategy
 {
     /**
-     * @param ImportSourceDefinition $sourceDefinition
+     * @param ImportSourceDefinition $importSourceDefinition
      *
      * @return ArchivingResult
      */
-    public function archive(ImportSourceDefinition $sourceDefinition): ArchivingResult;
+    public function archive(ImportSourceDefinition $importSourceDefinition): ArchivingResult;
 }

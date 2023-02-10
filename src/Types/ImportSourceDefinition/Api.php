@@ -17,12 +17,15 @@ class Api implements ImportSourceDefinition
 
     private string $apiPath;
 
+    /**
+     * @var array<string,mixed>
+     */
     private array $options;
 
     /**
-     * @param string $apiHost
-     * @param string $apiPath
-     * @param array  $options
+     * @param string              $apiHost
+     * @param string              $apiPath
+     * @param array<string,mixed> $options
      */
     public function __construct(string $apiHost, string $apiPath, array $options)
     {

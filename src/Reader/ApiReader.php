@@ -45,18 +45,13 @@ class ApiReader implements ReaderInterface
     /**
      * @param EntityImporterDefinition $importerDefinition
      * @param array                    $options
-     * @param callable():Client|null   $clientFactory
+     * @param callable():Client        $clientFactory
      */
     public function __construct(
         EntityImporterDefinition $importerDefinition,
         array $options,
-        ?callable $clientFactory = null
+        callable $clientFactory
     ) {
-        if (!$clientFactory) {
-            $clientFactory = static function () {
-                return new Client(['verify' => false]);
-            };
-        }
         $this->clientFactory          = $clientFactory;
         $this->importerDefinition     = $importerDefinition;
         $this->importSourceDefinition = $importerDefinition->getImportSourceDefinition();
@@ -194,7 +189,8 @@ class ApiReader implements ReaderInterface
 
         $itemsPerPage = $paginationStrategy->getItemsPerPage();
         $startOffset  = $paginationStrategy->getPageStartOffset($offset);
-        $data         = json_decode($body, true);
+        /** @var array<int,mixed> $data */
+        $data = json_decode($body, true);
         if (count($data) !== $itemsPerPage) {
             $this->readToEnd = true;
         }

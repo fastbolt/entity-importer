@@ -15,7 +15,7 @@ interface ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param array                    $options Array containing implementation-specific options
+     * @param array<string,mixed>      $options Array containing implementation-specific options
      *
      * @return ReaderInterface
      */

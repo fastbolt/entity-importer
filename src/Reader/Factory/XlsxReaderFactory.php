@@ -16,7 +16,7 @@ class XlsxReaderFactory implements ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param array                    $options
+     * @param array<string,mixed>      $options Array containing implementation-specific options
      *
      * @return XlsxReader
      */
