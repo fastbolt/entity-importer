@@ -27,6 +27,7 @@ class MappedSetterDetectorTest extends BaseTestCase
     public function testDetector()
     {
         $detector = new MappedSetterDetector();
+        self::assertSame(2000, $detector->getPriority());
         $this->definition->method('getSetterMapping')
                          ->willReturn(['foo' => 'setOne', 'bar' => 'setTwo']);
 
