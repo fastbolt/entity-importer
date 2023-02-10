@@ -1,110 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="5.6.0@e784128902dfe01d489c4123d69918a9f3c1eac5">
-  <file src="src/Console/Command/ImportCommand.php">
-    <InvalidScalarArgument>
-      <code>$limit</code>
-    </InvalidScalarArgument>
-    <MixedAssignment>
-      <code>$bar</code>
-    </MixedAssignment>
-    <MixedMethodCall>
-      <code>advance</code>
-      <code>finish</code>
-      <code>setRedrawFrequency</code>
-    </MixedMethodCall>
-    <UndefinedClass>
-      <code>ProgressBar</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Console/ImportCommandHelpRenderer.php">
-    <MixedAssignment>
-      <code>$table</code>
-    </MixedAssignment>
-    <MixedMethodCall>
-      <code>addRow</code>
-      <code>render</code>
-      <code>setHeaders</code>
-    </MixedMethodCall>
-    <UndefinedInterfaceMethod>
-      <code>createTable</code>
-    </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Console/ImportCommandResultRenderer.php">
-    <MixedAssignment>
-      <code>$count</code>
-    </MixedAssignment>
-    <MixedOperand>
-      <code>$count</code>
-    </MixedOperand>
-  </file>
-  <file src="src/DependencyInjection/Configuration.php">
-    <PossiblyNullReference>
-      <code>scalarNode</code>
-    </PossiblyNullReference>
-    <PossiblyUndefinedMethod>
-      <code>scalarNode</code>
-    </PossiblyUndefinedMethod>
-    <ReservedWord>
-      <code>$treeBuilder-&gt;getRootNode()
-                    -&gt;children()
-                    -&gt;scalarNode('processed_path')
-                    -&gt;defaultValue('%kernel.project_dir%/data/import/processed')
-                    -&gt;end()</code>
-    </ReservedWord>
-  </file>
-  <file src="src/DependencyInjection/EntityImporterExtension.php">
-    <MixedArgument>
-      <code>$value</code>
-    </MixedArgument>
-    <MixedAssignment>
-      <code>$value</code>
-    </MixedAssignment>
-    <ReservedWord>
-      <code>$loader-&gt;load('services.yaml')</code>
-    </ReservedWord>
-  </file>
-  <file src="src/EntityImporter.php">
-    <InvalidArgument>
-      <code>$error</code>
-    </InvalidArgument>
-    <MixedArgumentTypeCoercion>
-      <code>$item</code>
-    </MixedArgumentTypeCoercion>
-  </file>
-  <file src="src/EntityImporterDefinition.php">
-    <InvalidTemplateParam>
-      <code>ObjectRepository&lt;T&gt;</code>
-    </InvalidTemplateParam>
-  </file>
-  <file src="src/Factory/ArrayToEntityFactory.php">
-    <MixedAssignment>
-      <code>$entity</code>
-    </MixedAssignment>
-    <MixedInferredReturnType>
-      <code>T</code>
-    </MixedInferredReturnType>
-    <MixedReturnStatement>
-      <code>$this-&gt;entityUpdater-&gt;setData($definition, $entity, $row)</code>
-    </MixedReturnStatement>
-  </file>
-  <file src="src/Factory/EntityUpdater.php">
-    <MixedArgumentTypeCoercion>
-      <code>$entity</code>
-    </MixedArgumentTypeCoercion>
-    <MixedAssignment>
-      <code>$value</code>
-      <code>$value</code>
-    </MixedAssignment>
-    <MixedMethodCall>
-      <code>$setter</code>
-    </MixedMethodCall>
-  </file>
-  <file src="src/Reader/ApiReader.php">
-    <MixedAssignment>
-      <code>$datum</code>
-    </MixedAssignment>
-    <MixedPropertyTypeCoercion>
-      <code>$this-&gt;data</code>
-    </MixedPropertyTypeCoercion>
-  </file>
+    <file src="src/Console/Command/ImportCommand.php">
+        <InvalidScalarArgument>
+            <code>$limit</code>
+        </InvalidScalarArgument>
+        <MixedAssignment>
+            <code>$bar</code>
+        </MixedAssignment>
+        <MixedMethodCall>
+            <code>advance</code>
+            <code>finish</code>
+            <code>setRedrawFrequency</code>
+        </MixedMethodCall>
+        <UndefinedClass>
+            <code>ProgressBar</code>
+        </UndefinedClass>
+    </file>
+    <file src="src/Console/ImportCommandHelpRenderer.php">
+        <MixedAssignment>
+            <code>$table</code>
+        </MixedAssignment>
+        <MixedMethodCall>
+            <code>addRow</code>
+            <code>render</code>
+            <code>setHeaders</code>
+        </MixedMethodCall>
+        <UndefinedInterfaceMethod>
+            <code>createTable</code>
+        </UndefinedInterfaceMethod>
+    </file>
+    <file src="src/Console/ImportCommandResultRenderer.php">
+        <MixedAssignment>
+            <code>$count</code>
+        </MixedAssignment>
+        <MixedOperand>
+            <code>$count</code>
+        </MixedOperand>
+    </file>
+    <file src="src/DependencyInjection/Configuration.php">
+        <PossiblyNullReference>
+            <code>scalarNode</code>
+        </PossiblyNullReference>
+        <PossiblyUndefinedMethod>
+            <code>scalarNode</code>
+        </PossiblyUndefinedMethod>
+        <ReservedWord>
+            <code>$treeBuilder-&gt;getRootNode()
+                -&gt;children()
+                -&gt;scalarNode('processed_path')
+                -&gt;defaultValue('%kernel.project_dir%/data/import/processed')
+                -&gt;end()
+            </code>
+        </ReservedWord>
+    </file>
+    <file src="src/DependencyInjection/EntityImporterExtension.php">
+        <MixedArgument>
+            <code>$value</code>
+        </MixedArgument>
+        <MixedAssignment>
+            <code>$value</code>
+        </MixedAssignment>
+        <ReservedWord>
+            <code>$loader-&gt;load('services.yaml')</code>
+        </ReservedWord>
+    </file>
+    <file src="src/EntityImporter.php">
+        <InvalidArgument>
+            <code>$error</code>
+        </InvalidArgument>
+        <MixedArgumentTypeCoercion>
+            <code>$item</code>
+        </MixedArgumentTypeCoercion>
+    </file>
+    <file src="src/EntityImporterDefinition.php">
+        <InvalidTemplateParam>
+            <code>ObjectRepository&lt;T&gt;</code>
+        </InvalidTemplateParam>
+    </file>
+    <file src="src/Factory/ArrayToEntityFactory.php">
+        <MixedAssignment>
+            <code>$entity</code>
+        </MixedAssignment>
+        <MixedInferredReturnType>
+            <code>T</code>
+        </MixedInferredReturnType>
+        <MixedReturnStatement>
+            <code>$this-&gt;entityUpdater-&gt;setData($definition, $entity, $row)</code>
+        </MixedReturnStatement>
+    </file>
+    <file src="src/Factory/EntityUpdater.php">
+        <MixedArgumentTypeCoercion>
+            <code>$entity</code>
+        </MixedArgumentTypeCoercion>
+        <MixedAssignment>
+            <code>$value</code>
+            <code>$value</code>
+        </MixedAssignment>
+        <MixedMethodCall>
+            <code>$setter</code>
+        </MixedMethodCall>
+    </file>
+    <file src="src/Reader/ApiReader.php">
+        <MixedAssignment>
+            <code>$datum</code>
+        </MixedAssignment>
+        <MixedPropertyTypeCoercion>
+            <code>$this-&gt;data</code>
+        </MixedPropertyTypeCoercion>
+    </file>
 </files>
