@@ -8,6 +8,7 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Types;
 
+use Fastbolt\EntityImporter\ArchivingStrategy\ArchivingResult;
 use Fastbolt\EntityImporter\Types\ImportError;
 use Fastbolt\EntityImporter\Types\ImportResult;
 use PHPUnit\Framework\TestCase;
@@ -23,17 +24,17 @@ class ImportResultTest extends TestCase
 
         self::assertSame([], $result->getErrors());
         self::assertSame(0, $result->getSuccess());
-        self::assertNull($result->getArchivedFilePath());
+        self::assertNull($result->getArchivingResult());
 
         $result->increaseSuccess()
                ->addError($error1 = new ImportError(12, 'foo'))
                ->increaseSuccess()
                ->increaseSuccess()
                ->addError($error2 = new ImportError(15, 'bar'))
-               ->setArchivedFilePath('/foo/bar');
+               ->setArchivingResult($archivingResult = new ArchivingResult());
 
         self::assertSame([$error1, $error2], $result->getErrors());
         self::assertSame(3, $result->getSuccess());
-        self::assertSame('/foo/bar', $result->getArchivedFilePath());
+        self::assertSame($archivingResult, $result->getArchivingResult());
     }
 }

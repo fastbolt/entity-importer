@@ -8,9 +8,9 @@
 
 namespace Fastbolt\EntityImporter;
 
-use Exception;
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
 use Fastbolt\EntityImporter\Types\ImportResult;
+use Throwable;
 
 class EntityImporterManager
 {
@@ -48,7 +48,7 @@ class EntityImporterManager
     /**
      * @param string                   $name
      * @param callable():void          $statusCallback
-     * @param callable(Exception):void $errorCallback
+     * @param callable(Throwable):void $errorCallback
      * @param int|null                 $limit
      *
      * @return ImportResult

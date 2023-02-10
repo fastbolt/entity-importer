@@ -12,7 +12,6 @@ use Fastbolt\EntityImporter\Console\ImportCommandHelpRenderer;
 use Fastbolt\EntityImporter\Console\ImportCommandResultRenderer;
 use Fastbolt\EntityImporter\EntityImporterManager;
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
-use Fastbolt\EntityImporter\Types\ImportError;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 class ImportCommand extends Command
 {
@@ -86,7 +86,7 @@ class ImportCommand extends Command
 
                     return true;
                 },
-                static function (ImportError $error) {
+                static function (Throwable $error) {
                     return true;
                 },
                 $limit

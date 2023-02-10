@@ -75,15 +75,15 @@ class EntityUpdater
      * @param string                   $key
      * @param mixed                    $value
      *
-     * @return string|null
+     * @return string
      *
      * @throws SetterDetectionException Throws if no detector is able to detect setter.
      */
-    private function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): ?string
+    private function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): string
     {
         $entityClass = get_class($entity);
         if (null !== ($setter = $this->setterCache[$entityClass][$key] ?? null)) {
-            return $setter ?: null;
+            return $setter;
         }
 
         if (!isset($this->setterCache[$entityClass])) {
@@ -92,7 +92,7 @@ class EntityUpdater
 
         foreach ($this->setterDetectors as $detector) {
             if (null !== ($setter = $detector->detectSetter($entity, $key, $value))) {
-                $this->setterCache[$entityClass][$key] = $setter ?: '';
+                $this->setterCache[$entityClass][$key] = $setter;
 
                 return $setter;
             }

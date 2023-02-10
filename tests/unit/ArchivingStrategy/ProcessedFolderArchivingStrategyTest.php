@@ -6,16 +6,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Tests\Unit\Filesystem;
+namespace Fastbolt\EntityImporter\Tests\Unit\ArchivingStrategy;
 
-use Fastbolt\EntityImporter\Filesystem\ProcessedFolderArchivingStrategy;
+use Fastbolt\EntityImporter\ArchivingStrategy\ProcessedFolderArchivingStrategy;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 use Fastbolt\TestHelpers\BaseTestCase;
 use Fastbolt\TestHelpers\Visibility;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @covers \Fastbolt\EntityImporter\Filesystem\ProcessedFolderArchivingStrategy
+ * @covers \Fastbolt\EntityImporter\ArchivingStrategy\ProcessedFolderArchivingStrategy
  */
 class ProcessedFolderArchivingStrategyTest extends BaseTestCase
 {
@@ -23,6 +24,11 @@ class ProcessedFolderArchivingStrategyTest extends BaseTestCase
      * @var Filesystem&MockObject
      */
     private $filesystem;
+
+    /**
+     * @var ImportSourceDefinition&MockObject
+     */
+    private $importSourceDefinition;
 
     public function testFallbackFilesystem(): void
     {
@@ -45,21 +51,25 @@ class ProcessedFolderArchivingStrategyTest extends BaseTestCase
 
         self::assertFileExists($inputFile);
 
-        $result = $strategy->archiveFile($inputFile);
+        $this->importSourceDefinition->method('getSource')
+                                     ->willReturn($inputFile);
+        $result           = $strategy->archive($this->importSourceDefinition);
+        $archivedFilename = $result->getArchivedFilename();
 
         self::assertMatchesRegularExpression(
             '/^input\.\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}\.txt\.gz$/',
-            basename($result)
+            basename($archivedFilename)
         );
-        self::assertFileExists($result);
         self::assertFileDoesNotExist($inputFile);
-        self::assertSame('test', gzdecode(file_get_contents($result)));
+        self::assertFileExists($archivedFilename);
+        self::assertSame('test', gzdecode(file_get_contents($archivedFilename)));
     }
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->filesystem = $this->getMock(Filesystem::class);
+        $this->filesystem             = $this->getMock(Filesystem::class);
+        $this->importSourceDefinition = $this->getMock(ImportSourceDefinition::class);
     }
 }

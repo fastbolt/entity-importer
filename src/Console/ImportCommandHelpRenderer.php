@@ -41,7 +41,7 @@ class ImportCommandHelpRenderer
             return;
         }
         $table = $io->createTable()
-                    ->setHeaders(['Name', 'Description', 'Target Entity', 'Input filename']);
+                    ->setHeaders(['Name', 'Description', 'Target Entity', 'Input Source']);
 
         foreach ($importers as $name => $importer) {
             $sourceDefinition = $importer->getImportSourceDefinition();
@@ -50,7 +50,7 @@ class ImportCommandHelpRenderer
                     $name,
                     $importer->getDescription(),
                     $importer->getEntityClass(),
-                    $sourceDefinition->getFilename(),
+                    $sourceDefinition->getSource(),
                 ]
             );
         }

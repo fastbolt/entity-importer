@@ -55,13 +55,13 @@ class ReaderFactoryManagerTest extends BaseTestCase
         $this->readerFoo = $this->getMock(ReaderFactoryInterface::class);
         $this->readerBar = $this->getMock(ReaderFactoryInterface::class);
 
-        $this->readerFoo->method('supportsFiletype')
+        $this->readerFoo->method('supportsType')
                         ->willReturnCallback(static function (string $type) {
                             return $type === 'foo';
                         });
         $this->readerFoo->method('getSupportedTypes')
                         ->willReturn(['foo', 'baz']);
-        $this->readerBar->method('supportsFiletype')
+        $this->readerBar->method('supportsType')
                         ->willReturnCallback(static function (string $type) {
                             return $type === 'bar';
                         });

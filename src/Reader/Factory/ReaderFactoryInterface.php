@@ -9,24 +9,24 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\ReaderInterface;
+use Fastbolt\EntityImporter\Reader\ReaderInterface;
 
 interface ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param string                   $importFilePath
+     * @param array<string,mixed>      $options Array containing implementation-specific options
      *
      * @return ReaderInterface
      */
-    public function getReader(EntityImporterDefinition $importerDefinition, string $importFilePath): ReaderInterface;
+    public function getReader(EntityImporterDefinition $importerDefinition, array $options): ReaderInterface;
 
     /**
      * @param string $type
      *
      * @return bool
      */
-    public function supportsFiletype(string $type): bool;
+    public function supportsType(string $type): bool;
 
     /**
      * @return string[]

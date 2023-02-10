@@ -6,21 +6,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Reader;
+namespace Fastbolt\EntityImporter\Tests\Unit\Reader;
 
-use Fastbolt\EntityImporter\Reader\Reader\CsvReader;
+use Fastbolt\EntityImporter\Reader\CsvReader;
 use Fastbolt\TestHelpers\BaseTestCase;
 use Fastbolt\TestHelpers\Visibility;
 use SplFileObject;
 
 /**
- * @covers \Fastbolt\EntityImporter\Reader\Reader\CsvReader
+ * @covers \Fastbolt\EntityImporter\Reader\CsvReader
  */
 class CsvReaderTest extends BaseTestCase
 {
     public function testCsvReader(): void
     {
-        $file          = new SplFileObject(__DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv');
+        $file          = new SplFileObject(__DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv');
         $columnHeaders = ['foo', 'bar', 'baz'];
         $reader        = new CsvReader($file, $columnHeaders, null, ';', '`', '#');
 
@@ -33,10 +33,10 @@ class CsvReaderTest extends BaseTestCase
         self::assertSame([';', '`', '#'], $file->getCsvControl());
     }
 
-    public function testIteratorInvalidContent()
+    public function testIteratorInvalidContent(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFileInvalid.csv'
+            __DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFileInvalid.csv'
         );
         $columnHeaders = ['foo', 'bar', 'asd'];
         $reader        = new CsvReader($file, $columnHeaders, null, ';');
@@ -47,10 +47,10 @@ class CsvReaderTest extends BaseTestCase
         );
     }
 
-    public function testIteratorValidHeaders()
+    public function testIteratorValidHeaders(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
+            __DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
         );
         $columnHeaders = ['a', 'b', 'c'];
         $reader        = new CsvReader($file, $columnHeaders, null, ';');
@@ -68,10 +68,10 @@ class CsvReaderTest extends BaseTestCase
         }
     }
 
-    public function testIteratorValidHeadersInFile()
+    public function testIteratorValidHeadersInFile(): void
     {
         $file          = new SplFileObject(
-            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
+            __DIR__ . '/../_Fixtures/Reader/Factory/CsvReaderFactory/dummyFile.csv'
         );
         $columnHeaders = ['a', 'b', 'c'];
         $reader        = new CsvReader($file, $columnHeaders, 0, ';');

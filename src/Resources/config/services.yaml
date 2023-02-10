@@ -14,14 +14,15 @@ services:
         $readerFactoryManager: '@Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager'
         $defaultItemFactory: '@Fastbolt\EntityImporter\Factory\ArrayToEntityFactory'
         $objectManager: '@doctrine.orm.entity_manager'
-        $archivingStrategy: '@Fastbolt\EntityImporter\Filesystem\ProcessedFolderArchivingStrategy'
-        $importPath: '%entity_importer.default_import_path%'
+
+    Fastbolt\EntityImporter\Reader\Factory\ApiReaderFactory:
+        tags: [ 'fastbolt.entity_importer.reader_factory' ]
 
     Fastbolt\EntityImporter\Reader\Factory\CsvReaderFactory:
-        tags: ['fastbolt.entity_importer.reader_factory']
+        tags: [ 'fastbolt.entity_importer.reader_factory' ]
 
     Fastbolt\EntityImporter\Reader\Factory\XlsxReaderFactory:
-        tags: ['fastbolt.entity_importer.reader_factory']
+        tags: [ 'fastbolt.entity_importer.reader_factory' ]
 
     Fastbolt\EntityImporter\Factory\ArrayToEntityFactory:
         $entityInstantiator: '@Fastbolt\EntityImporter\Factory\EntityInstantiator'
@@ -47,6 +48,6 @@ services:
     Fastbolt\EntityImporter\Factory\SetterDetection\DefaultSetterDetector:
         tags: [ 'fastbolt.entity_importer.setter_detectors' ]
 
-    Fastbolt\EntityImporter\Filesystem\ProcessedFolderArchivingStrategy:
+    Fastbolt\EntityImporter\ArchivingStrategy\ProcessedFolderArchivingStrategy:
         $processedFolder: '%entity_importer.processed_path%'
         $archiveFilenameDateFormat: '%entity_importer.archive_filename_date_format%'

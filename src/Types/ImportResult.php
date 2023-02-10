@@ -8,6 +8,8 @@
 
 namespace Fastbolt\EntityImporter\Types;
 
+use Fastbolt\EntityImporter\ArchivingStrategy\ArchivingResult;
+
 class ImportResult
 {
     /**
@@ -21,9 +23,9 @@ class ImportResult
     private array $errors = [];
 
     /**
-     * @var string|null
+     * @var ArchivingResult|null
      */
-    private ?string $archivedFilePath = null;
+    private ?ArchivingResult $archivingResult = null;
 
     /**
      * @return $this
@@ -64,21 +66,21 @@ class ImportResult
     }
 
     /**
-     * @return string|null
+     * @return ArchivingResult|null
      */
-    public function getArchivedFilePath(): ?string
+    public function getArchivingResult(): ?ArchivingResult
     {
-        return $this->archivedFilePath;
+        return $this->archivingResult;
     }
 
     /**
-     * @param string|null $archivedFilePath
+     * @param ArchivingResult|null $archivingResult
      *
      * @return ImportResult
      */
-    public function setArchivedFilePath(?string $archivedFilePath): ImportResult
+    public function setArchivingResult(?ArchivingResult $archivingResult): ImportResult
     {
-        $this->archivedFilePath = $archivedFilePath;
+        $this->archivingResult = $archivingResult;
 
         return $this;
     }

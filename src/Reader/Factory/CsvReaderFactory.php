@@ -9,26 +9,29 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\CsvReader;
+use Fastbolt\EntityImporter\Reader\CsvReader;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 use SplFileObject;
 
 class CsvReaderFactory implements ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param string                   $importFilePath
+     * @param array<string,mixed>      $options
      *
      * @return CsvReader
      */
-    public function getReader(EntityImporterDefinition $importerDefinition, string $importFilePath): CsvReader
+    public function getReader(EntityImporterDefinition $importerDefinition, array $options): CsvReader
     {
-        $fileObject       = new SplFileObject($importFilePath);
+        /** @var Csv $sourceDefinition */
         $sourceDefinition = $importerDefinition->getImportSourceDefinition();
+        $importFilePath   = $sourceDefinition->getSource();
+        $fileObject       = new SplFileObject($importFilePath);
 
         return new CsvReader(
             $fileObject,
             $importerDefinition->getFields(),
-            $sourceDefinition->hasHeaderRow() ? 0 : null,
+            $sourceDefinition->skipFirstRow() ? 0 : null,
             $sourceDefinition->getDelimiter(),
             $sourceDefinition->getEnclosure(),
             $sourceDefinition->getEscape()
@@ -40,7 +43,7 @@ class CsvReaderFactory implements ReaderFactoryInterface
      *
      * @return bool
      */
-    public function supportsFiletype(string $type): bool
+    public function supportsType(string $type): bool
     {
         return in_array($type, $this->getSupportedTypes());
     }

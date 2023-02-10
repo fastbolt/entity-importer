@@ -9,25 +9,27 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\XlsxReader;
+use Fastbolt\EntityImporter\Reader\XlsxReader;
 use SplFileObject;
 
 class XlsxReaderFactory implements ReaderFactoryInterface
 {
     /**
      * @param EntityImporterDefinition $importerDefinition
-     * @param string                   $importFilePath
+     * @param array<string,mixed>      $options Array containing implementation-specific options
      *
      * @return XlsxReader
      */
-    public function getReader(EntityImporterDefinition $importerDefinition, string $importFilePath): XlsxReader
+    public function getReader(EntityImporterDefinition $importerDefinition, array $options): XlsxReader
     {
-        $fileObject = new SplFileObject($importFilePath);
+        $sourceDefinition = $importerDefinition->getImportSourceDefinition();
+        $importFilePath   = $sourceDefinition->getSource();
+        $fileObject       = new SplFileObject($importFilePath);
 
         return new XlsxReader(
             $fileObject,
             $importerDefinition->getFields(),
-            $importerDefinition->getImportSourceDefinition()->hasHeaderRow() ? 1 : 0
+            $importerDefinition->getImportSourceDefinition()->skipFirstRow() ? 1 : 0
         );
     }
 
@@ -36,7 +38,7 @@ class XlsxReaderFactory implements ReaderFactoryInterface
      *
      * @return bool
      */
-    public function supportsFiletype(string $type): bool
+    public function supportsType(string $type): bool
     {
         return in_array($type, $this->getSupportedTypes());
     }

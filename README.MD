@@ -61,17 +61,7 @@ When executing the command without any arguments, it will display all available 
 
 namespace App\Component\Data\Import\EntityImporter;
 
-use App\Entity\Branch;
-use App\Entity\Material;
-use App\Entity\MaterialGroup;
-use App\Repository\BranchRepository;
-use App\Repository\MaterialGroupRepository;
-use App\Repository\MaterialRepository;
-use DateTime;
-use Doctrine\Persistence\ObjectRepository;
-use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;
-use Fastbolt\EntityImporter\Reader\Reader\CsvReader;
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition;
+use App\Entity\Branch;use App\Entity\Material;use App\Entity\MaterialGroup;use App\Repository\BranchRepository;use App\Repository\MaterialGroupRepository;use App\Repository\MaterialRepository;use DateTime;use Doctrine\Persistence\ObjectRepository;use Fastbolt\EntityImporter\AbstractEntityImporterDefinition;use Fastbolt\EntityImporter\Reader\CsvReader;use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 
 /**
  * @template-implements Material
@@ -80,9 +70,9 @@ class MaterialImporterDefinition extends AbstractEntityImporterDefinition
 {
 
     /**
-     * @var ImportSourceDefinition
+     * @var Csv
      */
-    private ImportSourceDefinition $importSourceDefinition;
+    private Csv $importSourceDefinition;
 
     /**
      * @var MaterialRepository
@@ -113,7 +103,7 @@ class MaterialImporterDefinition extends AbstractEntityImporterDefinition
         $this->materialGroupRepository = $materialGroupRepository;
         $this->branchRepository        = $branchRepository;
 
-        $this->importSourceDefinition = new ImportSourceDefinition('MDMATERIALS.csv', CsvReader::TYPE);
+        $this->importSourceDefinition = new Csv('MDMATERIALS.csv', CsvReader::TYPE);
     }
 
     /**
@@ -177,7 +167,7 @@ class MaterialImporterDefinition extends AbstractEntityImporterDefinition
     /**
      * @inheritDoc
      */
-    public function getImportSourceDefinition(): ImportSourceDefinition
+    public function getImportSourceDefinition(): Csv
     {
         return $this->importSourceDefinition;
     }

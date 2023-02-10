@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fastbolt\EntityImporter\Reader\Reader;
+namespace Fastbolt\EntityImporter\Reader;
 
 use Port\Spreadsheet\SpreadsheetReader;
 use SplFileObject;
@@ -16,12 +16,10 @@ use SplFileObject;
  */
 class XlsxReader extends SpreadsheetReader implements ReaderInterface
 {
-    public const TYPE = 'xlsx';
-
     /**
      * Faulty rows
      *
-     * @var array<int,array>|null
+     * @var array<int,array<int,mixed>>|null
      */
     protected ?array $errors = null;
 
