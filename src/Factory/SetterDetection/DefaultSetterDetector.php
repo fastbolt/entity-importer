@@ -8,6 +8,7 @@
 
 namespace Fastbolt\EntityImporter\Factory\SetterDetection;
 
+use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Factory\SetterDetector;
 use Symfony\Component\String\UnicodeString;
 
@@ -16,7 +17,7 @@ class DefaultSetterDetector implements SetterDetector
     /**
      * @inheritDoc
      */
-    public function detectSetter(object $entity, string $key, $value): ?string
+    public function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): ?string
     {
         $stringObject = new UnicodeString($key);
         $setterName   = sprintf(

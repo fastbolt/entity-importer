@@ -112,4 +112,13 @@ interface EntityImporterDefinition
      * @return callable(T, array<mixed>)|null
      */
     public function getEntityModifier(): ?callable;
+
+    /**
+     * Return list of setters per field.
+     * Example:
+     *      ['name' => 'setShortname']
+     *
+     * @return array<string, string>
+     */
+    public function getSetterMapping(): array;
 }

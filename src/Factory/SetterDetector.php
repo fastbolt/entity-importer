@@ -8,16 +8,19 @@
 
 namespace Fastbolt\EntityImporter\Factory;
 
+use Fastbolt\EntityImporter\EntityImporterDefinition;
+
 interface SetterDetector
 {
     /**
-     * @param object $entity
-     * @param string $key
-     * @param mixed  $value
+     * @param EntityImporterDefinition $definition
+     * @param object                   $entity
+     * @param string                   $key
+     * @param mixed                    $value
      *
      * @return string|null
      */
-    public function detectSetter(object $entity, string $key, $value): ?string;
+    public function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): ?string;
 
     /**
      * @return int

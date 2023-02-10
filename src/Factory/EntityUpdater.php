@@ -91,7 +91,7 @@ class EntityUpdater
         }
 
         foreach ($this->setterDetectors as $detector) {
-            if (null !== ($setter = $detector->detectSetter($entity, $key, $value))) {
+            if (null !== ($setter = $detector->detectSetter($definition, $entity, $key, $value))) {
                 $this->setterCache[$entityClass][$key] = $setter;
 
                 return $setter;

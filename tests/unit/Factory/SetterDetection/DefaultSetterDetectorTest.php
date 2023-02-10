@@ -8,14 +8,22 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Factory\SetterDetection;
 
+use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Factory\SetterDetection\DefaultSetterDetector;
-use PHPUnit\Framework\TestCase;
+use Fastbolt\TestHelpers\BaseTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @covers \Fastbolt\EntityImporter\Factory\SetterDetection\DefaultSetterDetector
  */
-class DefaultSetterDetectorTest extends TestCase
+class DefaultSetterDetectorTest extends BaseTestCase
 {
+
+    /**
+     * @var EntityImporterDefinition&MockObject
+     */
+    private $definition;
+
     /**
      * @dataProvider detectionDataProvider
      */
@@ -24,7 +32,7 @@ class DefaultSetterDetectorTest extends TestCase
         $detector = new DefaultSetterDetector();
 
         self::assertSame(1000, $detector->getPriority());
-        self::assertSame($expectedSetter, $detector->detectSetter($entity, $key, ''), $message);
+        self::assertSame($expectedSetter, $detector->detectSetter($this->definition, $entity, $key, ''), $message);
     }
 
     public function detectionDataProvider(): array
@@ -64,5 +72,12 @@ class DefaultSetterDetectorTest extends TestCase
                 'Fail to detect missing setter',
             ],
         ];
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->definition = $this->getMock(EntityImporterDefinition::class);
     }
 }
