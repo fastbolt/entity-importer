@@ -17,6 +17,9 @@ class ApiReaderFactory implements ReaderFactoryInterface
 {
     private $clientFactory;
 
+    /**
+     * @param callable():Client|null $clientFactory
+     */
     public function __construct(
         ?callable $clientFactory = null
     ) {

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright © Fastbolt Schraubengroßhandels GmbH.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fastbolt\EntityImporter\Reader\Api;
 
 class PagePaginationStrategy implements PaginationStrategy
@@ -28,6 +34,9 @@ class PagePaginationStrategy implements PaginationStrategy
         ];
     }
 
+    /**
+     * @return int
+     */
     public function getItemsPerPage(): int
     {
         return $this->itemsPerPage;

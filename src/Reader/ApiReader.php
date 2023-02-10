@@ -8,11 +8,9 @@
 
 namespace Fastbolt\EntityImporter\Reader;
 
-use App\Domains\Import\DataWarehouse\Types\Structure\ApiResponse;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Api\PagePaginationStrategy;
 use Fastbolt\EntityImporter\Reader\Api\PaginationStrategy;
-use Fastbolt\EntityImporter\Reader\Reader\TKey;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -25,7 +23,7 @@ use Webmozart\Assert\Assert;
 class ApiReader implements ReaderInterface
 {
     /**
-     * @var callable
+     * @var callable():Client
      */
     private $clientFactory;
 
@@ -36,7 +34,7 @@ class ApiReader implements ReaderInterface
     private array $options;
 
     /**
-     * @var array<int, mixed>
+     * @var array<int, array>
      */
     private array $data = [];
 
@@ -44,6 +42,11 @@ class ApiReader implements ReaderInterface
 
     private bool $readToEnd = false;
 
+    /**
+     * @param EntityImporterDefinition $importerDefinition
+     * @param array                    $options
+     * @param callable():Client|null   $clientFactory
+     */
     public function __construct(
         EntityImporterDefinition $importerDefinition,
         array $options,
@@ -69,16 +72,18 @@ class ApiReader implements ReaderInterface
         }
     }
 
-    public function current()
+    /**
+     * Return the current element
+     *
+     * @return array
+     */
+    public function current(): array
     {
         return $this->data[$this->position];
     }
 
     /**
      * Move forward to next element
-     *
-     * @link https://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
      */
     public function next(): void
     {
@@ -87,9 +92,6 @@ class ApiReader implements ReaderInterface
 
     /**
      * Return the key of the current element
-     *
-     * @link https://php.net/manual/en/iterator.key.php
-     * @return TKey|null TKey on success, or null on failure.
      */
     public function key(): int
     {
@@ -99,8 +101,6 @@ class ApiReader implements ReaderInterface
     /**
      * Checks if current position is valid
      *
-     * @link https://php.net/manual/en/iterator.valid.php
-     * @return bool The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      */
     public function valid(): bool
@@ -118,6 +118,11 @@ class ApiReader implements ReaderInterface
         return isset($this->data[$this->position]);
     }
 
+    /**
+     * @param int $offset
+     *
+     * @return void
+     */
     private function loadBulkData(int $offset): void
     {
         $clientFactory = $this->clientFactory;
@@ -202,9 +207,6 @@ class ApiReader implements ReaderInterface
 
     /**
      * Rewind the Iterator to the first element
-     *
-     * @link https://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
      */
     public function rewind(): void
     {
