@@ -18,7 +18,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class DefaultSetterDetectorTest extends BaseTestCase
 {
-
     /**
      * @var EntityImporterDefinition&MockObject
      */
