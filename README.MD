@@ -6,7 +6,7 @@
 [![Type Coverage](https://shepherd.dev/github/fastbolt/entity-importer/coverage.svg)](https://shepherd.dev/github/fastbolt/entity-importer)
 [![Psalm Level](https://shepherd.dev/github/fastbolt/entity-importer/level.svg)](https://shepherd.dev/github/fastbolt/entity-importer)
 
-[![Github Build](https://img.shields.io/github/workflow/status/fastbolt/entity-importer/PHPUnit%20tests/main)](https://github.com/fastbolt/entity-importer/actions)
+[![Github Build](https://img.shields.io/github/actions/workflow/status/fastbolt/entity-importer/phpunit.yaml?branch=main)](https://github.com/fastbolt/entity-importer/actions)
 
 # Entity importing library
 
