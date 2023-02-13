@@ -182,11 +182,13 @@ class EntityImporterTest extends BaseTestCase
                 'foo' => 'col 1',
                 'bar' => 'col 2',
                 'asd' => 'col 3',
+                'baz' => 'col 4',
             ],
             [
                 'foo' => 'val 1.1',
                 'bar' => 'val 1.2',
                 'asd' => 'val 1.3',
+                'baz' => 'val 1.4',
             ],
             null,
         ];
@@ -205,9 +207,11 @@ class EntityImporterTest extends BaseTestCase
                                      return $entity;
                                  });
         $this->importerDefinition->method('getFields')
-                                 ->willReturn($columnHeaders = ['foo', 'bar', 'asd']);
+                                 ->willReturn($columnHeaders = ['foo', 'bar', 'asd', 'baz']);
         $this->importerDefinition->method('getIdentifierColumns')
-                                 ->willReturn(['bar']);
+                                 ->willReturn(['bar', 'baz']);
+        $this->importerDefinition->method('getFieldNameMapping')
+                                 ->willReturn(['baz' => 'bazzz']);
         $this->importerDefinition->method('getFlushInterval')
                                  ->willReturn(10);
         $this->readerFactoryManager->expects(self::once())
@@ -224,7 +228,7 @@ class EntityImporterTest extends BaseTestCase
                      ->willReturn([]);
         $this->repository->expects(self::once())
                          ->method('findOneBy')
-                         ->with(['bar' => 'val 1.2'])
+                         ->with(['bar' => 'val 1.2', 'bazzz' => 'val 1.4'])
                          ->willReturn(null);
         $this->customFactory->expects(self::once())
                             ->method('__invoke')

@@ -48,9 +48,6 @@ services:
     Fastbolt\EntityImporter\Factory\SetterDetection\DefaultSetterDetector:
         tags: [ 'fastbolt.entity_importer.setter_detectors' ]
 
-    Fastbolt\EntityImporter\Factory\SetterDetection\MappedSetterDetector:
-        tags: [ 'fastbolt.entity_importer.setter_detectors' ]
-
     Fastbolt\EntityImporter\ArchivingStrategy\ProcessedFolderArchivingStrategy:
         $processedFolder: '%entity_importer.processed_path%'
         $archiveFilenameDateFormat: '%entity_importer.archive_filename_date_format%'
