@@ -67,6 +67,11 @@
     <MixedArgumentTypeCoercion>
       <code>$item</code>
     </MixedArgumentTypeCoercion>
+    <MixedAssignment>
+      <code>$criteria[$targetFieldName]</code>
+      <code>$value</code>
+      <code>$value</code>
+    </MixedAssignment>
   </file>
   <file src="src/EntityImporterDefinition.php">
     <InvalidTemplateParam>
