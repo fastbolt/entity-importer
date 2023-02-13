@@ -134,14 +134,31 @@ class EntityImporter
      */
     private function getRepositorySelectionArray(EntityImporterDefinition $definition, array $row): array
     {
-        $columns = $definition->getIdentifierColumns();
-
-        return array_filter(
+        $columns    = $definition->getIdentifierColumns();
+        $dataFilter = array_filter(
             $row,
             static function (string $key) use ($columns) {
                 return in_array($key, $columns, true);
             },
             ARRAY_FILTER_USE_KEY
         );
+        $mappings   = $definition->getFieldNameMapping();
+        $converters = $definition->getFieldConverters();
+        $criteria   = [];
+        foreach ($dataFilter as $sourceFieldName => $value) {
+            if (null !== ($converter = $converters[$sourceFieldName] ?? null)) {
+                $value = $converter($value);
+            }
+
+            $targetFieldName = $mappings[$sourceFieldName] ?? $sourceFieldName;
+
+            $criteria[$targetFieldName] = $value;
+        }
+
+        if (null !== ($criteriaModifier = $definition->getIdentifierModifier())) {
+            $criteria = $criteriaModifier($criteria);
+        }
+
+        return $criteria;
     }
 }

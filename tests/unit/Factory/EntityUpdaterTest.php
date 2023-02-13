@@ -73,11 +73,11 @@ class EntityUpdaterTest extends BaseTestCase
                                   [$this->definition, $this->entity, 'bar', $importRow['bar']],
                               )
                               ->willReturnOnConsecutiveCalls(
-                                  'setFoo',
+                                  'setModified',
                                   'setBar'
                               );
         $this->entity->expects(self::once())
-                     ->method('setFoo')
+                     ->method('setModified')
                      ->with('321');
         $this->entity->expects(self::once())
                      ->method('setBar')
@@ -93,6 +93,8 @@ class EntityUpdaterTest extends BaseTestCase
                                               return strrev($value);
                                           },
                                       ]);
+        $this->definition->method('getFieldNameMapping')
+                         ->willReturn(['foo' => 'modified']);
 
         $updater = new EntityUpdater([$this->setterDetector1]);
         $result  = $updater->setData($this->definition, $this->entity, $importRow);
@@ -127,11 +129,11 @@ class EntityUpdaterTest extends BaseTestCase
                                   [$this->definition, $this->entity, 'bar', $array['bar']],
                               )
                               ->willReturnOnConsecutiveCalls(
-                                  'setFoo',
+                                  'setModified',
                                   'setBar'
                               );
         $this->entity->expects(self::atLeastOnce())
-                     ->method('setFoo')
+                     ->method('setModified')
                      ->with($array['foo']);
         $this->entity->expects(self::atLeastOnce())
                      ->method('setBar')
@@ -152,6 +154,6 @@ class EntityUpdaterTest extends BaseTestCase
         $this->setterDetector1 = $this->getMock(DefaultSetterDetector::class);
         $this->setterDetector2 = $this->getMock(DefaultSetterDetector::class);
         $this->definition      = $this->getMock(EntityImporterDefinition::class);
-        $this->entity          = $this->getMock(stdClass::class, [], ['setFoo', 'setBar']);
+        $this->entity          = $this->getMock(stdClass::class, [], ['setModified', 'setBar']);
     }
 }

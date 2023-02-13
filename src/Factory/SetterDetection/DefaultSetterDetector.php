@@ -19,7 +19,10 @@ class DefaultSetterDetector implements SetterDetector
      */
     public function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): ?string
     {
-        $stringObject = new UnicodeString($key);
+        $fieldNameMapping = $definition->getFieldNameMapping();
+        $targetFieldName  = $fieldNameMapping[$key] ?? $key;
+
+        $stringObject = new UnicodeString($targetFieldName);
         $setterName   = sprintf(
             'set%s',
             $stringObject->camel()->title()->toString()

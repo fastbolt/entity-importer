@@ -71,6 +71,14 @@ interface EntityImporterDefinition
     public function getIdentifierColumns(): array;
 
     /**
+     * Get modifier callable applied to identifier selection before loading entity from database.
+     * Can be used to add static columns to identifier selection or even modify selection array.
+     *
+     * @return callable(array<string,mixed>):array<string,mixed>|null
+     */
+    public function getIdentifierModifier(): ?callable;
+
+    /**
      * Import source definition to specify source data format.
      *
      * @return ImportSourceDefinition
@@ -114,11 +122,12 @@ interface EntityImporterDefinition
     public function getEntityModifier(): ?callable;
 
     /**
-     * Return list of setters per field.
+     * Return list of mappings for differing field names between source and target.
+     *
      * Example:
-     *      ['name' => 'setShortname']
+     *      ['name1' => 'lastname']
      *
      * @return array<string, string>
      */
-    public function getSetterMapping(): array;
+    public function getFieldNameMapping(): array;
 }
