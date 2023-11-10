@@ -41,9 +41,9 @@
     <PossiblyNullReference>
       <code>scalarNode</code>
     </PossiblyNullReference>
-    <PossiblyUndefinedMethod>
+    <UndefinedInterfaceMethod>
       <code>scalarNode</code>
-    </PossiblyUndefinedMethod>
+    </UndefinedInterfaceMethod>
     <ReservedWord>
       <code>$treeBuilder-&gt;getRootNode()
                     -&gt;children()
