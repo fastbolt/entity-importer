@@ -28,6 +28,7 @@ class AbstractEntityImporterDefinitionTest extends TestCase
         self::assertSame([], $this->definition->getFieldNameMapping());
         $this->assertNull($this->definition->getEntityInstantiator());
         $this->assertNull($this->definition->getEntityModifier());
+        self::assertTrue($this->definition->isThrowExceptionOnUnknownField());
     }
 
     protected function setUp(): void

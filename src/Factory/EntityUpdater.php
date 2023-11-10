@@ -59,9 +59,9 @@ class EntityUpdater
             if (null !== ($converter = $converters[$key] ?? null)) {
                 $value = $converter($value, $row);
             }
-            $setter = $this->detectSetter($definition, $entity, $key, $value);
-
-            $entity->$setter($value);
+            if (null !== ($setter = $this->detectSetter($definition, $entity, $key, $value))) {
+                $entity->$setter($value);
+            }
         }
 
         return $entity;
@@ -75,11 +75,11 @@ class EntityUpdater
      * @param string                   $key
      * @param mixed                    $value
      *
-     * @return string
+     * @return string|null
      *
      * @throws SetterDetectionException Throws if no detector is able to detect setter.
      */
-    private function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): string
+    private function detectSetter(EntityImporterDefinition $definition, object $entity, string $key, $value): ?string
     {
         $entityClass = get_class($entity);
         if (null !== ($setter = $this->setterCache[$entityClass][$key] ?? null)) {
@@ -96,6 +96,10 @@ class EntityUpdater
 
                 return $setter;
             }
+        }
+
+        if (false === $definition->isThrowExceptionOnUnknownField()) {
+            return null;
         }
 
         throw new SetterDetectionException($definition, $key, $value);
