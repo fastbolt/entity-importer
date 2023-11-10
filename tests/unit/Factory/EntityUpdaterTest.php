@@ -102,12 +102,64 @@ class EntityUpdaterTest extends BaseTestCase
         self::assertSame($result, $this->entity);
     }
 
+    public function testSetDataWithUnmappedField(): void
+    {
+        $importRow = [
+            'foo' => '123',
+            'bar' => new DateTime(),
+            'asd' => 'foo',
+            'xyz' => 'zyx',
+        ];
+        $this->setterDetector1->method('getPriority')
+                              ->willReturn(0);
+        $this->setterDetector1->expects(self::exactly(3))
+                              ->method('detectSetter')
+                              ->withConsecutive(
+                                  [$this->definition, $this->entity, 'foo', '321'],
+                                  [$this->definition, $this->entity, 'bar', $importRow['bar']],
+                                  [$this->definition, $this->entity, 'xyz', $importRow['xyz']],
+                              )
+                              ->willReturnOnConsecutiveCalls(
+                                  'setModified',
+                                  'setBar',
+                                  null
+                              );
+        $this->entity->expects(self::once())
+                     ->method('setModified')
+                     ->with('321');
+        $this->entity->expects(self::once())
+                     ->method('setBar')
+                     ->with($importRow['bar']);
+        $this->definition->method('getSkippedFields')
+                         ->willReturn(['asd']);
+        $this->definition->method('getFieldConverters')
+                         ->willReturn([
+                                          'foo' => static function (string $value, array $row) use ($importRow
+                                          ): string {
+                                              self::assertSame($importRow, $row);
+
+                                              return strrev($value);
+                                          },
+                                      ]);
+        $this->definition->method('getFieldNameMapping')
+                         ->willReturn(['foo' => 'modified']);
+        $this->definition->method('isThrowExceptionOnUnknownField')
+                         ->willReturn(false);
+
+        $updater = new EntityUpdater([$this->setterDetector1]);
+        $result  = $updater->setData($this->definition, $this->entity, $importRow);
+
+        self::assertSame($result, $this->entity);
+    }
+
     public function testSetDataException(): void
     {
         $this->expectException(SetterDetectionException::class);
 
         $this->setterDetector1->method('getPriority')
                               ->willReturn(0);
+        $this->definition->method('isThrowExceptionOnUnknownField')
+                         ->willReturn(true);
 
         $updater = new EntityUpdater([$this->setterDetector1]);
         $updater->setData($this->definition, $this->entity, ['foo' => '123']);
