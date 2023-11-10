@@ -130,4 +130,11 @@ interface EntityImporterDefinition
      * @return array<string, string>
      */
     public function getFieldNameMapping(): array;
+
+    /**
+     * Option to disable throwing an exception on unknown fields.
+     *
+     * @return bool
+     */
+    public function isThrowExceptionOnUnknownField(): bool;
 }

@@ -85,4 +85,12 @@ abstract class AbstractEntityImporterDefinition implements EntityImporterDefinit
     {
         return null;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function isThrowExceptionOnUnknownField(): bool
+    {
+        return true;
+    }
 }

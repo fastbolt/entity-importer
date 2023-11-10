@@ -41,16 +41,9 @@
     <PossiblyNullReference>
       <code>scalarNode</code>
     </PossiblyNullReference>
-    <PossiblyUndefinedMethod>
+    <UndefinedInterfaceMethod>
       <code>scalarNode</code>
-    </PossiblyUndefinedMethod>
-    <ReservedWord>
-      <code>$treeBuilder-&gt;getRootNode()
-                    -&gt;children()
-                    -&gt;scalarNode('processed_path')
-                    -&gt;defaultValue('%kernel.project_dir%/data/import/processed')
-                    -&gt;end()</code>
-    </ReservedWord>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/DependencyInjection/EntityImporterExtension.php">
     <MixedArgument>

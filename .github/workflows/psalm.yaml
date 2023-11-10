@@ -22,7 +22,7 @@ jobs:
             -   uses: actions/checkout@master
 
             -   name: Psalm
-                uses: docker://vimeo/psalm-github-actions
+                uses: psalm/psalm-github-actions@2.3.0
                 with:
                     args: --shepherd
                     composer_require_dev: true
