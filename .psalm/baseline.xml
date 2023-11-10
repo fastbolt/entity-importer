@@ -44,13 +44,6 @@
     <UndefinedInterfaceMethod>
       <code>scalarNode</code>
     </UndefinedInterfaceMethod>
-    <ReservedWord>
-      <code>$treeBuilder-&gt;getRootNode()
-                    -&gt;children()
-                    -&gt;scalarNode('processed_path')
-                    -&gt;defaultValue('%kernel.project_dir%/data/import/processed')
-                    -&gt;end()</code>
-    </ReservedWord>
   </file>
   <file src="src/DependencyInjection/EntityImporterExtension.php">
     <MixedArgument>
