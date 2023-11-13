@@ -10,6 +10,7 @@ namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Factory;
 
 use Fastbolt\EntityImporter\ArchivingStrategy\ArchivingStrategy;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
+use Fastbolt\EntityImporter\Exceptions\SourceUnavailableException;
 use Fastbolt\EntityImporter\Reader\Factory\CsvReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 use Fastbolt\TestHelpers\BaseTestCase;
@@ -70,6 +71,25 @@ class CsvReaderFactoryTest extends BaseTestCase
         $reader  = $factory->getReader($definition, []);
 
         self::assertSame(null, Visibility::getProperty($reader, 'headerRowNumber'));
+    }
+
+    public function testGetReaderUnknownFile(): void
+    {
+        $this->expectException(SourceUnavailableException::class);
+
+        $sourceDefinition = new Csv(
+            __DIR__ . '/../../_Fixtures/Reader/Factory/CsvReaderFactory/notExistingFile.csv',
+            $this->archivingStrategy,
+            '@',
+            '`',
+            '#',
+            false
+        );
+        $definition       = $this->getMock(EntityImporterDefinition::class);
+        $definition->method('getImportSourceDefinition')
+                   ->willReturn($sourceDefinition);
+        $factory = new CsvReaderFactory();
+        $factory->getReader($definition, []);
     }
 
     protected function setUp(): void

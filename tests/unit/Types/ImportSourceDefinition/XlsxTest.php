@@ -31,6 +31,10 @@ class XlsxTest extends BaseTestCase
         self::assertSame('xlsx', $definition->getType());
         self::assertSame([], $definition->getOptions());
         self::assertSame($this->archivingStrategy, $definition->getArchivingStrategy());
+        self::assertTrue($definition->throwOnSourceUnavailable());
+
+        $definition->setThrowOnSourceUnavailable(false);
+        self::assertFalse($definition->throwOnSourceUnavailable());
     }
 
     public function testCustomValues(): void

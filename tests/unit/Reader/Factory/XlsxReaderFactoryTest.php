@@ -10,6 +10,7 @@ namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Factory;
 
 use Fastbolt\EntityImporter\ArchivingStrategy\ArchivingStrategy;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
+use Fastbolt\EntityImporter\Exceptions\SourceUnavailableException;
 use Fastbolt\EntityImporter\Reader\Factory\XlsxReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Xlsx;
 use Fastbolt\TestHelpers\BaseTestCase;
@@ -43,6 +44,21 @@ class XlsxReaderFactoryTest extends BaseTestCase
             Visibility::getProperty($reader, 'worksheet')
         );
         self::assertTrue($factory->supportsType('xlsx'));
+    }
+
+    public function testGetReaderUnknownFile(): void
+    {
+        $this->expectException(SourceUnavailableException::class);
+
+        $sourceDefinition = (new Xlsx(
+            __DIR__ . '/../../_Fixtures/Reader/Factory/XlsxReaderFactory/notExistingFile.xlsx',
+            $this->archivingStrategy
+        ));
+        $definition       = $this->getMock(EntityImporterDefinition::class);
+        $definition->method('getImportSourceDefinition')
+                   ->willReturn($sourceDefinition);
+        $factory = new XlsxReaderFactory();
+        $factory->getReader($definition, []);
     }
 
     protected function setUp(): void
