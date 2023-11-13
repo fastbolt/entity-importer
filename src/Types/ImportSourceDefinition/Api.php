@@ -80,11 +80,19 @@ class Api implements ImportSourceDefinition
         return new VoidArchivingStratetegy();
     }
 
+    /**
+     * @return bool
+     */
     public function throwOnSourceUnavailable(): bool
     {
         return $this->throwOnSourceUnavailable;
     }
 
+    /**
+     * @param bool $throwOnSourceUnavailable
+     *
+     * @return void
+     */
     public function setThrowOnSourceUnavailable(bool $throwOnSourceUnavailable): void
     {
         $this->throwOnSourceUnavailable = $throwOnSourceUnavailable;

@@ -87,11 +87,19 @@ class Xlsx implements ImportSourceDefinition
         return $this->archivingStrategy;
     }
 
+    /**
+     * @return bool
+     */
     public function throwOnSourceUnavailable(): bool
     {
         return $this->throwOnSourceUnavailable;
     }
 
+    /**
+     * @param bool $throwOnSourceUnavailable
+     *
+     * @return void
+     */
     public function setThrowOnSourceUnavailable(bool $throwOnSourceUnavailable): void
     {
         $this->throwOnSourceUnavailable = $throwOnSourceUnavailable;
