@@ -22,6 +22,8 @@ class Api implements ImportSourceDefinition
      */
     private array $options;
 
+    private bool $throwOnSourceUnavailable = true;
+
     /**
      * @param string              $apiHost
      * @param string              $apiPath
@@ -76,5 +78,15 @@ class Api implements ImportSourceDefinition
     public function getArchivingStrategy(): ArchivingStrategy
     {
         return new VoidArchivingStratetegy();
+    }
+
+    public function throwOnSourceUnavailable(): bool
+    {
+        return $this->throwOnSourceUnavailable;
+    }
+
+    public function setThrowOnSourceUnavailable(bool $throwOnSourceUnavailable): void
+    {
+        $this->throwOnSourceUnavailable = $throwOnSourceUnavailable;
     }
 }

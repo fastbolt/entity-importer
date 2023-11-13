@@ -36,4 +36,9 @@ interface ImportSourceDefinition
      * @return ArchivingStrategy
      */
     public function getArchivingStrategy(): ArchivingStrategy;
+
+    /**
+     * @return bool
+     */
+    public function throwOnSourceUnavailable(): bool;
 }

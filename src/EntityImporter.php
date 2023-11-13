@@ -10,6 +10,7 @@ namespace Fastbolt\EntityImporter;
 
 use Doctrine\Persistence\ObjectManager;
 use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
+use Fastbolt\EntityImporter\Exceptions\SourceUnavailableException;
 use Fastbolt\EntityImporter\Factory\ArrayToEntityFactory;
 use Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager;
 use Fastbolt\EntityImporter\Types\ImportError;
@@ -78,7 +79,16 @@ class EntityImporter
 
         $entityModifier = $definition->getEntityModifier();
         $readerFactory  = $this->readerFactoryManager->getReaderFactory($sourceDefinition->getType());
-        $reader         = $readerFactory->getReader($definition, $sourceDefinition->getOptions());
+        try {
+            $reader = $readerFactory->getReader($definition, $sourceDefinition->getOptions());
+        } catch (SourceUnavailableException $exception) {
+            if ($sourceDefinition->throwOnSourceUnavailable()) {
+                throw $exception;
+            }
+
+            return $result;
+        }
+
         if (count($errors = $reader->getErrors()) > 0) {
             throw new InvalidInputFormatException($sourceDefinition->getSource(), $errors);
         }
