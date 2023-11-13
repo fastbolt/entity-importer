@@ -43,6 +43,11 @@ class Csv implements ImportSourceDefinition
     private ArchivingStrategy $archivingStrategy;
 
     /**
+     * @var bool
+     */
+    private bool $throwOnSourceUnavailable = true;
+
+    /**
      * @param string            $importFile
      * @param ArchivingStrategy $archivingStrategy
      * @param string            $delimiter
@@ -128,5 +133,23 @@ class Csv implements ImportSourceDefinition
     public function getArchivingStrategy(): ArchivingStrategy
     {
         return $this->archivingStrategy;
+    }
+
+    /**
+     * @return bool
+     */
+    public function throwOnSourceUnavailable(): bool
+    {
+        return $this->throwOnSourceUnavailable;
+    }
+
+    /**
+     * @param bool $throwOnSourceUnavailable
+     *
+     * @return void
+     */
+    public function setThrowOnSourceUnavailable(bool $throwOnSourceUnavailable): void
+    {
+        $this->throwOnSourceUnavailable = $throwOnSourceUnavailable;
     }
 }

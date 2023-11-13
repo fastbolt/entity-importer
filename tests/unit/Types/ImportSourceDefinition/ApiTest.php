@@ -30,5 +30,9 @@ class ApiTest extends BaseTestCase
         self::assertSame('api', $definition->getType());
         self::assertFalse($definition->skipFirstRow());
         self::assertSame($options, $definition->getOptions());
+        self::assertTrue($definition->throwOnSourceUnavailable());
+
+        $definition->setThrowOnSourceUnavailable(false);
+        self::assertFalse($definition->throwOnSourceUnavailable());
     }
 }

@@ -9,6 +9,7 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
+use Fastbolt\EntityImporter\Exceptions\SourceUnavailableException;
 use Fastbolt\EntityImporter\Reader\CsvReader;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Csv;
 use SplFileObject;
@@ -26,7 +27,12 @@ class CsvReaderFactory implements ReaderFactoryInterface
         /** @var Csv $sourceDefinition */
         $sourceDefinition = $importerDefinition->getImportSourceDefinition();
         $importFilePath   = $sourceDefinition->getSource();
-        $fileObject       = new SplFileObject($importFilePath);
+
+        if (!file_exists($importFilePath) || !is_file($importFilePath)) {
+            throw new SourceUnavailableException(sprintf('File "%s" does not exist', $importFilePath));
+        }
+
+        $fileObject = new SplFileObject($importFilePath);
 
         return new CsvReader(
             $fileObject,
