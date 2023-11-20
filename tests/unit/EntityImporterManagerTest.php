@@ -11,10 +11,13 @@ namespace Fastbolt\EntityImporter\Tests\Unit;
 use Fastbolt\EntityImporter\EntityImporter;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\EntityImporterManager;
+use Fastbolt\EntityImporter\Events\ImportFailureEvent;
+use Fastbolt\EntityImporter\Events\ImportSuccessEvent;
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
 use Fastbolt\TestHelpers\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @covers \Fastbolt\EntityImporter\EntityImporterManager
@@ -46,10 +49,16 @@ class EntityImporterManagerTest extends BaseTestCase
      */
     private $errorCallback;
 
+    /**
+     * @var EventDispatcherInterface|MockObject
+     */
+    private $dispatcher;
+
     public function testImport(): void
     {
         $manager = new EntityImporterManager(
             $this->importer,
+            $this->dispatcher,
             [
                 $this->definition1,
                 $this->definition2,
@@ -65,6 +74,9 @@ class EntityImporterManagerTest extends BaseTestCase
         $this->importer->expects(self::once())
                        ->method('import')
                        ->with($this->definition2, $this->statusCallback, $this->errorCallback);
+        $this->dispatcher->expects(self::once())
+                         ->method('dispatch')
+                         ->with(self::isInstanceOf(ImportSuccessEvent::class));
 
         $result = $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
     }
@@ -75,8 +87,12 @@ class EntityImporterManagerTest extends BaseTestCase
         $this->expectExceptionMessage('Importer importer:def2:name not found.');
         $manager = new EntityImporterManager(
             $this->importer,
+            $this->dispatcher,
             []
         );
+        $this->dispatcher->expects(self::once())
+                         ->method('dispatch')
+                         ->with(self::isInstanceOf(ImportFailureEvent::class));
         self::assertSame([], $manager->getImporterDefinitions());
         $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
     }
@@ -86,6 +102,7 @@ class EntityImporterManagerTest extends BaseTestCase
         parent::setUp();
 
         $this->importer       = $this->getMock(EntityImporter::class, ['import']);
+        $this->dispatcher     = $this->getMock(EventDispatcherInterface::class);
         $this->definition1    = $this->getMock(EntityImporterDefinition::class);
         $this->definition2    = $this->getMock(EntityImporterDefinition::class);
         $this->statusCallback = $this->getCallable();

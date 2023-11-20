@@ -6,6 +6,7 @@ services:
     Fastbolt\EntityImporter\EntityImporterManager:
         $importer: '@Fastbolt\EntityImporter\EntityImporter'
         $importerDefinitions: !tagged fastbolt.entity_importer.definition
+        $eventDispatcher: '@Symfony\Contracts\EventDispatcher\EventDispatcherInterface'
 
     Fastbolt\EntityImporter\Reader\Factory\ReaderFactoryManager:
         $factories: !tagged fastbolt.entity_importer.reader_factory

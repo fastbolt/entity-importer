@@ -21,6 +21,7 @@ class CsvReaderFactory implements ReaderFactoryInterface
      * @param array<string,mixed>      $options
      *
      * @return CsvReader
+     * @throws SourceUnavailableException
      */
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): CsvReader
     {
