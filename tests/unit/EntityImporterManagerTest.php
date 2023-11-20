@@ -97,6 +97,7 @@ class EntityImporterManagerTest extends BaseTestCase
         self::assertSame([], $manager->getImporterDefinitions());
         $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
     }
+
     public function testImportEmptyType(): void
     {
         $this->expectException(InvalidArgumentException::class);

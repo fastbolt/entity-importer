@@ -77,7 +77,8 @@ class EntityImporterManager
      */
     public function import(string $name, callable $statusCallback, callable $errorCallback, ?int $limit): ImportResult
     {
-        $start = new DateTime();
+        $start      = new DateTime();
+        $definition = null;
         try {
             if (!$name) {
                 throw new InvalidArgumentException('Name must not be empty');
