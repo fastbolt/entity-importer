@@ -16,6 +16,7 @@ use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
 use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
 use Fastbolt\EntityImporter\Exceptions\SourceUnavailableException;
 use Fastbolt\EntityImporter\Types\ImportResult;
+use InvalidArgumentException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Throwable;
 
@@ -72,12 +73,17 @@ class EntityImporterManager
      *
      * @throws InvalidInputFormatException
      * @throws SourceUnavailableException
+     * @throws InvalidArgumentException
      */
     public function import(string $name, callable $statusCallback, callable $errorCallback, ?int $limit): ImportResult
     {
         $start = new DateTime();
         try {
-            if (!$name || null === ($definition = $this->definitions[$name] ?? null)) {
+            if (!$name) {
+                throw new InvalidArgumentException('Name must not be empty');
+            }
+
+            if (null === ($definition = $this->definitions[$name] ?? null)) {
                 throw new ImporterDefinitionNotFoundException($name);
             }
 

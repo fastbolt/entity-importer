@@ -9,21 +9,21 @@
 namespace Fastbolt\EntityImporter\Tests\Unit\Events;
 
 use DateTime;
+use Exception;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
-use Fastbolt\EntityImporter\Events\ImportSuccessEvent;
-use Fastbolt\EntityImporter\Types\ImportResult;
+use Fastbolt\EntityImporter\Events\ImportFailureEvent;
 use Fastbolt\TestHelpers\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @covers \Fastbolt\EntityImporter\Events\ImportSuccessEvent
+ * @covers \Fastbolt\EntityImporter\Events\ImportFailureEvent
  */
-class ImportSuccessEventTest extends BaseTestCase
+class ImportFailureEventTest extends BaseTestCase
 {
     /**
-     * @var ImportResult|MockObject
+     * @var Exception|MockObject
      */
-    private $importResult;
+    private $exception;
 
     /**
      * @var EntityImporterDefinition|MockObject
@@ -32,16 +32,16 @@ class ImportSuccessEventTest extends BaseTestCase
 
     public function testEvent(): void
     {
-        $event = new ImportSuccessEvent($this->definition, $start = new DateTime(), $this->importResult);
+        $event = new ImportFailureEvent($this->definition, $start = new DateTime(), $this->exception);
 
         self::assertSame($this->definition, $event->getDefinition());
-        self::assertSame($this->importResult, $event->getImportResult());
         self::assertSame($start, $event->getImportStart());
+        self::assertSame($this->exception, $event->getException());
     }
 
     protected function setUp(): void
     {
-        $this->importResult = $this->getMock(ImportResult::class);
-        $this->definition   = $this->getMock(EntityImporterDefinition::class);
+        $this->exception  = $this->getMock(Exception::class);
+        $this->definition = $this->getMock(EntityImporterDefinition::class);
     }
 }

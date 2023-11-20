@@ -15,6 +15,7 @@ use Fastbolt\EntityImporter\Events\ImportFailureEvent;
 use Fastbolt\EntityImporter\Events\ImportSuccessEvent;
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
 use Fastbolt\TestHelpers\BaseTestCase;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -95,6 +96,21 @@ class EntityImporterManagerTest extends BaseTestCase
                          ->with(self::isInstanceOf(ImportFailureEvent::class));
         self::assertSame([], $manager->getImporterDefinitions());
         $manager->import('importer:def2:name', $this->statusCallback, $this->errorCallback, null);
+    }
+    public function testImportEmptyType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Name must not be empty');
+        $manager = new EntityImporterManager(
+            $this->importer,
+            $this->dispatcher,
+            []
+        );
+        $this->dispatcher->expects(self::once())
+                         ->method('dispatch')
+                         ->with(self::isInstanceOf(ImportFailureEvent::class));
+        self::assertSame([], $manager->getImporterDefinitions());
+        $manager->import('', $this->statusCallback, $this->errorCallback, null);
     }
 
     protected function setUp(): void
