@@ -9,6 +9,7 @@
 namespace Fastbolt\EntityImporter\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
+use Fastbolt\EntityImporter\Exceptions\SourceUnavailableException;
 use Fastbolt\EntityImporter\Reader\ReaderInterface;
 
 interface ReaderFactoryInterface
@@ -18,6 +19,8 @@ interface ReaderFactoryInterface
      * @param array<string,mixed>      $options Array containing implementation-specific options
      *
      * @return ReaderInterface
+     *
+     * @throws SourceUnavailableException
      */
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): ReaderInterface;
 

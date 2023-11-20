@@ -20,6 +20,8 @@ class XlsxReaderFactory implements ReaderFactoryInterface
      * @param array<string,mixed>      $options Array containing implementation-specific options
      *
      * @return XlsxReader
+     *
+     * @throws SourceUnavailableException
      */
     public function getReader(EntityImporterDefinition $importerDefinition, array $options): XlsxReader
     {
