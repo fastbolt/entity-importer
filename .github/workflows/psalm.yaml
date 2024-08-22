@@ -18,12 +18,15 @@ jobs:
     psalm:
         name: Psalm
         runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php-version:
+                    - "8.3"
         steps:
             -   uses: actions/checkout@master
 
             -   name: Psalm
                 uses: psalm/psalm-github-actions@2.3.0
                 with:
-                    args: --shepherd
                     composer_require_dev: true
                     composer_ignore_platform_reqs: true
