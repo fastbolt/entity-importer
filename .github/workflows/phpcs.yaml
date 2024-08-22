@@ -15,13 +15,11 @@ on:
 jobs:
     phpcs:
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                php-version:
-                    - "8.3"
-                include:
-                    -   php-versions: '8.3'
         steps:
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
             - uses: actions/checkout@v2
               with:
                   fetch-depth: 0 # important!
