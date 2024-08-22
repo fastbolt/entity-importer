@@ -20,12 +20,10 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - "7.4"
-                    - "8.0"
-                    - "8.1"
                     - "8.2"
+                    - "8.3"
                 include:
-                    -   php-versions: '8.1'
+                    -   php-versions: '8.3'
                         coverage: xdebug
                         composer-prefer: '--prefer-lowest --prefer-stable'
                         phpunit-flags: '--coverage-clover coverage.xml'

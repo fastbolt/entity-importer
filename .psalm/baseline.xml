@@ -4,17 +4,6 @@
     <InvalidScalarArgument>
       <code>$limit</code>
     </InvalidScalarArgument>
-    <MixedAssignment>
-      <code>$bar</code>
-    </MixedAssignment>
-    <MixedMethodCall>
-      <code>advance</code>
-      <code>finish</code>
-      <code>setRedrawFrequency</code>
-    </MixedMethodCall>
-    <UndefinedClass>
-      <code>ProgressBar</code>
-    </UndefinedClass>
   </file>
   <file src="src/Console/ImportCommandHelpRenderer.php">
     <MixedAssignment>
@@ -28,14 +17,6 @@
     <UndefinedInterfaceMethod>
       <code>createTable</code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Console/ImportCommandResultRenderer.php">
-    <MixedAssignment>
-      <code>$count</code>
-    </MixedAssignment>
-    <MixedOperand>
-      <code>$count</code>
-    </MixedOperand>
   </file>
   <file src="src/DependencyInjection/Configuration.php">
     <PossiblyNullReference>
@@ -52,9 +33,6 @@
     <MixedAssignment>
       <code>$value</code>
     </MixedAssignment>
-    <ReservedWord>
-      <code>$loader-&gt;load('services.yaml')</code>
-    </ReservedWord>
   </file>
   <file src="src/EntityImporter.php">
     <MixedArgumentTypeCoercion>
