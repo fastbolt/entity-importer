@@ -22,6 +22,9 @@ class Api implements ImportSourceDefinition
      */
     private array $options;
 
+    /*
+     * @var array<string,string>
+     */
     private array $queryParameters;
 
     private bool $throwOnSourceUnavailable = true;
