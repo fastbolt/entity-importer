@@ -126,6 +126,7 @@ class ApiReader implements ReaderInterface
         /** @var PaginationStrategy $paginationStrategy */
         $paginationStrategy   = $this->options['pagination_strategy'];
         $paginationParameters = $paginationStrategy->getRequestParameters($offset);
+        $queryParameters      = $this->importSourceDefinition->getQueryParameters();
         $requestParameters    = array_merge_recursive(
             [
                 'verify'  => false,
@@ -134,7 +135,7 @@ class ApiReader implements ReaderInterface
                     'X-AUTH-TOKEN' => $this->importSourceDefinition->getOptions()['api_key'],
                 ],
             ],
-            $paginationParameters
+            array_merge_recursive($queryParameters, $paginationParameters)
         );
         $url                  = $this->importSourceDefinition->getSource();
         $requestMethod        = Request::METHOD_GET;
