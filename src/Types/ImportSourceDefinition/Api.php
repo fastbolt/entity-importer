@@ -23,7 +23,7 @@ class Api implements ImportSourceDefinition
     private array $options;
 
     /*
-     * @var array<string,string>
+     * @var array<string, mixed>
      */
     private array $queryParameters;
 
@@ -80,7 +80,7 @@ class Api implements ImportSourceDefinition
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<array-key, mixed>
      */
     public function getQueryParameters(): array
     {
