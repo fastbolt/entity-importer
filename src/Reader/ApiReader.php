@@ -12,6 +12,7 @@ use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Api\PagePaginationStrategy;
 use Fastbolt\EntityImporter\Reader\Api\PaginationStrategy;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Api;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
@@ -29,7 +30,7 @@ class ApiReader implements ReaderInterface
 
     private EntityImporterDefinition $importerDefinition;
 
-    private Api $importSourceDefinition;
+    private ImportSourceDefinition|Api $importSourceDefinition;
 
     private array $options;
 

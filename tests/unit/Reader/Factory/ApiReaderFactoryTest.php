@@ -10,7 +10,6 @@ namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Factory;
 
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Factory\ApiReaderFactory;
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Api;
 use Fastbolt\TestHelpers\BaseTestCase;
 use Fastbolt\TestHelpers\Visibility;
 use GuzzleHttp\Client;
