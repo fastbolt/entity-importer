@@ -23,7 +23,7 @@ class Api implements ImportSourceDefinition
     private array $options;
 
     /*
-     * @var array<string, mixed>
+     * @var array<array-key, mixed>
      */
     private array $queryParameters;
 
