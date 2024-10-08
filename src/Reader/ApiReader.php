@@ -54,8 +54,11 @@ class ApiReader implements ReaderInterface
     ) {
         $this->clientFactory          = $clientFactory;
         $this->importerDefinition     = $importerDefinition;
-        $this->importSourceDefinition = /** @var Api */ $importerDefinition->getImportSourceDefinition();
         $this->options                = $options;
+
+        /** @var Api $apiTmp */
+        $apiTmp = $importerDefinition->getImportSourceDefinition();
+        $this->importSourceDefinition = $apiTmp;
 
         Assert::keyExists($this->options, 'api_key');
 
