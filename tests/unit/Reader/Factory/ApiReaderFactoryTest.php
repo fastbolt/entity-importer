@@ -65,7 +65,7 @@ class ApiReaderFactoryTest extends BaseTestCase
         parent::setUp();
 
         $this->clientFactory      = $this->getCallable();
-        $this->importerDefinition = $this->getMock(Api::class);
+        $this->importerDefinition = $this->getMock(EntityImporterDefinition::class);
         $this->client             = $this->getMock(Client::class);
     }
 }
