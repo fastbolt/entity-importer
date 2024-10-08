@@ -80,7 +80,7 @@ class Api implements ImportSourceDefinition
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function getQueryParameters(): array
     {
