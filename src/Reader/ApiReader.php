@@ -11,7 +11,7 @@ namespace Fastbolt\EntityImporter\Reader;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Api\PagePaginationStrategy;
 use Fastbolt\EntityImporter\Reader\Api\PaginationStrategy;
-use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Api;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
@@ -29,7 +29,7 @@ class ApiReader implements ReaderInterface
 
     private EntityImporterDefinition $importerDefinition;
 
-    private ImportSourceDefinition $importSourceDefinition;
+    private Api $importSourceDefinition;
 
     private array $options;
 
@@ -54,7 +54,7 @@ class ApiReader implements ReaderInterface
     ) {
         $this->clientFactory          = $clientFactory;
         $this->importerDefinition     = $importerDefinition;
-        $this->importSourceDefinition = $importerDefinition->getImportSourceDefinition();
+        $this->importSourceDefinition = /** @var Api */ $importerDefinition->getImportSourceDefinition();
         $this->options                = $options;
 
         Assert::keyExists($this->options, 'api_key');
