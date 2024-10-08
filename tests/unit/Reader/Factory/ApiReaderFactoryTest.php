@@ -8,8 +8,8 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Factory;
 
-use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Factory\ApiReaderFactory;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Api;
 use Fastbolt\TestHelpers\BaseTestCase;
 use Fastbolt\TestHelpers\Visibility;
 use GuzzleHttp\Client;
@@ -26,7 +26,7 @@ class ApiReaderFactoryTest extends BaseTestCase
     private $clientFactory;
 
     /**
-     * @var EntityImporterDefinition&MockObject
+     * @var Api&MockObject
      */
     private $importerDefinition;
 
@@ -64,7 +64,7 @@ class ApiReaderFactoryTest extends BaseTestCase
         parent::setUp();
 
         $this->clientFactory      = $this->getCallable();
-        $this->importerDefinition = $this->getMock(EntityImporterDefinition::class);
+        $this->importerDefinition = $this->getMock(Api::class);
         $this->client             = $this->getMock(Client::class);
     }
 }
