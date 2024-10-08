@@ -8,6 +8,7 @@
 
 namespace Fastbolt\EntityImporter\Tests\Unit\Reader\Factory;
 
+use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Factory\ApiReaderFactory;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Api;
 use Fastbolt\TestHelpers\BaseTestCase;
@@ -26,7 +27,7 @@ class ApiReaderFactoryTest extends BaseTestCase
     private $clientFactory;
 
     /**
-     * @var Api&MockObject
+     * @var EntityImporterDefinition&MockObject
      */
     private $importerDefinition;
 
