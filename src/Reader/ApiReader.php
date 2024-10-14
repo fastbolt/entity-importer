@@ -124,24 +124,26 @@ class ApiReader implements ReaderInterface
      */
     private function loadBulkData(int $offset): void
     {
+        /** @var Api $importSourceDefinition */
+        $importSourceDefinition = $this->importSourceDefinition;
         $clientFactory = $this->clientFactory;
         $client        = $clientFactory();
 
         /** @var PaginationStrategy $paginationStrategy */
         $paginationStrategy   = $this->options['pagination_strategy'];
         $paginationParameters = $paginationStrategy->getRequestParameters($offset);
-        $queryParameters      = $this->importSourceDefinition->getQueryParameters();
+        $queryParameters      = $importSourceDefinition->getQueryParameters();
         $requestParameters    = array_merge_recursive(
             [
                 'verify'  => false,
                 'headers' => [
                     'Accept'       => 'application/json',
-                    'X-AUTH-TOKEN' => $this->importSourceDefinition->getOptions()['api_key'],
+                    'X-AUTH-TOKEN' => (string) $importSourceDefinition->getOptions()['api_key'],
                 ],
             ],
             array_merge_recursive($queryParameters, $paginationParameters)
         );
-        $url                  = $this->importSourceDefinition->getSource();
+        $url                  = $importSourceDefinition->getSource();
         $requestMethod        = Request::METHOD_GET;
 
         try {
