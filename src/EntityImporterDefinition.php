@@ -24,7 +24,7 @@ interface EntityImporterDefinition
      */
     public function getName(): string;
 
-    /***
+    /**
      * Description displayed in "Available import types" overview.
      *
      * @return string
