@@ -11,6 +11,7 @@ namespace Fastbolt\EntityImporter\Reader;
 use Fastbolt\EntityImporter\EntityImporterDefinition;
 use Fastbolt\EntityImporter\Reader\Api\PagePaginationStrategy;
 use Fastbolt\EntityImporter\Reader\Api\PaginationStrategy;
+use Fastbolt\EntityImporter\Types\ImportSourceDefinition\Api;
 use Fastbolt\EntityImporter\Types\ImportSourceDefinition\ImportSourceDefinition;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -29,7 +30,7 @@ class ApiReader implements ReaderInterface
 
     private EntityImporterDefinition $importerDefinition;
 
-    private ImportSourceDefinition $importSourceDefinition;
+    private ImportSourceDefinition|Api $importSourceDefinition;
 
     private array $options;
 
@@ -54,8 +55,11 @@ class ApiReader implements ReaderInterface
     ) {
         $this->clientFactory          = $clientFactory;
         $this->importerDefinition     = $importerDefinition;
-        $this->importSourceDefinition = $importerDefinition->getImportSourceDefinition();
         $this->options                = $options;
+
+        /** @var Api $apiTmp */
+        $apiTmp = $importerDefinition->getImportSourceDefinition();
+        $this->importSourceDefinition = $apiTmp;
 
         Assert::keyExists($this->options, 'api_key');
 
@@ -120,23 +124,26 @@ class ApiReader implements ReaderInterface
      */
     private function loadBulkData(int $offset): void
     {
+        /** @var Api $importSourceDefinition */
+        $importSourceDefinition = $this->importSourceDefinition;
         $clientFactory = $this->clientFactory;
         $client        = $clientFactory();
 
         /** @var PaginationStrategy $paginationStrategy */
         $paginationStrategy   = $this->options['pagination_strategy'];
         $paginationParameters = $paginationStrategy->getRequestParameters($offset);
+        $queryParameters      = $importSourceDefinition->getQueryParameters();
         $requestParameters    = array_merge_recursive(
             [
                 'verify'  => false,
                 'headers' => [
                     'Accept'       => 'application/json',
-                    'X-AUTH-TOKEN' => $this->importSourceDefinition->getOptions()['api_key'],
+                    'X-AUTH-TOKEN' => (string) $importSourceDefinition->getOptions()['api_key'],
                 ],
             ],
-            $paginationParameters
+            array_merge_recursive($queryParameters, $paginationParameters)
         );
-        $url                  = $this->importSourceDefinition->getSource();
+        $url                  = $importSourceDefinition->getSource();
         $requestMethod        = Request::METHOD_GET;
 
         try {
