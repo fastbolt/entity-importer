@@ -132,7 +132,7 @@ class ApiReader implements ReaderInterface
         /** @var PaginationStrategy $paginationStrategy */
         $paginationStrategy   = $this->options['pagination_strategy'];
         $paginationParameters = $paginationStrategy->getRequestParameters($offset);
-        $queryParameters      = $importSourceDefinition->getQueryParameters();
+        $queryParameters      = ['query' => $importSourceDefinition->getQueryParameters()];
         $requestParameters    = array_merge_recursive(
             [
                 'verify'  => false,
