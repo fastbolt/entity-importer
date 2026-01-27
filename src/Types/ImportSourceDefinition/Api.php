@@ -22,18 +22,25 @@ class Api implements ImportSourceDefinition
      */
     private array $options;
 
+    /*
+     * @var array<array-key, mixed>
+     */
+    private array $queryParameters;
+
     private bool $throwOnSourceUnavailable = true;
 
     /**
-     * @param string              $apiHost
-     * @param string              $apiPath
-     * @param array<string,mixed> $options
+     * @param string               $apiHost
+     * @param string               $apiPath
+     * @param array<string,mixed>  $options
+     * @param array<string,string> $queryParameters
      */
-    public function __construct(string $apiHost, string $apiPath, array $options)
+    public function __construct(string $apiHost, string $apiPath, array $options, array $queryParameters = [])
     {
         $this->options = $options;
         $this->apiHost = $apiHost;
         $this->apiPath = $apiPath;
+        $this->queryParameters = $queryParameters;
     }
 
     /**
@@ -70,6 +77,14 @@ class Api implements ImportSourceDefinition
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    public function getQueryParameters(): array
+    {
+        return $this->queryParameters;
     }
 
     /**

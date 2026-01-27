@@ -70,6 +70,11 @@ class XlsxReader implements ReaderInterface
         $this->setColumnHeaders($columnHeaders);
     }
 
+    /**
+     * @param array $columnHeaders
+     *
+     * @return void
+     */
     public function setColumnHeaders(array $columnHeaders): void
     {
         $this->columnHeaders = $columnHeaders;
@@ -99,46 +104,75 @@ class XlsxReader implements ReaderInterface
         return $this->errors;
     }
 
-    public function current()
+    /**
+     * @return mixed
+     */
+    public function current(): mixed
     {
+        /** @var array $row */
         $row = $this->worksheet[$this->pointer];
 
         // If the spreadsheet file has column headers, use them to construct an associative
         // array for the columns in this line
         if (!empty($this->columnHeaders) && count($this->columnHeaders) === count($row)) {
-            return array_combine(array_values($this->columnHeaders), $row);
+            /** @var array<int, array-key> $headers */
+            $headers = array_values($this->columnHeaders);
+            return array_combine($headers, $row);
         }
 
         // Else just return the column values
         return $row;
     }
 
+    /**
+     * @param int $rowNumber
+     *
+     * @return void
+     */
     public function setHeaderRowNumber(int $rowNumber): void
     {
         $this->headerRowNumber = $rowNumber;
+        /**
+         * @psalm-suppress MixedAssignment
+         */
         $this->columnHeaders   = $this->worksheet[$rowNumber];
     }
 
+    /**
+     * @return array
+     */
     public function getColumnHeaders(): array
     {
         return $this->columnHeaders;
     }
 
+    /**
+     * @return void
+     */
     public function next(): void
     {
         $this->pointer++;
     }
 
-    public function key(): mixed
+    /**
+     * @return int
+     */
+    public function key(): int
     {
         return $this->pointer;
     }
 
+    /**
+     * @return bool
+     */
     public function valid(): bool
     {
         return isset($this->worksheet[$this->pointer]);
     }
 
+    /**
+     * @return void
+     */
     public function rewind(): void
     {
         if (null === $this->headerRowNumber) {

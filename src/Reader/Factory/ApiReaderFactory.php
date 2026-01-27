@@ -24,7 +24,7 @@ class ApiReaderFactory implements ReaderFactoryInterface
      */
     public function __construct(?callable $clientFactory = null)
     {
-        if (!$clientFactory) {
+        if ($clientFactory === null) {
             $clientFactory = static function (): Client {
                 return new Client(['verify' => false]);
             };

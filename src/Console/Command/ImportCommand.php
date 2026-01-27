@@ -12,6 +12,8 @@ use Fastbolt\EntityImporter\Console\ImportCommandHelpRenderer;
 use Fastbolt\EntityImporter\Console\ImportCommandResultRenderer;
 use Fastbolt\EntityImporter\EntityImporterManager;
 use Fastbolt\EntityImporter\Exceptions\ImporterDefinitionNotFoundException;
+use Fastbolt\EntityImporter\Exceptions\InvalidInputFormatException;
+use Fastbolt\EntityImporter\Exceptions\SourceUnavailableException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,33 +26,16 @@ use Throwable;
 class ImportCommand extends Command
 {
     /**
-     * @var EntityImporterManager
-     */
-    private EntityImporterManager $entityImporterManager;
-
-    /**
-     * @var ImportCommandHelpRenderer
-     */
-    private ImportCommandHelpRenderer $helpRenderer;
-
-    /**
-     * @var ImportCommandResultRenderer
-     */
-    private ImportCommandResultRenderer $resultRenderer;
-
-    /**
-     * @param EntityImporterManager $entityImporterManager
+     * @param EntityImporterManager       $entityImporterManager
+     * @param ImportCommandHelpRenderer   $helpRenderer
+     * @param ImportCommandResultRenderer $resultRenderer
      */
     public function __construct(
-        EntityImporterManager $entityImporterManager,
-        ImportCommandHelpRenderer $helpRenderer,
-        ImportCommandResultRenderer $resultRenderer
+        private readonly EntityImporterManager $entityImporterManager,
+        private readonly ImportCommandHelpRenderer $helpRenderer,
+        private readonly ImportCommandResultRenderer $resultRenderer
     ) {
         parent::__construct();
-
-        $this->entityImporterManager = $entityImporterManager;
-        $this->helpRenderer          = $helpRenderer;
-        $this->resultRenderer        = $resultRenderer;
     }
 
     /**
@@ -69,6 +54,8 @@ class ImportCommand extends Command
      * @param OutputInterface $output
      *
      * @return int
+     * @throws InvalidInputFormatException
+     * @throws SourceUnavailableException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
