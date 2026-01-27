@@ -41,7 +41,7 @@ jobs:
 
             -   name: Cache Composer packages
                 id: composer-cache
-                uses: actions/cache@v2
+                uses: actions/cache@v3
                 with:
                     path: vendor
                     key: ${{ runner.os }}-composer-${{ matrix.composer-prefer }}$-${{ hashFiles('**/composer.lock') }}
@@ -53,10 +53,3 @@ jobs:
 
             -   name: Run test suite
                 run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
-
-            -   name: Upload PHPunit coverage
-                uses: codecov/codecov-action@v3
-                with:
-                    fail_ci_if_error: true # optional (default = false)
-                    verbose: true # optional (default = false)
-                    flags: unittests
